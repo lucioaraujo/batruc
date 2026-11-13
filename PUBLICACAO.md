@@ -46,7 +46,7 @@ publicação, vamos acertando os detalhes do software no caminho".
   documento
 - [x] texto "Sobre" do app nas 4 línguas: versão 0.1.0 candidata, recursos atuais, crédito do GMD, "testado no Linux; Windows e macOS ainda não" (13/11)
 - [x] README público curto em 4 línguas (13/11)
-- [ ] corrigir o que a CI apontar no Windows e no macOS (o Modular precisou
+- [x] corrigir o que a CI apontar no Windows e no macOS (o Modular precisou
   de cinco correções na primeira rodada). Rodadas de 13/11:
   - 1–2: macOS ✅. Linux: ICE do GCC 11. Windows: C1060 (memória do MSVC
     no Main.cpp) e C2975 num teste;
@@ -60,7 +60,11 @@ publicação, vamos acertando os detalhes do software no caminho".
     24.04, Debian 12 e Arch. No Fedora, o `.tar.gz` não abriu: pedia
     `libatomic.so.1` sem usar símbolo dela (o Clang não liga com
     `--as-needed`; o AppImage já levava a biblioteca);
-  - 5: `--as-needed` nas ligações do Linux.
+  - 5: `--as-needed` nas ligações do Linux. Run 43525981484 **toda verde**:
+    os três pacotes, os 28 testes nos três sistemas e a abertura em Fedora,
+    Debian 12, Ubuntu 24.04 e Arch (14/11).
+- [ ] pré-release `v0.1.0-rc1` (autor: "avance", 14/11), para testar os
+  downloads antes da `v0.1.0`; padrão do Modular (tag com hífen = pré-release)
 - [ ] screenshots de execução real
 - [x] site em `website/` (base do Trioio, 4 línguas, `PUBLICADO = False`,
   noindex; `deploy-site.yml` só manual). Falta ligar o GitHub Pages e virar
