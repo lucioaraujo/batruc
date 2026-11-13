@@ -47,8 +47,24 @@ publicação, vamos acertando os detalhes do software no caminho".
 - [x] texto "Sobre" do app nas 4 línguas: versão 0.1.0 candidata, recursos atuais, crédito do GMD, "testado no Linux; Windows e macOS ainda não" (13/11)
 - [x] README público curto em 4 línguas (13/11)
 - [ ] corrigir o que a CI apontar no Windows e no macOS (o Modular precisou
-  de cinco correções na primeira rodada)
+  de cinco correções na primeira rodada). Rodadas de 13/11:
+  - 1–2: macOS ✅. Linux: ICE do GCC 11. Windows: C1060 (memória do MSVC
+    no Main.cpp) e C2975 num teste;
+  - 3 (Clang no Linux, clang-cl no Windows): macOS ✅; o Windows compila,
+    mas 5 testes caem por pilha de 1 MB (os testes usam até 3 MB) e 4
+    testes de paridade chamam `/bin/sh`. O Clang 14 do Linux recusa
+    structured binding capturado por lambda;
+  - 4 (commit `a1e24bc`): pilha de 8 MB no Windows, paridade só fora do
+    Windows, locais simples no `drawFunctionGraph`. Run 43523590174.
+    Os três pacotes ✅ (macOS, Windows, Linux) e o arranque ✅ em Ubuntu
+    24.04, Debian 12 e Arch. No Fedora, o `.tar.gz` não abriu: pedia
+    `libatomic.so.1` sem usar símbolo dela (o Clang não liga com
+    `--as-needed`; o AppImage já levava a biblioteca);
+  - 5: `--as-needed` nas ligações do Linux.
 - [ ] screenshots de execução real
+- [x] site em `website/` (base do Trioio, 4 línguas, `PUBLICADO = False`,
+  noindex; `deploy-site.yml` só manual). Falta ligar o GitHub Pages e virar
+  `PUBLICADO = True` na release (13/11)
 - [ ] página do Batruc no portal da família (preparada localmente; o
   upload para o HostGator é do autor)
 

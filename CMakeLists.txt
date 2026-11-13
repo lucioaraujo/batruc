@@ -26,6 +26,14 @@ if(MSVC)
     add_link_options(/STACK:8388608)
 endif()
 
+# Linux: ligar só as bibliotecas realmente usadas. O GCC do Ubuntu já faz isso
+# por padrão; o Clang não, e a checagem de std::atomic do JUCE deixava o
+# binário pedindo libatomic.so.1 sem usar nenhum símbolo dela. No Fedora, que
+# não traz essa biblioteca, o .tar.gz não abria (CI, 13/11/2026).
+if(CMAKE_SYSTEM_NAME STREQUAL "Linux")
+    add_link_options("LINKER:--as-needed")
+endif()
+
 add_library(batruc_core STATIC
     src/core/CompositionCore.cpp
     src/core/BassComposition.cpp
