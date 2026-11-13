@@ -63,8 +63,12 @@ publicação, vamos acertando os detalhes do software no caminho".
   - 5: `--as-needed` nas ligações do Linux. Run 43525981484 **toda verde**:
     os três pacotes, os 28 testes nos três sistemas e a abertura em Fedora,
     Debian 12, Ubuntu 24.04 e Arch (14/11).
-- [ ] pré-release `v0.1.0-rc1` (autor: "avance", 14/11), para testar os
-  downloads antes da `v0.1.0`; padrão do Modular (tag com hífen = pré-release)
+- [x] pré-release `v0.1.0-rc1` (autor: "avance", 14/11), para testar os
+  downloads antes da `v0.1.0`; padrão do Modular (tag com hífen = pré-release).
+  Run 43527407534 verde; seis pacotes anexados em
+  https://github.com/lucioaraujo/batruc/releases/tag/v0.1.0-rc1
+- [ ] teste do autor com os downloads da rc1 → então tag `v0.1.0`, Pages,
+  `PUBLICADO = True` e card do portal (zip para o HostGator)
 - [ ] screenshots de execução real
 - [x] site em `website/` (base do Trioio, 4 línguas, `PUBLICADO = False`,
   noindex; `deploy-site.yml` só manual). Falta ligar o GitHub Pages e virar
