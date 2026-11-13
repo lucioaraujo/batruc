@@ -150,12 +150,18 @@ jobs:
         shell: bash
         run: packaging/obter-gmd.sh
 
-      # Windows: compilador hospedeiro de 64 bits (o de 32 bits esgotava a
-      # memória no Main.cpp, C1060, na primeira rodada de 13/11/2026)
+      # Clang nos três sistemas (13/11/2026). Nas duas primeiras rodadas o
+      # Main.cpp travou o GCC 11 do Ubuntu 22.04 (falha interna, segfault) e
+      # esgotou a memória do MSVC (C1060, mesmo com o hospedeiro de 64 bits),
+      # enquanto o Clang do macOS e o GCC 13 local compilam (41 s, 1,1 GB).
+      # Linux: o clang do próprio Ubuntu 22.04 usa a libstdc++ do sistema,
+      # então o pacote segue valendo para distribuições de 2022 em diante.
+      # Windows: clang-cl do Visual Studio (-T ClangCL), runtime estático.
       - name: Configure
         run: >
           cmake -S . -B build
-          ${{ runner.os == 'Windows' && '-T host=x64' || '' }}
+          ${{ runner.os == 'Windows' && '-T ClangCL,host=x64' || '' }}
+          ${{ runner.os == 'Linux' && '-DCMAKE_C_COMPILER=clang -DCMAKE_CXX_COMPILER=clang++' || '' }}
           -DCMAKE_BUILD_TYPE=Release
           -DBATRUC_BUILD_JUCE_APP=ON
           -DBATRUC_JUCE_SOURCE_DIR=${{ github.workspace }}/JUCE-checkout
