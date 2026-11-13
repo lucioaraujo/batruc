@@ -92,3 +92,41 @@ publicação, vamos acertando os detalhes do software no caminho".
 - [ ] **Protótipo web em HTML:** vai junto ou fica como histórico.
 - [ ] **Sessão de escuta final** documentada.
 - [ ] Revisão do espanhol por um falante nativo (desejável).
+
+## Card do portal da família (rascunho, 14/11/2026)
+
+Entra em `RASGO/RASGO_WEBSITE` (4 páginas, JSON-LD posição 9, captura
+`assets/screenshots/batruc-0.1.0-1920.jpg` = `website/assets/interface.jpg`)
+**só quando a release v0.1.0 existir**, junto com o Pages ligado e
+`PUBLICADO = True` (camada 4: portal, repositório e página juntos). O
+pacote `rasgo-website.zip` e o envio são do autor. Seção: Instrumentos,
+depois do Asterismus. A cena da família no topo (cada instrumento tem a sua)
+é decisão estética do autor; não está feita.
+
+- **PT** — kicker `INSTRUMENTO · COMPOSIÇÃO RÍTMICA`. "Modelos matemáticos e
+  físicos — pêndulos acoplados, bilhar, figuras de Lissajous, séries de
+  Fourier, curvas rolantes — escrevem ritmos que você ouve, edita, toca e
+  leva para a partitura. Bumbo, caixa com ornamentos, chimbal e um baixo no
+  tom da seed; pautas de baixo e de bateria exportáveis em MusicXML."
+  Status: "Disponível para Linux, Windows e Mac." Link: "Site e downloads do
+  Batruc →".
+- **EN** — `INSTRUMENT · RHYTHM COMPOSITION`. "Mathematical and physical
+  models — coupled pendulums, billiards, Lissajous figures, Fourier series,
+  rolling curves — write rhythms you hear, edit, play and take to the score.
+  Kick, snare with ornaments, hi-hat and a bass in the seed's key; bass and
+  drum staves exportable as MusicXML." "Available for Linux, Windows and
+  Mac." "Batruc site and downloads →".
+- **FR** — `INSTRUMENT · COMPOSITION RYTHMIQUE`. « Des modèles mathématiques
+  et physiques — pendules couplés, billard, figures de Lissajous, séries de
+  Fourier, courbes roulantes — écrivent des rythmes que vous écoutez,
+  modifiez, jouez et portez sur la partition. Grosse caisse, caisse claire
+  ornementée, charleston et une basse dans la tonalité de la seed ; portées
+  de basse et de batterie exportables en MusicXML. » « Disponible pour
+  Linux, Windows et Mac. » « Site et téléchargements de Batruc → ».
+- **ES** — `INSTRUMENTO · COMPOSICIÓN RÍTMICA`. «Modelos matemáticos y
+  físicos — péndulos acoplados, billar, figuras de Lissajous, series de
+  Fourier, curvas rodantes — escriben ritmos que escuchas, editas, tocas y
+  llevas a la partitura. Bombo, caja con ornamentos, charles y un bajo en la
+  tonalidad de la seed; pentagramas de bajo y batería exportables a
+  MusicXML.» «Disponible para Linux, Windows y Mac.» «Sitio y descargas de
+  Batruc →».

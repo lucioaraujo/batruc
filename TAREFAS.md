@@ -1,6 +1,6 @@
 # Batruc — tarefas e continuidade
 
-Atualizado em: 2026-11-13.
+Atualizado em: 2026-11-14.
 Estado: incubação; maquete local executável; core C++ e host JUCE Release
 compilados localmente; fixtures comparam agendas seeded. A interface foi
 inspecionada por capturas do próprio app em três resoluções; a escuta dos
@@ -21,8 +21,12 @@ diante, commits, push, versões e releases são feitos só aqui (RASGO/AGENTS
   configurados neste repositório.
 - Fora do público: `preservation/` e os estudos raster `exec-*.png` e
   `ideia.png` (origem não registrada).
-- Próximo passo: o resultado da primeira CI (Linux, Windows, macOS) e as
-  correções que ela pedir. Ver [`PUBLICACAO.md`](PUBLICACAO.md).
+- CI (13–14/11): rodadas 1–5 registradas em [`PUBLICACAO.md`](PUBLICACAO.md).
+  Na 4ª, os três pacotes passaram; o Fedora pediu `--as-needed` (5ª).
+  O site está em `website/` (em preparação, noindex, deploy manual), e o
+  card do portal tem rascunho em 4 línguas no `PUBLICACAO.md`.
+- Próximo passo: com a CI verde, o autor decide sobre a tag `v0.1.0`
+  (release), o GitHub Pages, o `PUBLICADO = True` e o card no portal.
 
 ## ▶ Publicação — em andamento (13/11/2026, "avance em todas as etapas")
 
