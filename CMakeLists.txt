@@ -18,6 +18,14 @@ endif()
 
 project(Batruc VERSION 0.1.0 LANGUAGES C CXX)
 
+# Pilha de 8 MB no Windows, como o padrão do Linux. O Windows reserva só 1 MB
+# por padrão, e a composição guarda estruturas grandes na pilha
+# (FigureComposition ~180 KB; alguns testes passam de 3 MB). Sem isto, os
+# testes caíam com SegFault na primeira rodada da CI (13/11/2026).
+if(MSVC)
+    add_link_options(/STACK:8388608)
+endif()
+
 add_library(batruc_core STATIC
     src/core/CompositionCore.cpp
     src/core/BassComposition.cpp
@@ -144,7 +152,7 @@ if(BUILD_TESTING)
     )
     target_link_libraries(batruc_seeded_variation_fixture PRIVATE batruc_core)
     find_program(BATRUC_NODE_EXECUTABLE node)
-    if(BATRUC_NODE_EXECUTABLE)
+    if(BATRUC_NODE_EXECUTABLE AND NOT WIN32)
         add_test(NAME batruc_seeded_bass_parity
             COMMAND ${CMAKE_COMMAND} -E env
                 "BATRUC_NODE_EXECUTABLE=${BATRUC_NODE_EXECUTABLE}"

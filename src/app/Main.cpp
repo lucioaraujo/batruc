@@ -21382,8 +21382,12 @@ private:
         std::array<juce::Colour, kMaxVoices> tints{};
         for (std::size_t voice = 0; voice < tints.size(); ++voice)
             tints[voice] = voiceTint(voice);
-        const auto [phaseArcOffset, phaseArcSlope] =
+        // Plain locals, not a structured binding: lambdas below capture them,
+        // and Clang < 16 rejects capturing structured bindings (C++17).
+        const auto phaseArc =
             formalPhaseArcForDrawing(formalCycle, formalPhaseAmount);
+        const double phaseArcOffset = phaseArc.first;
+        const double phaseArcSlope = phaseArc.second;
         constexpr int curveSamples = 512;
 
         // The intensity laws are composition material in their own right. This

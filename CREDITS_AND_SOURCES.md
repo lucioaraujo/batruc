@@ -15,6 +15,7 @@
 | Componente | Uso | Licença |
 |---|---|---|
 | [JUCE](https://juce.com) 9.0.3 | interface, áudio e janelas do app nativo | AGPLv3 ou comercial. Não é versionado neste repositório: o build aponta para um checkout local, e a CI usa a tag 9.0.3. |
+| Fontes [DejaVu](https://dejavu-fonts.github.io/) (Sans e Sans Mono) | só no site (`website/assets/fonts/`), cópia `.woff2` igual à dos outros sites RASGO | licença livre da DejaVu (derivada da Bitstream Vera; domínio público para as mudanças da DejaVu) |
 
 Nenhum outro código de terceiros está incorporado. As ideias de bibliotecas
 estudadas (DaisySP, Faust, Pure Data) estão em
