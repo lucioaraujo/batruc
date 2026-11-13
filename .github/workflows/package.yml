@@ -150,9 +150,12 @@ jobs:
         shell: bash
         run: packaging/obter-gmd.sh
 
+      # Windows: compilador hospedeiro de 64 bits (o de 32 bits esgotava a
+      # memória no Main.cpp, C1060, na primeira rodada de 13/11/2026)
       - name: Configure
         run: >
           cmake -S . -B build
+          ${{ runner.os == 'Windows' && '-T host=x64' || '' }}
           -DCMAKE_BUILD_TYPE=Release
           -DBATRUC_BUILD_JUCE_APP=ON
           -DBATRUC_JUCE_SOURCE_DIR=${{ github.workspace }}/JUCE-checkout

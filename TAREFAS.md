@@ -10,6 +10,20 @@ Fonte conceitual ativa: [DESENVOLVIMENTO.md](DESENVOLVIMENTO.md) (até
 anteriores a essa data referem-se a ele). O `README.md` atual é a
 apresentação pública.
 
+## ▶ Repositório próprio e público (13/11/2026)
+
+**Este diretório é agora o repositório `lucioaraujo/batruc`** (público). O
+monorepo `rasgo-instruments` deixou de rastreá-lo (`.gitignore`) e guarda o
+histórico anterior, que tem o e-mail pessoal e os caminhos locais. Daqui em
+diante, commits, push, versões e releases são feitos só aqui (RASGO/AGENTS
+§4).
+- Autor e committer: `Lúcio de Araújo <rasgo.instruments@gmail.com>`,
+  configurados neste repositório.
+- Fora do público: `preservation/` e os estudos raster `exec-*.png` e
+  `ideia.png` (origem não registrada).
+- Próximo passo: o resultado da primeira CI (Linux, Windows, macOS) e as
+  correções que ela pedir. Ver [`PUBLICACAO.md`](PUBLICACAO.md).
+
 ## ▶ Publicação — em andamento (13/11/2026, "avance em todas as etapas")
 
 Feito (local, sem commit):

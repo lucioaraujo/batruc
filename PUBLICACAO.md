@@ -27,7 +27,7 @@ publicação, vamos acertando os detalhes do software no caminho".
 | instalação e plataformas | ✅ [`INSTALL.md`](INSTALL.md), com a matriz honesta (só Linux testado) |
 | testes e validações realmente executados | 🟡 28 testes no Linux; escuta do autor em lotes; falta a CI nos 3 sistemas |
 | screenshots com origem autorizada | ❌ fazer, a partir de execução real |
-| links (repositório, documentação, release) | ❌ dependem do repositório próprio |
+| links (repositório, documentação, release) | 🟡 repositório público https://github.com/lucioaraujo/batruc; a release depende da CI |
 | ausência de áudio privado, gravações e brainstorm | ✅ escutas em `.local-build/` (fora do git) |
 | contato oficial | ✅ `rasgo.instruments@gmail.com` (já no CPack) |
 | versão publicada = página editorial | ❌ depende da página |
@@ -62,9 +62,15 @@ publicação, vamos acertando os detalhes do software no caminho".
   - Conferido: o `.deb` tem 1.150 MIDIs e o binário instalado os carrega.
 - [x] **README:** o diário virou `DESENVOLVIMENTO.md` (`git mv`, com o
   histórico preservado), e o README público entrou em 4 línguas (13/11).
-- [ ] **Repositório próprio** `lucioaraujo/batruc`: privado primeiro (a
-  CI em repositório privado consome cota) ou público direto (minutos
-  gratuitos).
+- [x] **Repositório próprio e público** `lucioaraujo/batruc` (autor:
+  "publico", 13/11/2026). Padrão do Trioio, do Aquorbium e do Maravi:
+  - o histórico começa limpo, e o anterior fica no monorepo privado;
+  - o e-mail é só o do RASGO (autor: "divulgue somente o email do rasgo");
+  - os caminhos locais foram trocados por formas genéricas;
+  - `preservation/` e os estudos raster sem origem registrada ficaram de
+    fora;
+  - varredura de segredos e proteção de push ligadas;
+  - primeira rodada da CI nos três sistemas disparada (run 43519082281).
 - [x] **Versão** da primeira release: 0.1.0 (13/11).
 - [ ] **Busca de marca** no INPI (classes 9, 15 e 41).
 - [ ] **Protótipo web em HTML:** vai junto ou fica como histórico.

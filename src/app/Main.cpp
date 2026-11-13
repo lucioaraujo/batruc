@@ -2258,7 +2258,13 @@ juce::String localized(const UiLanguage language,
     if (language == UiLanguage::english)
         return utf8(english);
     if (language == UiLanguage::spanish) {
-        static const std::unordered_map<std::string, const char*> spanish = {
+        // Tabela simples de pares (13/11/2026): um initializer_list de ~650
+        // pares para std::unordered_map gerava código de inicialização
+        // gigantesco; o MSVC esgotava a memória (C1060) e o GCC 11 travava
+        // (falha interna) no Main.cpp. Pares de const char* são triviais; o
+        // mapa é montado uma vez, na primeira consulta.
+        struct SpanishEntry { const char* portuguese; const char* spanish; };
+        static constexpr SpanishEntry kSpanish[] = {
             {"Sobre o Batruc", "Acerca de Batruc"}, {"Fechar", "Cerrar"},
             {"ÁREAS / RELAÇÃO DE STENGEL", "ÁREAS / RELACIÓN DE STENGEL"},
             {"Mude x, y e z; observe a área w calculada e o fechamento da relação.",
@@ -3349,6 +3355,13 @@ juce::String localized(const UiLanguage language,
             {"MICROLINHAS MÓVEIS / ANALOGIA",
              "MICROLÍNEAS MÓVILES / ANALOGÍA"},
         };
+        static const auto spanish = [] {
+            std::unordered_map<std::string, const char*> map;
+            map.reserve(std::size(kSpanish));
+            for (const auto& entry : kSpanish)
+                map.emplace(entry.portuguese, entry.spanish);   // vale a primeira
+            return map;
+        }();
         const auto found = spanish.find(portuguese);
         return utf8(found != spanish.end() ? found->second : english);
     }

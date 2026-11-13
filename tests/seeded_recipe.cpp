@@ -192,7 +192,9 @@ int main() {
     styleCells[0].enabled = true;
     if (!batruc::insertRhythmicCellAttack(styleCells[0], 0.0, 1.0f))
         return 9;
-    constexpr std::size_t styleRenderSamples = 4096;
+    // static: o MSVC não aceita a constante local como tamanho de array
+    // dentro da lambda (CI Windows, 13/11/2026: erro C2975)
+    static constexpr std::size_t styleRenderSamples = 4096;
     std::array<std::array<float, styleRenderSamples>, 17> familyOutputs{};
     std::array<float, batruc::kMaxVoices> familyLevels{};
     familyLevels[0] = 1.0f;
