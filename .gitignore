@@ -1,0 +1,15 @@
+# Batruc (13/11/2026, preparação para publicação)
+# Groove MIDI Dataset: dado de terceiros (CC BY 4.0), baixado e conferido por
+# packaging/obter-gmd.sh; vai nos pacotes, não no repositório.
+/midis/groove/
+/midis/groove-v1.0.0-midionly.zip
+# builds, escutas e artefatos locais
+/.local-build/
+/build/
+/--archive-smoke/
+# Fora do repositório público (13/11/2026): a cópia de preservação fica no
+# arquivo da família; estudos raster de origem não registrada não são
+# publicados (o histórico anterior está no monorepo privado rasgo-instruments).
+/preservation/
+/prototype/assets/brand/references/exec-*.png
+/prototype/assets/brand/references/ideia.png

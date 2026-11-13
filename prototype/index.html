@@ -1,0 +1,388 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>batruc · estudo 01</title>
+  <meta name="theme-color" content="#FDF9F2">
+  <link rel="icon" href="assets/brand/icons/favicon.svg" type="image/svg+xml">
+  <link rel="icon" href="assets/brand/icons/favicon.ico" type="image/x-icon">
+  <link rel="icon" href="assets/brand/icons/favicon-16.png" type="image/png" sizes="16x16">
+  <link rel="icon" href="assets/brand/icons/favicon-32.png" type="image/png" sizes="32x32">
+  <link rel="apple-touch-icon" href="assets/brand/icons/apple-touch-icon.png">
+  <link rel="mask-icon" href="assets/brand/icons/favicon.svg" color="#0C1525">
+  <link rel="manifest" href="assets/brand/icons/site.webmanifest">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <main class="instrument">
+    <header class="masthead">
+      <div class="brand-lockup">
+        <div class="eyebrow">RASGO / INSTRUMENTO EM INCUBAÇÃO</div>
+        <h1 class="brand-title-visually-hidden">Batruc</h1>
+        <div class="brand-art" role="img" aria-label="Batruc">
+          <img class="brand-wordmark" src="assets/brand/active/batruc-wordmark-original-crop-v01.png"
+               width="1050" height="156" alt="Batruc">
+        </div>
+        <p class="brand-description">Estudo 01 — até oito vozes de fórmula e um módulo editável de baixo.</p>
+      </div>
+      <div class="edition">
+        <div class="edition-name"><span>MATEMÁTICA</span><span>FÍSICA</span><span>MÚSICA</span><b>01</b></div>
+        <div class="header-actions">
+          <label class="interface-language" for="interface-language"><span>IDIOMA</span>
+            <select id="interface-language" aria-label="Idioma da interface">
+              <option value="pt">PT</option><option value="en">EN</option>
+              <option value="es">ES</option><option value="fr">FR</option>
+            </select>
+          </label>
+          <button id="guide-learn" type="button">APRENDER</button>
+          <button id="guide-about" type="button">SOBRE</button>
+        </div>
+      </div>
+    </header>
+
+    <section id="formula-grid" class="formula-grid" aria-label="Fórmulas e valores em movimento">
+    </section>
+    <aside class="formula-reading" aria-label="Relação entre cálculo e composição">
+      <div><span>MATEMÁTICA</span><strong id="reading-math">combinação linear de funções</strong></div>
+        <div><span>FÍSICA</span><strong id="reading-physics">influência idealizada entre movimentos</strong></div>
+      <div><span>COMPOSIÇÃO</span><strong id="reading-composition">imitação transformada, encontro e variação</strong></div>
+      <p id="relation-summary">λ = 0: vozes independentes. Aumentar λ aproxima cada voz do movimento anterior.</p>
+    </aside>
+    <section class="seed-module" aria-label="Máquina de seeds e variações">
+      <div class="seed-controls">
+        <label><span>SEED / 8 HEX</span><input id="seed-value" value="4E415632" maxlength="8" pattern="[A-Fa-f0-9]{8}" spellcheck="false"></label>
+        <button id="seed-new" type="button">NOVA SEED</button>
+        <label class="seed-variation"><span>VARIAÇÃO <output id="variation-value">35%</output></span><input id="variation" type="range" min="0" max="100" step="1" value="35"></label>
+      </div>
+      <p id="seed-summary">A seed calcula o baixo a partir dos ataques e posições das vozes. Editar uma célula converte o baixo para o modo manual.</p>
+      <div class="seed-archive" aria-label="Pasta local para composições e gravações">
+        <button id="archive-folder" type="button">ESCOLHER PASTA</button>
+        <label><span>GUARDAR COMO</span><input id="archive-name" maxlength="64" placeholder="Nome da composição"></label>
+        <button id="archive-save" type="button" disabled>GUARDAR CÁLCULO</button>
+        <label class="archive-select"><span>CÁLCULOS NA PASTA</span><select id="archive-list" disabled><option value="">Escolha uma pasta</option></select></label>
+        <button id="archive-load" type="button" disabled>ABRIR</button>
+        <button id="archive-delete" type="button" disabled>APAGAR</button>
+      </div>
+      <p id="archive-status" role="status" class="archive-status">Escolha uma pasta local para guardar e reabrir cálculos e gravações.</p>
+    </section>
+
+    <section class="drawing" aria-label="Gráficos animados dos movimentos e eventos">
+      <div class="panel-head">
+        <div><span id="cycle-length" class="kicker">TRAÇADO / 8,0 S POR CICLO</span><h2>Uma forma que se torna tempo</h2></div>
+        <div class="live-readout"><span id="section-name">Construção</span><b id="clock">00:00.0</b></div>
+      </div>
+      <div class="geometry-panel">
+        <div class="geometry-heading"><span>02 / DESENHO GEOMÉTRICO</span><strong>O instrumento traça a curva</strong></div>
+        <div class="geometry-discipline">MATH ART · SOUND DESIGN · MATHEMATICAL SONIFICATION</div>
+        <div class="geometry-controls">
+          <label><span>INSTRUMENTO DE TRAÇADO</span><select id="geometry-shape">
+            <option value="compass">Compasso · circunferência</option><option value="triangle">Esquadro · triângulo</option>
+            <option value="square">Régua e esquadro · quadrado</option><option value="spiral">Compasso · espiral</option>
+            <option value="lissajous">Lápis · curva de Lissajous</option>
+            <option value="fourier-triangle">Fourier · triângulo</option>
+            <option value="fourier-square">Fourier · quadrado</option>
+            <option value="epicycloid">Roda externa · epicicloide (nefróide)</option>
+            <option value="hypocycloid">Roda interna · hipocicloide (deltóide)</option>
+            <option value="cycloid">Cicloide · roda sobre reta</option>
+            <option value="catenary">Catenária · curva de uma corrente suspensa</option>
+            <option value="billiard-square">Bilhar · quadrado com reflexões</option>
+          </select></label>
+          <label id="geometry-billiard-control" hidden><span>TRAJETÓRIA · VOLTAS X:Y</span><select id="geometry-billiard-pattern">
+            <option value="0">2:4 · 6 impactos</option><option value="1">4:2 · 6 impactos</option>
+            <option value="2">2:6 · 8 impactos</option><option value="3">6:2 · 8 impactos</option>
+            <option value="4">4:4 · 8 impactos</option><option value="5">4:6 · 10 impactos</option>
+            <option value="6">6:4 · 10 impactos</option>
+          </select></label>
+          <label class="geometry-source-toggle"><input id="geometry-source" type="checkbox"><span>Usar y do desenho como função da voz 1</span></label>
+          <label id="geometry-fourier-control" hidden><span>ORDEM H · COMPONENTES −H…+H</span><input id="geometry-fourier-terms" type="range" min="1" max="32" step="1" value="8"><output id="geometry-fourier-value">H=8 · 17 componentes</output></label>
+          <output id="geometry-equation">x = cos(θ) · y = sen(θ)</output>
+        </div>
+        <canvas id="geometry-trace" aria-label="Percurso geométrico traçado pelo compasso, lápis ou esquadro"></canvas>
+      </div>
+      <div class="voice-graph-heading"><span>01 / VOZES · TEMPO</span><strong id="graph-title">Funções convertidas em eventos sonoros</strong></div>
+      <canvas id="graph" aria-label="Traçados das vozes e pontos de disparo"></canvas>
+      <div class="graph-zoom-controls" aria-label="Zoom e trecho visível do gráfico">
+        <label><span>ZOOM <output id="graph-zoom-value">1×</output></span><input id="graph-zoom" type="range" min="1" max="8" step="0.25" value="1"></label>
+        <label><span>AMPLITUDE Y <output id="graph-y-value">1×</output></span><input id="graph-y-scale" type="range" min="0.5" max="3" step="0.1" value="1"></label>
+        <label><span>CENTRO DO TRECHO <output id="graph-focus-value">50%</output></span><input id="graph-focus" type="range" min="0" max="100" step="1" value="0"></label>
+        <button id="graph-reset" type="button">VER CICLO TODO</button>
+      </div>
+      <div id="graph-legend" class="graph-legend"><span><i class="event-symbol"></i>evento sonoro</span><span class="graph-note">A linha vertical é a posição atual no ciclo.</span></div>
+    </section>
+
+    <section class="mixer" aria-label="Mesa de mixagem das vozes">
+      <div class="panel-head"><div><span class="kicker">MIXER / DOZE VOZES + BAIXO</span><h2>Equilíbrio e espaço</h2></div>
+        <div class="master-output"><label for="output-level">MASTER · saída <output id="output-value">120%</output></label>
+          <input id="output-level" type="range" min="0.5" max="1.7" step="0.05" value="1.2">
+          <button id="master-mute" type="button" aria-pressed="false" aria-label="Mute master">M</button>
+        </div>
+      </div>
+      <div class="formula-bus-trim"><label for="formula-bus-trim">TRIM DAS VOZES <output id="formula-bus-trim-value">+16,5 dB</output></label>
+        <input id="formula-bus-trim" type="range" min="-12" max="24" step="0.1" value="16.5">
+        <span>Compensa o barramento das vozes antes da soma com o baixo; não altera o nível do canal de baixo.</span>
+      </div>
+      <div class="mixer-balance" aria-live="polite">
+        <span id="mixer-balance-readout">SENSOR · aguarda áudio</span>
+        <button id="mixer-auto-balance" type="button" disabled>AJUSTAR VOZES</button>
+      </div>
+      <div id="channel-mixer" class="channel-mixer" aria-label="Controles independentes por voz"></div>
+      <p class="mixer-note">Solo pode ativar vários canais. Mute continua valendo mesmo quando o canal está em solo. O master contém picos altos.</p>
+    </section>
+
+    <section class="bass-module" aria-label="Módulo editável de baixo">
+      <div class="panel-head"><div><span class="kicker">MÓDULO / BAIXO</span><h2>Escreva a linha, passo a passo</h2></div><span id="bass-step-count" class="duration">16 passos por compasso</span></div>
+      <p class="bass-help">A seed gera uma linha de baixo a partir dos ataques, posições e intensidades vocais. O gráfico mostra o início do ciclo de mudança; editar as células abaixo troca para o baixo manual. LFO, filtros e envelopes continuam modulando o som.</p>
+      <div class="bass-draw-toolbar"><button id="bass-draw-toggle" type="button" aria-pressed="false">✎ DESENHAR TRAÇO</button><span>O gesto contínuo vira notas quantizadas pela grade do compasso.</span></div>
+      <div class="bass-editor-scroll"><canvas id="bass-editor" class="bass-editor" aria-label="Editor gráfico: clique para inserir nota, arraste para mudar altura e duração"></canvas></div>
+      <p id="bass-editor-hint" class="bass-editor-hint">No modo de edição: clique para inserir/remover; arraste o corpo para mudar a altura e a borda direita para mudar a duração. No modo de desenho, arraste uma linha para criar ou alterar os passos atravessados. A escala vertical mostra notas MIDI do baixo.</p>
+      <div id="bass-pattern" class="bass-pattern" aria-label="Editor de notas e durações do baixo"></div>
+      <div class="bass-duration-controls">
+        <label class="control"><span>Regra de duração</span><select id="bass-duration-formula">
+          <option value="manual" selected>Manual por passo</option><option value="fibonacci">Sequência de Fibonacci</option>
+          <option value="geometric">Progressão geométrica</option>
+        </select></label>
+        <label class="control"><span>Razão geométrica</span><select id="bass-geo-ratio">
+          <option value="1.2">1,20</option><option value="1.5" selected>1,50</option>
+          <option value="1.618">φ · 1,618</option><option value="2">2,00</option>
+        </select></label>
+        <p id="bass-duration-equation" class="bass-formula" aria-live="polite">Manual: dₙ = duração escolhida no passo.</p>
+      </div>
+      <div class="bass-lfo-controls">
+        <label class="control"><span>Matéria sonora do baixo</span><select id="bass-timbre">
+          <option value="sub">Sub · seno profundo</option><option value="round" selected>Redondo · triângulo</option>
+          <option value="body">Corpo · dente filtrado</option><option value="pulse">Pulso · quadrada filtrada</option>
+          <option value="bright">Brilhante · harmônicos</option><option value="pluck">Pluck · ataque curto</option>
+        </select></label>
+        <label class="control"><span>Perfil espectral</span><select id="bass-oscillator-profile">
+          <option value="harmonic" selected>Harmônicos · 1:2:3</option>
+          <option value="odd">Ímpares · 1:3:5</option>
+          <option value="inharmonic">Inarmônicos · 1:√2:√3</option>
+          <option value="beat">Batimento lento · 1:1,003:0,997</option>
+        </select></label>
+        <label class="bass-lfo-toggle"><input id="bass-lfo-enabled" type="checkbox"><span>Modular alturas com LFO</span></label>
+        <label class="control"><span>Forma do LFO</span><select id="bass-shape"><option value="triangle" selected>Triangular</option><option value="sine">Senoidal</option><option value="square">Quadrada</option></select></label>
+        <label class="control"><span>Período</span><select id="bass-rate"><option value="1">1 ciclo da forma</option><option value="2" selected>2 ciclos da forma</option><option value="4">4 ciclos da forma</option></select></label>
+        <label class="control"><span>Profundidade <output id="bass-depth-value">0 semitons</output></span><input id="bass-depth" type="range" min="0" max="12" step="1" value="0"></label>
+        <label class="control"><span>Frase / pausas</span><select id="bass-phrase-mode">
+          <option value="loop" selected>Loop exato</option><option value="breath">Respiração a cada 2 compassos</option>
+          <option value="cadence">Cadência a cada 4 compassos</option><option value="call-response">Chamada e resposta</option>
+        </select></label>
+        <label class="control"><span>Encaixe com as vozes</span><select id="bass-rhythm-relation">
+          <option value="independent">Independente</option><option value="follow" selected>Seguir ataques</option>
+          <option value="answer">Responder após a voz</option><option value="convolution">Convolução cíclica</option>
+        </select></label>
+        <label class="control"><span>Mínimo de variação de altura <output id="bass-pitch-variation-value">0%</output></span><input id="bass-pitch-variation" type="range" min="0" max="100" step="1" value="0"></label>
+      </div>
+      <div class="bass-duration-controls bass-vcf-controls" aria-label="Filtro passa-baixas do baixo">
+        <label class="control"><span>Corte VCF <output id="bass-vcf-cutoff-value">420 Hz</output></span><input id="bass-vcf-cutoff" type="range" min="30" max="6000" step="1" value="420"></label>
+        <label class="control"><span>Ressonância <output id="bass-vcf-resonance-value">0,707</output></span><input id="bass-vcf-resonance" type="range" min="0.5" max="14" step="0.01" value="0.707"></label>
+        <p class="bass-formula">VCF passa-baixas de 2 polos · Q controla o pico de ressonância junto ao corte.</p>
+      </div>
+      <div class="bass-envelope-controls" aria-label="Envelopes do baixo">
+        <fieldset><legend>AMPLITUDE · ADSR</legend>
+          <label class="control"><span>Nível <output id="bass-output-level-value">0,20</output></span><input id="bass-output-level" type="range" min="0" max="0.8" step="0.01" value="0.2"></label>
+          <label class="control"><span>Ataque <output id="bass-amp-attack-value">8 ms</output></span><input id="bass-amp-attack" type="range" min="0.001" max="1" step="0.001" value="0.008"></label>
+          <label class="control"><span>Decaimento <output id="bass-amp-decay-value">180 ms</output></span><input id="bass-amp-decay" type="range" min="0.005" max="2" step="0.005" value="0.18"></label>
+          <label class="control"><span>Sustentação <output id="bass-amp-sustain-value">62%</output></span><input id="bass-amp-sustain" type="range" min="0" max="1" step="0.01" value="0.62"></label>
+          <label class="control"><span>Soltura <output id="bass-amp-release-value">120 ms</output></span><input id="bass-amp-release" type="range" min="0.005" max="3" step="0.005" value="0.12"></label>
+        </fieldset>
+        <fieldset><legend>FILTRO · ADSR + GATE</legend>
+          <label class="control"><span>Abertura <output id="bass-filter-amount-value">900 Hz</output></span><input id="bass-filter-amount" type="range" min="0" max="2400" step="10" value="900"></label>
+          <label class="control"><span>Ataque <output id="bass-filter-attack-value">6 ms</output></span><input id="bass-filter-attack" type="range" min="0.001" max="1" step="0.001" value="0.006"></label>
+          <label class="control"><span>Decaimento <output id="bass-filter-decay-value">243 ms</output></span><input id="bass-filter-decay" type="range" min="0.005" max="2" step="0.001" value="0.243"></label>
+          <label class="control"><span>Sustentação <output id="bass-filter-sustain-value">12%</output></span><input id="bass-filter-sustain" type="range" min="0" max="1" step="0.01" value="0.12"></label>
+          <label class="control"><span>Soltura <output id="bass-filter-release-value">120 ms</output></span><input id="bass-filter-release" type="range" min="0.005" max="3" step="0.005" value="0.12"></label>
+          <label class="control"><span>Gate <output id="bass-gate-value">86%</output></span><input id="bass-gate" type="range" min="0.4" max="1" step="0.01" value="0.86"></label>
+        </fieldset>
+      </div>
+      <p class="bass-formula">Três componentes de oscilador em relações selecionáveis, misturados a 1 : 0,34 : 0,16 e normalizados antes do filtro. Cada seed escolhe um perfil; a escolha manual pode substituí-lo. Perfis: harmônicos, parciais ímpares, razões inarmônicas ou batimentos lentos. Repetições: 1, 2, 4 ou 8; ghost reduz o peso e acento reforça o ataque. LFO de altura: m(t) = forma(2π · t / período) · profundidade.</p>
+    </section>
+
+    <section class="controls" aria-label="Controles de composição e transporte">
+      <div class="transport">
+        <button id="play" class="primary" type="button">▶ Tocar estudo</button>
+        <button id="stop" type="button">■ Parar</button>
+        <button id="record" type="button" aria-pressed="false">● Gravar master</button>
+        <span id="record-status" role="status">Áudio não gravado</span>
+        <a id="score-download" hidden>Baixar partitura TXT</a>
+        <span id="status" role="status">Pronto para ouvir. O áudio começa após seu gesto.</span>
+      </div>
+      <div class="control-grid">
+        <label class="control"><span>Modelo de movimento</span>
+          <select id="motion-model">
+            <option value="functions" selected>Funções e vozes independentes</option>
+            <option value="coupled-pendulum">Três pêndulos ligados por molas · aproximação linear</option>
+          </select>
+          <small>Modelo idealizado de ângulos pequenos; não reproduz a geometria serial do artigo. A forma tem sete ciclos.</small>
+        </label>
+        <label class="control"><span>Quantidade de vozes</span>
+          <select id="voice-count">
+            <option value="2">2 vozes</option><option value="3">3 vozes</option>
+            <option value="4" selected>4 vozes</option><option value="5">5 vozes</option>
+            <option value="6">6 vozes</option><option value="7">7 vozes</option>
+            <option value="8">8 vozes</option>
+          </select>
+          <small>Cada voz usa de 0,5 a 16 oscilações, em passos de 0,25.</small>
+        </label>
+        <label class="control"><span>Relação polirrítmica</span>
+          <select id="polyrhythm-preset">
+            <option value="">Escolha uma relação</option>
+            <option value="4:3">4:3</option><option value="5:4">5:4</option>
+            <option value="6:4">6:4</option><option value="7:4">7:4</option>
+            <option value="8:6">8:6</option><option value="10:4">10:4</option>
+            <option value="10:7">10:7</option><option value="2:3:5">2:3:5</option>
+            <option value="3:4:5">3:4:5</option><option value="4:5:7">4:5:7</option>
+            <option value="3:4:5:7">3:4:5:7</option>
+            <option value="3:4:5:7:8">3:4:5:7:8</option>
+          </select>
+        </label>
+        <button id="polyrhythm-apply" type="button">APLICAR RELAÇÃO</button>
+        <label class="control"><span>Receita de eventos</span>
+          <select id="recipe">
+            <option value="center">A · passagens pelo centro</option>
+            <option value="turn">B · pontos de inversão</option>
+          </select>
+          <small>O mesmo movimento produz outra frase.</small>
+        </label>
+        <label class="control"><span>Campo da receita</span>
+          <select id="pattern-mode">
+            <option value="unrestricted">Campo livre</option>
+            <option value="adhesive-pads">Quatro zonas de contato</option>
+            <option value="diagonal-lanes">Duas faixas diagonais</option>
+          </select>
+          <small>O campo move e deforma o recorte pela seed. As quatro ilhas pulsam e derivam em fases próprias com influência suave da vizinha; conectores transitórios incluem no campo o corredor entre ilhas próximas. As microlinhas derivam e respiram de modo assimétrico. Ataques que cruzam as bordas mudam de presença e intensidade; o traço acompanha o campo.</small>
+        </label>
+        <label class="control"><span>Lei de intensidade</span>
+          <select id="intensity-law">
+            <option value="uniform">Uniforme</option>
+            <option value="projection-y">Projeção em y</option>
+            <option value="product-xy">Produto xy</option>
+            <option value="quadratic-difference">Diferença x² − y²</option>
+            <option value="gaussian-centre">Centro gaussiano</option>
+            <option value="cosine-bands">Faixas de cosseno</option>
+            <option value="potential-energy">Energia potencial</option>
+            <option value="kinetic-energy">Energia cinética</option>
+          </select>
+          <small>Mapeia posição e movimento em força de ataque, com a mesma fórmula da saída JUCE.</small>
+        </label>
+        <label class="control"><span>Mistura da lei <output id="intensity-amount-value">35%</output></span>
+          <input id="intensity-amount" type="range" min="0" max="1" step="0.01" value="0.35">
+          <small>0% mantém intensidade uniforme; 100% aplica integralmente a lei escolhida.</small>
+        </label>
+        <label class="control"><span>Desvio máximo de fase · vozes 2–8 <output id="phase-value">0,125 volta</output></span>
+          <input id="phase" type="range" min="0" max="0.5" step="0.005" value="0.125">
+          <small>Avança nos ciclos 3–4 e retorna gradualmente ao ponto inicial nos ciclos 6–7.</small>
+        </label>
+        <fieldset id="pendulum-controls" class="pendulum-controls" hidden>
+          <legend>TRÊS OSCILADORES ANGULARES · APROXIMAÇÃO DE ÂNGULO PEQUENO</legend>
+          <label class="control"><span>Comprimento L <output id="pendulum-length-value">1,00 m</output></span>
+            <input id="pendulum-length" type="range" min="0.4" max="2" step="0.05" value="1">
+          </label>
+          <label class="control"><span>Acoplamento κ <output id="pendulum-coupling-value">0,35</output></span>
+            <input id="pendulum-coupling" type="range" min="0" max="1.5" step="0.01" value="0.35">
+          </label>
+          <label class="control"><span>Amortecimento ζ <output id="pendulum-damping-value">0,04</output></span>
+            <input id="pendulum-damping" type="range" min="0" max="0.3" step="0.005" value="0.04">
+          </label>
+          <p>θ̈ᵢ + 2ζω₀θ̇ᵢ + ω₀²θᵢ + κω₀²Σⱼ(θᵢ−θⱼ)=0 · ω₀²=g/L. É uma aproximação linear: três pêndulos individuais ligados em cadeia por molas efetivas, com κ adimensional. Não é o pêndulo serial do artigo nem uma reprodução dos resultados dele. No ciclo 5, a fase se sustenta e todas as vozes continuam disponíveis.</p>
+        </fieldset>
+        <label class="control"><span>Intenção composicional</span>
+          <select id="intention">
+            <option value="meet" selected>Escutar encontros</option>
+            <option value="build">Construir intensidade</option>
+            <option value="thin">Rarefazer</option>
+            <option value="contrast">Contrastar vozes</option>
+          </select>
+          <small>Define como encontros, contraste ou percurso alteram os eventos.</small>
+        </label>
+        <label class="control"><span>Desenho da dinâmica</span>
+          <select id="dynamics">
+            <option value="steady">Estável</option>
+            <option value="crescendo">Crescendo</option>
+            <option value="arch" selected>Arco</option>
+            <option value="waves">Ondas</option>
+          </select>
+          <small>Curva de intensidade aplicada aos eventos e ao gráfico.</small>
+        </label>
+        <label class="control"><span>Swing <output id="swing-value">50%</output></span>
+          <input id="swing" type="range" min="0.5" max="0.67" step="0.01" value="0.5">
+          <small>50% é reto; 67% aproxima a divisão ternária. Sem deslocar o início do ciclo.</small>
+        </label>
+        <label class="control"><span>Forma de tocar</span>
+          <select id="articulation">
+            <option value="short">Curta</option><option value="balanced" selected>Equilibrada</option>
+            <option value="long">Sustentada</option>
+          </select>
+          <small>Controla o tempo de decaimento de cada ataque.</small>
+        </label>
+        <label class="control"><span>Duração total</span>
+          <select id="duration">
+            <option value="28">28 segundos</option><option value="42">42 segundos</option>
+            <option value="56" selected>56 segundos</option><option value="70">70 segundos</option>
+            <option value="84">84 segundos</option>
+          </select>
+          <small>Os sete ciclos mantêm a forma; muda a duração de cada ciclo.</small>
+        </label>
+        <label class="control"><span>Andamento <output id="bpm-value">120 BPM</output></span>
+          <input id="bpm" type="range" min="40" max="240" step="1" value="120">
+          <small>Define a grade de pulsos para swing e acentos; a duração da forma é independente.</small>
+        </label>
+        <label class="control"><span>Fórmula de compasso</span>
+          <select id="meter">
+            <option value="3/4">3/4</option><option value="4/4" selected>4/4</option>
+            <option value="5/4">5/4</option><option value="7/8">7/8</option>
+          </select>
+          <small>Organiza os acentos do groove; BPM refere-se à semínima.</small>
+        </label>
+        <label class="control"><span>Matéria sonora</span>
+          <select id="timbre">
+            <option value="sine">Seno — puro</option><option value="triangle" selected>Triângulo — suave</option>
+            <option value="sawtooth">Dente — brilhante</option><option value="square">Quadrada — oca</option>
+          </select>
+          <small>Osciladores provisórios, não instrumentos acústicos simulados.</small>
+        </label>
+        <label class="control"><span>Groove</span>
+          <select id="groove">
+            <option value="straight" selected>Quatro apoios</option><option value="ternary">Três pulsações</option>
+            <option value="additive">3 + 3 + 2</option><option value="offbeat">Contratempos</option>
+          </select>
+          <small>Muda os pontos de acento; a receita matemática continua audível.</small>
+        </label>
+      </div>
+    </section>
+
+    <section class="form" aria-label="Forma temporal da composição">
+      <div class="panel-head"><div><span class="kicker">FORMA / 7 CICLOS</span><h2>Construção, mudança, pausa, retorno</h2></div><span id="duration-label" class="duration">56 s</span></div>
+      <div id="timeline" class="timeline" role="list" aria-label="Sete ciclos da forma"></div>
+      <div class="timeline-labels"><span>CONSTRUÇÃO · CICLOS 1–2 · <b id="presentation-time">16 s</b></span><span>MUDANÇA · CICLOS 3–4 · <b id="transformation-time">16 s</b></span><span>EXPANSÃO · CICLO 5 · <b id="suspension-time">8 s</b></span><span>RETORNO · CICLOS 6–7 · <b id="return-time">16 s</b></span></div>
+      <p id="form-entry-map" class="form-entry-map" aria-live="polite"></p>
+    </section>
+
+    <footer>
+      <p><strong>Modelos:</strong> funções senoidais combinadas por <em>λ</em> ou, quando selecionada, aproximação linear de três pêndulos angulares ligados por molas efetivas. Esta última não reproduz o pêndulo serial do artigo visto nas capturas. O baixo usa uma sequência editável de notas e durações; o LFO é opcional. Os sons são provisórios.</p>
+      <p>Batruc · Lúcio de Araújo · estudo local em HTML/JavaScript para investigar a interface. A direção do instrumento permanece C++/JUCE.</p>
+    </footer>
+
+    <dialog id="guide-dialog" aria-labelledby="guide-title">
+      <div class="guide-head">
+        <div><span class="kicker">BATRUC / CADERNO</span><h2 id="guide-title">Aprender</h2></div>
+        <div class="guide-tools">
+          <label for="guide-language">IDIOMA DO CONTEÚDO</label>
+          <select id="guide-language" aria-label="Idioma do conteúdo">
+            <option value="pt">Português</option><option value="en">English</option>
+            <option value="es">Español</option><option value="fr">Français</option>
+          </select>
+          <button id="guide-close" type="button" aria-label="Fechar">FECHAR ×</button>
+        </div>
+      </div>
+      <nav id="guide-tabs" class="guide-tabs" aria-label="Tópicos de aprendizagem"></nav>
+      <article id="guide-content" class="guide-content" tabindex="0" lang="pt-BR"></article>
+    </dialog>
+  </main>
+  <script src="score.js"></script>
+  <script src="interface-i18n.js"></script>
+  <script src="guide.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

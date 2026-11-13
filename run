@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+project_dir="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
+release_app="$project_dir/.local-build/native/linux-release-juce/batruc_app_artefacts/Release/Batruc"
+debug_app="$project_dir/.local-build/native/linux-debug-juce/batruc_app_artefacts/Debug/Batruc"
+
+if [[ -x "$release_app" ]]; then
+    app="$release_app"
+elif [[ -x "$debug_app" ]]; then
+    app="$debug_app"
+else
+    printf 'Batruc ainda não está compilado. Compile a versão otimizada com:\n  cmake --build "%s/.local-build/native/linux-release-juce" --target batruc_app --parallel 1\n' "$project_dir" >&2
+    exit 1
+fi
+
+exec "$app" "$@"

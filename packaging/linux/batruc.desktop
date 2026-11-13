@@ -1,0 +1,10 @@
+[Desktop Entry]
+Type=Application
+Name=Batruc
+GenericName=Rhythm Composition Instrument
+Comment=Composição rítmica por matemática e física — seeds, figuras, caixa e notação
+Exec=batruc
+Icon=batruc
+StartupWMClass=Batruc
+Terminal=false
+Categories=AudioVideo;Audio;Music;

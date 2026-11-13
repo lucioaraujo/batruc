@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 280 190" role="img" aria-labelledby="title desc">
+  <title id="title">Batruc — função, tempo e amostragem</title>
+  <desc id="desc">Uma curva periódica sobre um eixo temporal, com amostras marcadas por hastes e nós.</desc>
+  <path d="M18 95H262" fill="none" stroke="#132a28" stroke-width="2" stroke-linecap="round"/>
+  <g fill="none" stroke-width="2.2" stroke-linecap="round">
+    <path d="M50 95V48M170 95V48" stroke="#c65132"/>
+    <path d="M110 95V142M230 95V142" stroke="#167d77"/>
+  </g>
+  <path d="M20 95C35 95 35 48 50 48S65 95 80 95 95 142 110 142 125 95 140 95 155 48 170 48 185 95 200 95 215 142 230 142 245 95 260 95"
+        fill="none" stroke="#132a28" stroke-width="4.2" stroke-linecap="round" stroke-linejoin="round"/>
+  <g stroke="#f8f6ec" stroke-width="1.5">
+    <circle cx="50" cy="48" r="5.7" fill="#c65132"/>
+    <circle cx="110" cy="142" r="5.7" fill="#167d77"/>
+    <circle cx="170" cy="48" r="5.7" fill="#c65132"/>
+    <circle cx="230" cy="142" r="5.7" fill="#167d77"/>
+  </g>
+</svg>
