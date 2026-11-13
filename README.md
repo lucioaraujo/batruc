@@ -8,8 +8,8 @@ Mathematical and physical models write editable rhythms: coupled pendulums,
 billiard, Lissajous figures, Fourier series and rolling curves. You then play,
 shape and write them down. Its former name was Trucmetry.
 
-**Version:** 0.1.0 (in preparation, not yet released) · **License:** GNU
-AGPL-3.0-or-later ([`LICENSE`](LICENSE)) · **Tested on:** Linux x86-64
+**Version:** 0.1.0 · **License:** GNU AGPL-3.0-or-later ([`LICENSE`](LICENSE))
+· **Packages:** Linux, Windows, macOS ([releases](https://github.com/lucioaraujo/batruc/releases))
 
 ## What it does
 
@@ -36,8 +36,8 @@ AGPL-3.0-or-later ([`LICENSE`](LICENSE)) · **Tested on:** Linux x86-64
 
 ## What it does not do (yet)
 
-- **Windows and macOS have never been built.** The packaging and CI are
-  ready, but untested on those systems.
+- **Windows and macOS are built and tested in CI only.** They have not yet
+  been opened and played on real Windows or macOS machines.
 - The style labels from the MIDI dataset describe drum performances, not
   musical traditions.
 - The genre grooves use only what the cited research documents
@@ -62,8 +62,8 @@ Modelos matemáticos e físicos escrevem ritmos editáveis: pêndulos acoplados,
 bilhar, figuras de Lissajous, séries de Fourier e curvas rolantes. Depois
 você toca, molda e escreve esses ritmos. O nome anterior era Trucmetry.
 
-**Versão:** 0.1.0 (em preparação, ainda não publicada) · **Licença:** GNU
-AGPL-3.0-or-later · **Testado em:** Linux x86-64
+**Versão:** 0.1.0 · **Licença:** GNU AGPL-3.0-or-later · **Pacotes:** Linux,
+Windows e macOS ([releases](https://github.com/lucioaraujo/batruc/releases))
 
 - **Seeds que escrevem ritmo:** figuras de bumbo, caixa e chimbal a partir
   de um modelo físico, com forma de frase, rupturas e desenvolvimento em
@@ -85,8 +85,8 @@ AGPL-3.0-or-later · **Testado em:** Linux x86-64
   próprios arquivos MIDI.
 - Gravação em WAV, cenas versionadas e interface em quatro línguas.
 
-**Ainda não:** Windows e macOS nunca foram compilados. O empacotamento e a
-integração contínua estão prontos, mas não foram testados nesses sistemas.
+**Ainda não:** Windows e macOS são compilados e testados só na integração
+contínua; ainda não foram abertos e tocados em máquinas reais.
 
 Instalação: [`INSTALL.md`](INSTALL.md) · Créditos:
 [`CREDITS_AND_SOURCES.md`](CREDITS_AND_SOURCES.md) · Diário:
@@ -107,7 +107,8 @@ Il propose :
 - des ornements de caisse claire sur la note, avec ORN par stem ;
 - des portées de basse et de batterie exportables en MusicXML.
 
-Version 0.1.0 en préparation ; testé sous Linux seulement. Licence
+Version 0.1.0 ; paquets Linux, Windows et macOS (Windows et macOS testés en
+CI seulement). Licence
 AGPL-3.0-or-later. Installation : [`INSTALL.md`](INSTALL.md).
 
 ## Español
@@ -122,5 +123,6 @@ Ofrece:
 - ornamentos de caja en la nota, con ORN por stem;
 - pentagramas de bajo y batería exportables a MusicXML.
 
-Versión 0.1.0 en preparación; probado solo en Linux. Licencia
+Versión 0.1.0; paquetes Linux, Windows y macOS (Windows y macOS probados
+solo en CI). Licencia
 AGPL-3.0-or-later. Instalación: [`INSTALL.md`](INSTALL.md).

@@ -1,16 +1,17 @@
 # Batruc — notas de versão / changelog
 
-## 0.1.0 — primeira versão pública (em preparação, não publicada)
+## 0.1.0 — primeira versão pública
 
-**English summary.** First public candidate of Batruc, a rhythm-composition
+**English summary.** First public version of Batruc, a rhythm-composition
 instrument of the RASGO family. Mathematical and physical models (coupled
 pendulums, billiard, Lissajous, Fourier, rolling curves) write editable
 rhythmic figures. It has RHYTHM and GENERATIVE modes, a seed-chosen key for
 the bass, a bass line with its own phrase, snare ornaments stored on the
 note (with a per-stem ORN switch), genre snare idioms and measured
 microtiming. It shows a bass staff and a drum staff with MusicXML export.
-The interface is in Portuguese, English, Spanish and French. Only Linux has
-been built and played so far.
+The interface is in Portuguese, English, Spanish and French. Packages for
+Linux, Windows and macOS; Windows and macOS are built and tested in CI but
+have not yet been played on real machines.
 
 **Resumo em português.**
 
@@ -38,5 +39,9 @@ been built and played so far.
   - exportação MusicXML das duas.
 - **Interface:** quatro línguas, cenas versionadas (até o schema 64),
   gravação WAV, metrônomo.
-- **Validação:** 28 testes automatizados. Build, execução e escuta só no
-  Linux. Windows e macOS ainda não foram compilados.
+- **Pacotes:** `.deb`, AppImage e `.tar.gz` (Linux), instalador `.exe` e
+  `.zip` (Windows), `.dmg` Universal 2 (macOS), com o Groove MIDI Dataset.
+- **Validação:** 28 testes automatizados nos três sistemas (CI). Abertura do
+  pacote Linux testada em Debian 12, Ubuntu 24.04, Fedora e Arch. Execução e
+  escuta em máquina real só no Linux; Windows e macOS ainda não foram
+  abertos em máquinas reais.
