@@ -2268,6 +2268,17 @@ juce::String localized(const UiLanguage language,
         struct SpanishEntry { const char* portuguese; const char* spanish; };
         static constexpr SpanishEntry kSpanish[] = {
             {"Sobre o Batruc", "Acerca de Batruc"}, {"Fechar", "Cerrar"},
+            {"TOQUE PARA MEDIR", "REPRODUCE PARA MEDIR"}, {"AGUARDA SINAL", "ESPERANDO SEÑAL"},
+            {"REPETIÇÕES", "REPETICIONES"}, {"LEI DE DURAÇÃO", "LEY DE DURACIÓN"},
+            {"RAZÃO", "RAZÓN"}, {"FRASE / PAUSAS", "FRASE / SILENCIOS"},
+            {"ENCAIXE COM VOZES", "ENCAJE CON LAS VOCES"}, {"MATÉRIA SONORA", "MATERIA SONORA"},
+            {"Acento", "Acento"}, {"Geométrica", "Geométrica"}, {"Respiração", "Respiración"},
+            {"Cadência", "Cadencia"}, {"Chamada/resposta", "Llamada/respuesta"},
+            {"p: ciclos horizontais inteiros por volta", "p: ciclos horizontales enteros por vuelta"},
+            {"q: ciclos verticais inteiros por volta", "q: ciclos verticales enteros por vuelta"},
+            {"φy: fase relativa vertical, em voltas", "φy: fase vertical relativa, en vueltas"},
+            {"Ax: amplitude horizontal normalizada", "Ax: amplitud horizontal normalizada"},
+            {"Ay: amplitude vertical normalizada", "Ay: amplitud vertical normalizada"},
             {"ÁREAS / RELAÇÃO DE STENGEL", "ÁREAS / RELACIÓN DE STENGEL"},
             {"Mude x, y e z; observe a área w calculada e o fechamento da relação.",
              "Ajusta x, y, z; observa el área w calculada y el cierre de la relación."},
@@ -2598,8 +2609,8 @@ juce::String localized(const UiLanguage language,
             {"Exportar MusicXML do baixo", "Exportar MusicXML del bajo"},
             {"MusicXML exportado", "MusicXML exportado"},
             {"Falha ao exportar MusicXML", "No se pudo exportar el MusicXML"},
-            {"Instrumento de composição rítmica da família RASGO.\nVersão 0.1.1.\nNome histórico: Trucmetry.\nAutoria e direção artística: Lúcio de Araújo.\nCódigo do Batruc: GNU AGPL-3.0-or-later.\nJUCE 9.0.3 mantém sua licença própria (AGPLv3 ou comercial).\nModelos físicos e matemáticos (pêndulos acoplados, bilhar, Lissajous, Fourier, curvas rolantes) escrevem figuras rítmicas editáveis. Modos RITMO e GERATIVO; baixo com voz própria no tom da seed; ornamentos de caixa na nota, com ORN por stem; ginga por gênero e microtempo medido; pautas do baixo e da bateria com MusicXML; quatro línguas.\nDados: Groove MIDI Dataset (Google LLC, CC BY 4.0). Créditos completos em CREDITS_AND_SOURCES.md.\nTocado no Linux; Windows e macOS compilados e testados só na integração contínua.",
-             "Instrumento de composición rítmica de la familia RASGO.\nVersión 0.1.1.\nNombre histórico: Trucmetry.\nAutoría y dirección artística: Lúcio de Araújo.\nCódigo de Batruc: GNU AGPL-3.0-or-later.\nJUCE 9.0.3 mantiene su propia licencia (AGPLv3 o comercial).\nModelos físicos y matemáticos (péndulos acoplados, billar, Lissajous, Fourier, curvas rodantes) escriben figuras rítmicas editables. Modos RITMO y GENERATIVO; un bajo con voz propia en la tonalidad de la seed; ornamentos de caja en la nota, con ORN por stem; groove por género y microtiming medido; pentagramas de bajo y batería con MusicXML; cuatro idiomas.\nDatos: Groove MIDI Dataset (Google LLC, CC BY 4.0). Créditos completos en CREDITS_AND_SOURCES.md.\nTocado en Linux; Windows y macOS compilados y probados solo en integración continua."},
+            {"Instrumento de composição rítmica da família RASGO.\nVersão 0.1.2.\nNome histórico: Trucmetry.\nAutoria e direção artística: Lúcio de Araújo.\nCódigo do Batruc: GNU AGPL-3.0-or-later.\nJUCE 9.0.3 mantém sua licença própria (AGPLv3 ou comercial).\nModelos físicos e matemáticos (pêndulos acoplados, bilhar, Lissajous, Fourier, curvas rolantes) escrevem figuras rítmicas editáveis. Modos RITMO e GERATIVO; baixo com voz própria no tom da seed; ornamentos de caixa na nota, com ORN por stem; ginga por gênero e microtempo medido; pautas do baixo e da bateria com MusicXML; quatro línguas.\nDados: Groove MIDI Dataset (Google LLC, CC BY 4.0). Créditos completos em CREDITS_AND_SOURCES.md.\nTocado no Linux; Windows e macOS compilados e testados só na integração contínua.",
+             "Instrumento de composición rítmica de la familia RASGO.\nVersión 0.1.2.\nNombre histórico: Trucmetry.\nAutoría y dirección artística: Lúcio de Araújo.\nCódigo de Batruc: GNU AGPL-3.0-or-later.\nJUCE 9.0.3 mantiene su propia licencia (AGPLv3 o comercial).\nModelos físicos y matemáticos (péndulos acoplados, billar, Lissajous, Fourier, curvas rodantes) escriben figuras rítmicas editables. Modos RITMO y GENERATIVO; un bajo con voz propia en la tonalidad de la seed; ornamentos de caja en la nota, con ORN por stem; groove por género y microtiming medido; pentagramas de bajo y batería con MusicXML; cuatro idiomas.\nDatos: Groove MIDI Dataset (Google LLC, CC BY 4.0). Créditos completos en CREDITS_AND_SOURCES.md.\nTocado en Linux; Windows y macOS compilados y probados solo en integración continua."},
             {"Centro dispara nas passagens θ = 0 ou π. Extremos dispara nas inversões θ = π/2 ou 3π/2. A regra altera os instantes de ataque sem mudar a oscilação desenhada.",
              "Centro dispara en los pasos por θ = 0 o π. Extremos dispara en las inversiones θ = π/2 o 3π/2. La regla cambia los instantes de ataque sin alterar la oscilación dibujada."},
             {"Espaço acústico",
@@ -3484,9 +3495,9 @@ InfoContent aboutContent(const UiLanguage language) {
     const auto title = localized(language, "Sobre o Batruc", "About Batruc",
                                  "À propos de Batruc");
     const auto body = localized(language,
-        "Instrumento de composição rítmica da família RASGO.\nVersão 0.1.1.\nNome histórico: Trucmetry.\nAutoria e direção artística: Lúcio de Araújo.\nCódigo do Batruc: GNU AGPL-3.0-or-later.\nJUCE 9.0.3 mantém sua licença própria (AGPLv3 ou comercial).\nModelos físicos e matemáticos (pêndulos acoplados, bilhar, Lissajous, Fourier, curvas rolantes) escrevem figuras rítmicas editáveis. Modos RITMO e GERATIVO; baixo com voz própria no tom da seed; ornamentos de caixa na nota, com ORN por stem; ginga por gênero e microtempo medido; pautas do baixo e da bateria com MusicXML; quatro línguas.\nDados: Groove MIDI Dataset (Google LLC, CC BY 4.0). Créditos completos em CREDITS_AND_SOURCES.md.\nTocado no Linux; Windows e macOS compilados e testados só na integração contínua.",
-        "Rhythm-composition instrument of the RASGO family.\nVersion 0.1.1.\nFormer name: Trucmetry.\nAuthorship and artistic direction: Lúcio de Araújo.\nBatruc code: GNU AGPL-3.0-or-later.\nJUCE 9.0.3 keeps its own licence (AGPLv3 or commercial).\nPhysical and mathematical models (coupled pendulums, billiard, Lissajous, Fourier, rolling curves) write editable rhythmic figures. RHYTHM and GENERATIVE modes; a bass with its own voice in the seed's key; snare ornaments on the note, with a per-stem ORN switch; genre grooves and measured microtiming; bass and drum staves with MusicXML; four languages.\nData: Groove MIDI Dataset (Google LLC, CC BY 4.0). Full credits in CREDITS_AND_SOURCES.md.\nPlayed on Linux; Windows and macOS built and tested in CI only.",
-        "Instrument de composition rythmique de la famille RASGO.\nVersion 0.1.1.\nAncien nom : Trucmetry.\nAuteur et direction artistique : Lúcio de Araújo.\nCode Batruc : GNU AGPL-3.0-or-later.\nJUCE 9.0.3 garde sa propre licence (AGPLv3 ou commerciale).\nDes modèles physiques et mathématiques (pendules couplés, billard, Lissajous, Fourier, courbes roulantes) écrivent des figures rythmiques modifiables. Modes RYTHME et GÉNÉRATIF ; une basse à voix propre dans la tonalité de la graine ; ornements de caisse claire sur la note, avec ORN par stem ; grooves par genre et microtiming mesuré ; portées de basse et de batterie avec MusicXML ; quatre langues.\nDonnées : Groove MIDI Dataset (Google LLC, CC BY 4.0). Crédits complets dans CREDITS_AND_SOURCES.md.\nJoué sous Linux ; Windows et macOS compilés et testés en intégration continue seulement.");
+        "Instrumento de composição rítmica da família RASGO.\nVersão 0.1.2.\nNome histórico: Trucmetry.\nAutoria e direção artística: Lúcio de Araújo.\nCódigo do Batruc: GNU AGPL-3.0-or-later.\nJUCE 9.0.3 mantém sua licença própria (AGPLv3 ou comercial).\nModelos físicos e matemáticos (pêndulos acoplados, bilhar, Lissajous, Fourier, curvas rolantes) escrevem figuras rítmicas editáveis. Modos RITMO e GERATIVO; baixo com voz própria no tom da seed; ornamentos de caixa na nota, com ORN por stem; ginga por gênero e microtempo medido; pautas do baixo e da bateria com MusicXML; quatro línguas.\nDados: Groove MIDI Dataset (Google LLC, CC BY 4.0). Créditos completos em CREDITS_AND_SOURCES.md.\nTocado no Linux; Windows e macOS compilados e testados só na integração contínua.",
+        "Rhythm-composition instrument of the RASGO family.\nVersion 0.1.2.\nFormer name: Trucmetry.\nAuthorship and artistic direction: Lúcio de Araújo.\nBatruc code: GNU AGPL-3.0-or-later.\nJUCE 9.0.3 keeps its own licence (AGPLv3 or commercial).\nPhysical and mathematical models (coupled pendulums, billiard, Lissajous, Fourier, rolling curves) write editable rhythmic figures. RHYTHM and GENERATIVE modes; a bass with its own voice in the seed's key; snare ornaments on the note, with a per-stem ORN switch; genre grooves and measured microtiming; bass and drum staves with MusicXML; four languages.\nData: Groove MIDI Dataset (Google LLC, CC BY 4.0). Full credits in CREDITS_AND_SOURCES.md.\nPlayed on Linux; Windows and macOS built and tested in CI only.",
+        "Instrument de composition rythmique de la famille RASGO.\nVersion 0.1.2.\nAncien nom : Trucmetry.\nAuteur et direction artistique : Lúcio de Araújo.\nCode Batruc : GNU AGPL-3.0-or-later.\nJUCE 9.0.3 garde sa propre licence (AGPLv3 ou commerciale).\nDes modèles physiques et mathématiques (pendules couplés, billard, Lissajous, Fourier, courbes roulantes) écrivent des figures rythmiques modifiables. Modes RYTHME et GÉNÉRATIF ; une basse à voix propre dans la tonalité de la graine ; ornements de caisse claire sur la note, avec ORN par stem ; grooves par genre et microtiming mesuré ; portées de basse et de batterie avec MusicXML ; quatre langues.\nDonnées : Groove MIDI Dataset (Google LLC, CC BY 4.0). Crédits complets dans CREDITS_AND_SOURCES.md.\nJoué sous Linux ; Windows et macOS compilés et testés en intégration continue seulement.");
     return {title, body};
 }
 
@@ -8019,10 +8030,6 @@ public:
                 + juce::String(signature.denominator), choice + 1);
         }
         meterBox_.setSelectedId(2, juce::dontSendNotification);
-        meterBox_.setTooltip(localized(language_,
-            "Quatro compassos por seção; define a duração segundo o BPM e os acentos do groove",
-            "Four bars per section; sets duration from BPM and groove accents",
-            "Quatre mesures par section ; règle la durée selon le BPM et les accents du groove"));
         meterBox_.onChange = [this] {
             const auto signature = timeSignatureForChoice(meterBox_.getSelectedId());
             rhythmicCellsDirty_ = true;   // a grade do rulo segue o compasso
@@ -8159,10 +8166,6 @@ public:
             if (hasCurrentSeed_)
                 applySeedVariation();
         };
-        compositionVariationSlider_.setTooltip(localized(language_,
-            "Recalcula ciclos, acoplamento, fase, transformação e variação de alturas do baixo a partir da seed; 0 preserva a base.",
-            "Recalculates cycles, coupling, phase, transform and bass pitch variation from the seed; 0 keeps the base.",
-            "Recalcule cycles, couplage, phase, transformation et variation de hauteur de basse depuis la graine ; 0 conserve la base."));
 
         addAndMakeVisible(seedEditor_);
         seedEditor_.setTextToShowWhenEmpty(utf8("SEED · 8 HEX"), colour(palette::soft));
@@ -8178,10 +8181,6 @@ public:
             "Saisissez huit chiffres hexadécimaux puis Entrée pour générer une recette reproductible"));
         addAndMakeVisible(newSeedButton_);
         newSeedButton_.setButtonText(localized(language_, "Nova seed", "New seed", "Nouv. graine"));
-        newSeedButton_.setTooltip(localized(language_,
-            "Buscar contraste em ritmo, geometria, timbre e expressão, sem repetir as 64 últimas seeds usadas",
-            "Find contrast in rhythm, geometry, timbre and expression without repeating the last 64 seeds",
-            "Chercher du contraste en rythme, géométrie, timbre et expression, sans répéter les 64 dernières graines"));
         newSeedButton_.setColour(juce::TextButton::buttonColourId,
                                  colour(palette::ink));
         newSeedButton_.setColour(juce::TextButton::textColourOffId,
@@ -8685,10 +8684,6 @@ public:
         percussionKeyButton_.setColour(juce::TextButton::buttonOnColourId, colour(palette::voiceTwo));
         percussionKeyButton_.setColour(juce::TextButton::textColourOffId, colour(palette::ink));
         percussionKeyButton_.setColour(juce::TextButton::textColourOnId, colour(palette::white));
-        percussionKeyButton_.setTooltip(localized(language_,
-            "Afina bumbo, caixa, membranas, toms, conga, agogô e wood block no tom da seed (o bumbo vai à tônica ou à quinta); pratos e chimbais não mudam.",
-            "Tunes kick, snare, membranes, toms, conga, agogô and woodblock to the seed's key (the kick goes to the root or fifth); cymbals and hi-hats do not change.",
-            "Accorde grosse caisse, caisse claire, membranes, toms, conga, agogô et wood-block dans la tonalité de la graine (la grosse caisse va à la tonique ou à la quinte) ; cymbales et charleston ne changent pas."));
         percussionKeyButton_.onClick = [this] {
             percussionKeyEnabled_.store(percussionKeyButton_.getToggleState(),
                                         std::memory_order_relaxed);
@@ -8909,15 +8904,6 @@ public:
             coupling.setColour(juce::Slider::textBoxTextColourId, colour(palette::ink));
             coupling.setColour(juce::Slider::textBoxBackgroundColourId, colour(palette::paper));
             coupling.setColour(juce::Slider::textBoxOutlineColourId, colour(palette::line));
-            coupling.setTooltip(voice == 0
-                ? localized(language_,
-                    "V1 inicia a cadeia: não existe stem anterior para acoplar.",
-                    "V1 starts the chain: there is no previous stem to couple.",
-                    "V1 commence la chaîne : aucun stem précédent à coupler.")
-                : localized(language_,
-                    "Mistura a curva de intensidade do stem anterior com a deste stem. 0 = independente; 0,8 = influência forte. Não desloca ataques.",
-                    "Blends the previous stem's intensity curve with this stem's curve. 0 = independent; 0.8 = strong influence. Does not shift onsets.",
-                    "Mélange la courbe d'intensité du stem précédent avec celle-ci. 0 = indépendant ; 0,8 = forte influence. Ne décale pas les attaques."));
             voiceCouplings_[voice].store(static_cast<float>(coupling.getValue()),
                                          std::memory_order_relaxed);
             coupling.onValueChange = [this, voice] {
@@ -9967,14 +9953,6 @@ public:
         }
         geometryOrbitButton_.setButtonText("ORBIT");
         geometryStudyButton_.setButtonText("STUDY");
-        geometryOrbitButton_.setTooltip(localized(language_,
-            "Mostra ciclos como movimento, fase e rastro composto.",
-            "Shows cycles as motion, phase and a combined trace.",
-            "Montre les cycles comme mouvement, phase et trace composée."));
-        geometryStudyButton_.setTooltip(localized(language_,
-            "Mapeia pulsos e alinhamentos em uma grade temporal comum.",
-            "Maps pulses and alignments on a shared time grid.",
-            "Cartographie les pulsations et alignements sur une grille temporelle commune."));
         geometryOrbitButton_.onClick = [this] {
             const bool enabled = geometryOrbitButton_.getToggleState();
             geometryStudyButton_.setToggleState(false, juce::dontSendNotification);
@@ -10301,10 +10279,6 @@ public:
         bassSwingSlider_.setColour(juce::Slider::textBoxTextColourId, colour(palette::ink));
         bassSwingSlider_.setColour(juce::Slider::textBoxBackgroundColourId, colour(palette::paper));
         bassSwingSlider_.setColour(juce::Slider::textBoxOutlineColourId, colour(palette::line));
-        bassSwingSlider_.setTooltip(localized(language_,
-            "Atraso dos passos pares do baixo, como fração do passo de semicolcheia.",
-            "Delay of bass offbeats as a fraction of a sixteenth-note step.",
-            "Retard des contretemps de basse, en fraction d'une double croche."));
         bassSwingSlider_.onValueChange = [this] {
             requestBassPerformanceRebuild();
         };
@@ -10413,10 +10387,6 @@ public:
         };
         configurePathControl(bassPathMemoryLabel_, bassPathMemorySlider_,
             localized(language_, "MEMÓRIA", "MEMORY", "MÉMOIRE"), 95.0, 72.0);
-        bassPathMemorySlider_.setTooltip(localized(language_,
-            "Retenção da integral entre ciclos. Zero responde só ao campo atual; 95% prolonga a história dentro de limites.",
-            "Integral retention between cycles. Zero follows only the current field; 95% prolongs history within bounds.",
-            "Rétention de l'intégrale entre cycles. Zéro suit seulement le champ actuel ; 95 % prolonge l'histoire dans les limites."));
         bassPathMemorySlider_.onValueChange = [this] {
             bassRecipe_.pathMemory = static_cast<float>(
                 bassPathMemorySlider_.getValue() / 100.0);
@@ -10425,10 +10395,6 @@ public:
         configurePathControl(bassPathBreathLabel_, bassPathBreathSlider_,
             localized(language_, "RESPIROS", "BREATHS", "RESPIRATIONS"),
             200.0, 100.0);
-        bassPathBreathSlider_.setTooltip(localized(language_,
-            "Articula os ataques encurtando o gate em até 30%; não remove notas nem cria ciclos inteiros de silêncio.",
-            "Shapes articulation by shortening the gate by up to 30%; it never removes notes or creates silent passages.",
-            "Façonne l'articulation en raccourcissant le gate jusqu'à 30 % ; ne supprime aucune note et ne crée pas de passage silencieux."));
         bassPathBreathSlider_.onValueChange = [this] {
             bassRecipe_.pathBreath = static_cast<float>(
                 bassPathBreathSlider_.getValue() / 100.0);
@@ -10790,10 +10756,6 @@ public:
         graphYScaleSlider_.setSliderStyle(juce::Slider::LinearHorizontal);
         graphYScaleSlider_.setTextBoxStyle(juce::Slider::TextBoxRight, false, 38, 18);
         graphYScaleSlider_.setTextValueSuffix(utf8("×"));
-        graphYScaleSlider_.setTooltip(localized(language_,
-            "Ampliação vertical das curvas; não altera o som.",
-            "Vertical curve scale; does not change the sound.",
-            "Échelle verticale des courbes ; ne modifie pas le son."));
         graphYScaleSlider_.setColour(juce::Slider::trackColourId, colour(palette::voiceOne));
         graphYScaleSlider_.setColour(juce::Slider::thumbColourId, colour(palette::voiceOne));
         graphYScaleSlider_.setColour(juce::Slider::textBoxTextColourId, colour(palette::ink));
@@ -10855,10 +10817,6 @@ public:
         masterMeterLabel_.setJustificationType(juce::Justification::centredRight);
         masterMeterLabel_.setColour(juce::Label::textColourId, colour(palette::soft));
         masterMeterLabel_.setFont(monoFont(9.0f));
-        masterMeterLabel_.setTooltip(localized(language_,
-            "Máximos da sessão: pico de amostra, pico reconstruído estimado e redução do limitador. Reinicia ao reconfigurar o dispositivo.",
-            "Session maxima: sample peak, estimated reconstructed peak and limiter reduction. Resets when the device is reconfigured.",
-            "Maxima de session : crête d'échantillon, crête reconstruite estimée et réduction du limiteur. Réinitialisé à la reconfiguration du périphérique."));
 
         addAndMakeVisible(creditLabel_);
         creditLabel_.setJustificationType(juce::Justification::centred);
@@ -10869,10 +10827,6 @@ public:
         cpuMeterLabel_.setJustificationType(juce::Justification::centredRight);
         cpuMeterLabel_.setColour(juce::Label::textColourId, colour(palette::white));
         cpuMeterLabel_.setFont(monoFont(9.5f));
-        cpuMeterLabel_.setTooltip(localized(language_,
-            "Carga do callback de áudio em relação ao orçamento do bloco; acima de 100% excede o tempo disponível.",
-            "Audio callback load against the block budget; above 100% exceeds the available time.",
-            "Charge du callback audio par rapport au budget du bloc ; au-dessus de 100 %, le temps disponible est dépassé."));
 
         for (std::size_t voice = 0; voice < kMaxVoices; ++voice) {
             chipDutyCycles_[voice].store(0.50f, std::memory_order_relaxed);
@@ -10914,21 +10868,6 @@ public:
         chipParameterSliders_[voice][2].setTextValueSuffix(" bit");
         chipParameterSliders_[voice][3].setRange(0.0, 100.0, 1.0);
         chipParameterSliders_[voice][3].setTextValueSuffix(" %");
-        chipParameterSliders_[voice][0].setTooltip(localized(language_,
-            "Largura do pulso da matéria 8-bit.", "8-bit pulse width.",
-            "Largeur d’impulsion de la matière 8-bit."));
-        chipParameterSliders_[voice][1].setTooltip(localized(language_,
-            "Clock do sample-and-hold; valores baixos ficam mais ásperos.",
-            "Sample-and-hold clock; lower values sound rougher.",
-            "Horloge du maintien ; les valeurs basses sont plus rugueuses."));
-        chipParameterSliders_[voice][2].setTooltip(localized(language_,
-            "Profundidade de amplitude entre 2 e 8 bits.",
-            "Amplitude depth from 2 to 8 bits.",
-            "Profondeur d’amplitude de 2 à 8 bits."));
-        chipParameterSliders_[voice][3].setTooltip(localized(language_,
-            "Quantidade de ruído digital na excitação.",
-            "Digital noise amount in the excitation.",
-            "Quantité de bruit numérique dans l’excitation."));
         for (std::size_t index = 0; index < 4; ++index)
             chipParameterSliders_[voice][index].onValueChange = [this, voice, index] {
                 const auto value = chipParameterSliders_[voice][index].getValue();
@@ -11709,6 +11648,30 @@ public:
     }
 
     void diagnosticShowFamilyMenu() { soundFamilyBox_.showPopup(); }
+
+    // Auditoria de idioma (14/11/2026): todos os textos de componentes da
+    // página (botões, rótulos, caixas e seus itens, dicas), um por linha.
+    juce::StringArray diagnosticComponentTexts() {
+        juce::StringArray texts;
+        std::function<void(juce::Component&)> visit = [&](juce::Component& component) {
+            for (auto* child : component.getChildren()) {
+                if (auto* button = dynamic_cast<juce::Button*>(child))
+                    texts.add("button\t" + button->getButtonText());
+                if (auto* label = dynamic_cast<juce::Label*>(child))
+                    texts.add("label\t" + label->getText());
+                if (auto* box = dynamic_cast<juce::ComboBox*>(child))
+                    for (int i = 0; i < box->getNumItems(); ++i)
+                        texts.add("item\t" + box->getItemText(i));
+                if (auto* tip = dynamic_cast<juce::SettableTooltipClient*>(child))
+                    texts.add("tooltip\t" + tip->getTooltip());
+                visit(*child);
+            }
+        };
+        visit(*this);
+        texts.removeEmptyStrings();
+        texts.removeDuplicates(false);
+        return texts;
+    }
 
     // Só para capturas de documentação (site, 14/11/2026): troca a língua
     // da interface sem gravar a preferência do usuário.
@@ -20265,6 +20228,139 @@ private:
             "La basse générée par seed est recalculée hors audio et mise à jour au prochain bloc. Les relations écologiques utilisent le λ de chaque voix."));
     }
 
+    // Textos que dependem da língua e antes só eram aplicados ao montar a tela
+    // (14/11/2026): a troca de língua com o app aberto deixava dicas, rótulos
+    // e itens do Baixo em português. A auditoria de idioma (textos-componentes)
+    // compara as quatro línguas.
+    void refreshLanguageDependentTexts() {
+        geometryOrbitButton_.setTooltip(localized(language_,
+            "Mostra ciclos como movimento, fase e rastro composto.",
+            "Shows cycles as motion, phase and a combined trace.",
+            "Montre les cycles comme mouvement, phase et trace composée."));
+        percussionKeyButton_.setTooltip(localized(language_,
+            "Afina bumbo, caixa, membranas, toms, conga, agogô e wood block no tom da seed (o bumbo vai à tônica ou à quinta); pratos e chimbais não mudam.",
+            "Tunes kick, snare, membranes, toms, conga, agogô and woodblock to the seed's key (the kick goes to the root or fifth); cymbals and hi-hats do not change.",
+            "Accorde grosse caisse, caisse claire, membranes, toms, conga, agogô et wood-block dans la tonalité de la graine (la grosse caisse va à la tonique ou à la quinte) ; cymbales et charleston ne changent pas."));
+        graphYScaleSlider_.setTooltip(localized(language_,
+            "Ampliação vertical das curvas; não altera o som.",
+            "Vertical curve scale; does not change the sound.",
+            "Échelle verticale des courbes ; ne modifie pas le son."));
+        bassPathBreathSlider_.setTooltip(localized(language_,
+            "Articula os ataques encurtando o gate em até 30%; não remove notas nem cria ciclos inteiros de silêncio.",
+            "Shapes articulation by shortening the gate by up to 30%; it never removes notes or creates silent passages.",
+            "Façonne l'articulation en raccourcissant le gate jusqu'à 30 % ; ne supprime aucune note et ne crée pas de passage silencieux."));
+        bassSwingSlider_.setTooltip(localized(language_,
+            "Atraso dos passos pares do baixo, como fração do passo de semicolcheia.",
+            "Delay of bass offbeats as a fraction of a sixteenth-note step.",
+            "Retard des contretemps de basse, en fraction d'une double croche."));
+        newSeedButton_.setTooltip(localized(language_,
+            "Buscar contraste em ritmo, geometria, timbre e expressão, sem repetir as 64 últimas seeds usadas",
+            "Find contrast in rhythm, geometry, timbre and expression without repeating the last 64 seeds",
+            "Chercher du contraste en rythme, géométrie, timbre et expression, sans répéter les 64 dernières graines"));
+        cpuMeterLabel_.setTooltip(localized(language_,
+            "Carga do callback de áudio em relação ao orçamento do bloco; acima de 100% excede o tempo disponível.",
+            "Audio callback load against the block budget; above 100% exceeds the available time.",
+            "Charge du callback audio par rapport au budget du bloc ; au-dessus de 100 %, le temps disponible est dépassé."));
+        geometryStudyButton_.setTooltip(localized(language_,
+            "Mapeia pulsos e alinhamentos em uma grade temporal comum.",
+            "Maps pulses and alignments on a shared time grid.",
+            "Cartographie les pulsations et alignements sur une grille temporelle commune."));
+        masterMeterLabel_.setTooltip(localized(language_,
+            "Máximos da sessão: pico de amostra, pico reconstruído estimado e redução do limitador. Reinicia ao reconfigurar o dispositivo.",
+            "Session maxima: sample peak, estimated reconstructed peak and limiter reduction. Resets when the device is reconfigured.",
+            "Maxima de session : crête d'échantillon, crête reconstruite estimée et réduction du limiteur. Réinitialisé à la reconfiguration du périphérique."));
+        meterBox_.setTooltip(localized(language_,
+            "Quatro compassos por seção; define a duração segundo o BPM e os acentos do groove",
+            "Four bars per section; sets duration from BPM and groove accents",
+            "Quatre mesures par section ; règle la durée selon le BPM et les accents du groove"));
+        compositionVariationSlider_.setTooltip(localized(language_,
+            "Recalcula ciclos, acoplamento, fase, transformação e variação de alturas do baixo a partir da seed; 0 preserva a base.",
+            "Recalculates cycles, coupling, phase, transform and bass pitch variation from the seed; 0 keeps the base.",
+            "Recalcule cycles, couplage, phase, transformation et variation de hauteur de basse depuis la graine ; 0 conserve la base."));
+        bassPathMemorySlider_.setTooltip(localized(language_,
+            "Retenção da integral entre ciclos. Zero responde só ao campo atual; 95% prolonga a história dentro de limites.",
+            "Integral retention between cycles. Zero follows only the current field; 95% prolongs history within bounds.",
+            "Rétention de l'intégrale entre cycles. Zéro suit seulement le champ actuel ; 95 % prolonge l'histoire dans les limites."));
+        for (std::size_t voice = 0; voice < voiceCouplingSliders_.size(); ++voice)
+            voiceCouplingSliders_[voice].setTooltip(voice == 0
+                ? localized(language_,
+                    "V1 inicia a cadeia: não existe stem anterior para acoplar.",
+                    "V1 starts the chain: there is no previous stem to couple.",
+                    "V1 commence la chaîne : aucun stem précédent à coupler.")
+                : localized(language_,
+                    "Mistura a curva de intensidade do stem anterior com a deste stem. 0 = independente; 0,8 = influência forte. Não desloca ataques.",
+                    "Blends the previous stem's intensity curve with this stem's curve. 0 = independent; 0.8 = strong influence. Does not shift onsets.",
+                    "Mélange la courbe d'intensité du stem précédent avec celle-ci. 0 = indépendant ; 0,8 = forte influence. Ne décale pas les attaques."));
+        for (std::size_t voice = 0; voice < kMaxActiveVoices; ++voice) {
+            chipParameterSliders_[voice][0].setTooltip(localized(language_,
+                "Largura do pulso da matéria 8-bit.", "8-bit pulse width.",
+                "Largeur d’impulsion de la matière 8-bit."));
+            chipParameterSliders_[voice][1].setTooltip(localized(language_,
+                "Clock do sample-and-hold; valores baixos ficam mais ásperos.",
+                "Sample-and-hold clock; lower values sound rougher.",
+                "Horloge du maintien ; les valeurs basses sont plus rugueuses."));
+            chipParameterSliders_[voice][2].setTooltip(localized(language_,
+                "Profundidade de amplitude entre 2 e 8 bits.",
+                "Amplitude depth from 2 to 8 bits.",
+                "Profondeur d’amplitude de 2 à 8 bits."));
+            chipParameterSliders_[voice][3].setTooltip(localized(language_,
+                "Quantidade de ruído digital na excitação.",
+                "Digital noise amount in the excitation.",
+                "Quantité de bruit numérique dans l’excitation."));
+            chipParameterLabels_[voice][3].setText(localized(language_, "RUÍDO", "NOISE", "BRUIT"),
+                juce::dontSendNotification);
+        }
+        bassPathMemoryLabel_.setText(localized(language_, "MEMÓRIA", "MEMORY", "MÉMOIRE"),
+            juce::dontSendNotification);
+        bassPathBreathLabel_.setText(localized(language_, "RESPIROS", "BREATHS", "RESPIRATIONS"),
+            juce::dontSendNotification);
+        const std::pair<juce::Label*, juce::String> bassLabels[] = {
+            {&bassRepeatsLabel_, localized(language_, "REPETIÇÕES", "REPEATS", "RÉPÉTITIONS")},
+            {&bassIntentLabel_, localized(language_, "INTENÇÃO", "INTENTION", "INTENTION")},
+            {&bassDurationLawLabel_, localized(language_, "LEI DE DURAÇÃO", "DURATION LAW", "LOI DE DURÉE")},
+            {&bassGeoRatioLabel_, localized(language_, "RAZÃO", "RATIO", "RAPPORT")},
+            {&bassPhraseModeLabel_, localized(language_, "FRASE / PAUSAS", "PHRASE / RESTS", "PHRASE / SILENCES")},
+            {&bassRhythmRelationLabel_, localized(language_, "ENCAIXE COM VOZES", "FIT WITH VOICES", "ACCORD AVEC LES VOIX")},
+            {&bassMaterialLabel_, localized(language_, "MATÉRIA SONORA", "SOUND MATTER", "MATIÈRE SONORE")}};
+        for (const auto& [label, text] : bassLabels)
+            label->setText(text, juce::dontSendNotification);
+        bassIntentBox_.changeItemText(3, localized(language_, "Acento", "Accent", "Accent"));
+        bassDurationLawBox_.changeItemText(3, localized(language_, "Geométrica", "Geometric", "Géométrique"));
+        bassPhraseModeBox_.changeItemText(2, localized(language_, "Respiração", "Breath", "Respiration"));
+        bassPhraseModeBox_.changeItemText(3, localized(language_, "Cadência", "Cadence", "Cadence"));
+        bassPhraseModeBox_.changeItemText(4, localized(language_, "Chamada/resposta", "Call/response", "Appel/réponse"));
+        geometryLissajousXFrequencyBox_.setTooltip(localized(language_,
+            "p: ciclos horizontais inteiros por volta", "p: whole horizontal cycles per turn",
+            "p : cycles horizontaux entiers par tour"));
+        geometryLissajousYFrequencyBox_.setTooltip(localized(language_,
+            "q: ciclos verticais inteiros por volta", "q: whole vertical cycles per turn",
+            "q : cycles verticaux entiers par tour"));
+        geometryLissajousPhaseSlider_.setTooltip(localized(language_,
+            "φy: fase relativa vertical, em voltas", "φy: relative vertical phase, in turns",
+            "φy : phase verticale relative, en tours"));
+        geometryLissajousXAmplitudeSlider_.setTooltip(localized(language_,
+            "Ax: amplitude horizontal normalizada", "Ax: normalised horizontal amplitude",
+            "Ax : amplitude horizontale normalisée"));
+        geometryLissajousYAmplitudeSlider_.setTooltip(localized(language_,
+            "Ay: amplitude vertical normalizada", "Ay: normalised vertical amplitude",
+            "Ay : amplitude verticale normalisée"));
+        geometryTraceView_.setLanguage(language_);
+        refreshCompositionModeButton();
+        updateMixerBalanceSensor();
+        // O JUCE copia a dica do slider para a caixa de valor só ao criá-la;
+        // sem isto, a caixa de valor ficava com a dica na língua da abertura.
+        std::function<void(juce::Component&)> syncSliderTips = [&](juce::Component& component) {
+            for (auto* child : component.getChildren()) {
+                if (auto* slider = dynamic_cast<juce::Slider*>(child))
+                    for (auto* part : slider->getChildren())
+                        if (auto* box = dynamic_cast<juce::Label*>(part))
+                            box->setTooltip(slider->getTooltip());
+                syncSliderTips(*child);
+            }
+        };
+        syncSliderTips(*this);
+    }
+
     void updateInterfaceLanguage() {
         refreshCompositionModeButton();
         headerChrome_.setLanguage(language_);
@@ -20892,6 +20988,10 @@ private:
         refreshInfoPanelLanguage();
         updateChannelLevels();
         updateStatusLabel();
+        refreshLanguageDependentTexts();
+        // o piano roll do baixo só recebia a língua na próxima edição do
+        // baixo (14/11/2026); agora acompanha a troca de língua
+        updateBassEditorControls();
         // larguras do cabeçalho dependem do texto na língua escolhida
         updatePinnedChrome(pageViewport_ != nullptr
             ? pageViewport_->getViewArea() : getLocalBounds());
@@ -22989,7 +23089,7 @@ public:
 class BatrucApplication final : public juce::JUCEApplication {
 public:
     const juce::String getApplicationName() override { return "Batruc"; }
-    const juce::String getApplicationVersion() override { return "0.1.1"; }
+    const juce::String getApplicationVersion() override { return "0.1.2"; }
     bool moreThanOneInstanceAllowed() override { return true; }
 
     void initialise(const juce::String& commandLine) override {
@@ -23244,6 +23344,8 @@ public:
                     }
                     if (captured) {
                         page->diagnosticMenusInsideWindow(menusTested, menusOnDesktop);
+                        directory.getChildFile("textos-componentes.txt").replaceWithText(
+                            page->diagnosticComponentTexts().joinIntoString("\n"));
                         viewport->setViewPosition(0, page->diagnosticMixerTopViewY());
                         page->diagnosticShowFamilyMenu();
                         auto shot = window_->createComponentSnapshot(

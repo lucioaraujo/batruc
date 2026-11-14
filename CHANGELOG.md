@@ -1,6 +1,6 @@
 # Batruc — notas de versão / changelog
 
-## 0.1.2 — em preparação
+## 0.1.2 — 14/11/2026
 
 **English summary.** All menus now open inside the app window, so the desktop
 no longer shows through them on Linux; the header fits its labels in every
@@ -15,8 +15,18 @@ language.
 - **Cabeçalho nas 4 línguas:** cada botão mede o próprio texto; em espanhol e
   francês os rótulos não saem mais cortados nem miúdos (em 1080 px, a largura
   mínima, volta às larguras fixas).
+- **Troca de língua completa:** com o app aberto, a troca de língua deixava
+  em português rótulos e itens do Baixo (REPETIÇÕES, LEI DE DURAÇÃO, RAZÃO,
+  Respiração, Cadência…), dicas de vários controles, a legenda do piano roll
+  e as caixas de valor dos sliders. Todos passam a acompanhar a língua; os
+  textos que só existiam em português ganharam inglês, francês e espanhol.
 - **Diagnóstico:** `BATRUC_AUDIT_LANGUAGE=0..3` faz as capturas da auditoria
-  na língua pedida, sem gravar a preferência do usuário.
+  na língua pedida, sem gravar a preferência do usuário; a auditoria grava
+  `textos-componentes.txt` (todos os textos da tela) para comparar as
+  línguas. Resultado: nenhum texto em português sobrando em inglês e
+  francês; em espanhol, só palavras iguais nas duas línguas.
+- **Site:** Tutorial e LEARN com recortes de capturas reais do app, na língua
+  de cada página (`tools/recortar_capturas_site.py`).
 
 ## 0.1.1 — 14/11/2026
 

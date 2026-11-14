@@ -63,6 +63,8 @@ a:hover { color: var(--ink); }
 .lesson p, .lesson li { color: var(--muted); max-width: 720px; }
 .lesson ul, .lesson ol { margin: .4rem 0 0; padding-left: 1.3rem; }
 .lesson li { margin: .3rem 0; }
+.lesson-shot { margin: 1rem 0 0; max-width: 100%; }
+.lesson-shot img { display: block; max-width: 100%; height: auto; border: 1px solid var(--line); background: var(--ground); }
 .lesson pre { margin: .8rem 0 0; padding: .8rem 1rem; overflow-x: auto; background: var(--ground); border: 1px solid var(--line); font: .82rem "DejaVu Sans Mono", monospace; color: var(--ink); }
 
 .hero { padding: clamp(3rem, 9vw, 7rem) clamp(1.2rem, 8vw, 6rem) clamp(2rem, 6vw, 4rem); border-bottom: 1px solid var(--line); }
