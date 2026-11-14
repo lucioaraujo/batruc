@@ -1,5 +1,21 @@
 # Batruc — notas de versão / changelog
 
+## 0.1.1 — em preparação
+
+**English summary.** Menus no longer show the desktop through them for the
+first seconds while playing; the snare starts a little lower (0.80).
+
+- **Menus transparentes no Linux:** com o transporte tocando, a animação de
+  60 Hz ocupava a thread de mensagens, e a janela do menu aparecia
+  transparente até ser pintada. Com um menu aberto, a animação cai para
+  10 Hz (relato do autor, 14/11/2026).
+- **Caixa mais baixa de partida:** o nível inicial de V2 passou de 1,00 para
+  0,80 (cerca de −2 dB) em todas as seeds e famílias. Cenas salvas mantêm os
+  níveis delas (autor: "a caixa um pouco mais baixo", 14/11/2026).
+- **Diagnóstico:** `--export-learn` exporta o Aprender nas 4 línguas (fonte
+  da página LEARN do site); `--audit-layout` salva também uma captura
+  1920×1006 para o portal.
+
 ## 0.1.0 — primeira versão pública
 
 **English summary.** First public version of Batruc, a rhythm-composition

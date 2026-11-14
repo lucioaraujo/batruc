@@ -90,8 +90,10 @@ constexpr int kInlineGeometryMinimumWidth = 1080;
 constexpr float kDefaultFormulaBusGainDb = 16.5f;
 // First-pass kit balance from the two-bar TD-11 reference. Mixer faders stay
 // editable and scene values always override these startup levels.
+// Caixa (V2) em 0,80 (~ -2 dB) desde 14/11/2026: o autor achava a caixa alta
+// ("deixar como volume standart dos seed a caixa um pouco mais baixo").
 constexpr std::array<float, kMaxActiveVoices> kInitialKitLevels = {
-    1.0f, 1.0f, 0.45f, 0.50f, 1.0f, 1.0f, 1.0f, 1.0f};
+    1.0f, 0.80f, 0.45f, 0.50f, 1.0f, 1.0f, 1.0f, 1.0f};
 constexpr std::array<float, 8> kDefaultBassParameters = {
     0.20f, 0.008f, 0.18f, 0.62f, 0.12f, 180.0f, 900.0f, 0.86f};
 constexpr std::array<float, 13> kDefaultBassAudioParameters = {
@@ -21213,7 +21215,14 @@ private:
         // Only the performance canvas animates, and only while transport
         // moves. Repaint the visible page slice so the playhead keeps moving
         // when the user has scrolled below the first performance panel.
-        if (transportRunning) {
+        // Com um menu aberto (ComboBox/PopupMenu é componente modal), a
+        // animação cai para 10 Hz: o redesenho de 60 Hz em software ocupava a
+        // thread de mensagens, e a janela nova do menu ficava transparente
+        // (mostrando a área de trabalho) até ser pintada. Autor, 14/11/2026.
+        const bool menuOpen = juce::ModalComponentManager::getInstance()
+            ->getNumModalComponents() > 0;
+        const bool animateThisFrame = !menuOpen || (++menuOpenFrameCounter_ % 6) == 0;
+        if (transportRunning && animateThisFrame) {
             const juce::Rectangle<int> performanceArea(
                 0, 0, getWidth(), kPerformancePageHeight);
             const juce::Rectangle<int> mixerArea(
@@ -22789,6 +22798,7 @@ private:
     bool draggingGraph_ = false;
     GraphMotion graphMotion_ = GraphMotion::left;
     GraphAnalysis graphAnalysis_ = GraphAnalysis::signal;
+    unsigned menuOpenFrameCounter_ = 0;
     juce::ThreadPool recordingFinalizer_{1};
 };
 
