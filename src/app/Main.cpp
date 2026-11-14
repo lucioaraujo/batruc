@@ -23090,6 +23090,12 @@ public:
                         }
                         if (!captured) break;
                     }
+                    // Captura para o card do portal da família (14/11/2026): as
+                    // capturas dos outros instrumentos têm 1920×1006.
+                    if (captured) {
+                        window_->setSize(1920, 1006);
+                        captured = capture("portal-1920x1006.png", 0);
+                    }
                 }
                 if (!captured && error.isEmpty())
                     error = "Falha ao capturar telas de layout.";
