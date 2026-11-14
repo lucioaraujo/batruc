@@ -1,6 +1,6 @@
 # Batruc — notas de versão / changelog
 
-## 0.1.1 — em preparação
+## 0.1.1 — 14/11/2026
 
 **English summary.** Menus no longer show the desktop through them for the
 first seconds while playing; the snare starts a little lower (0.80).

@@ -1,10 +1,10 @@
 # Batruc — instalação / installation
 
-> **Estado (14 nov. 2026):** versão 0.1.0. Os pacotes saem da integração
-> contínua do repositório `lucioaraujo/batruc`. Antes da versão final vem
-> uma pré-release (`v0.1.0-rc1`) para o autor testar baixando do GitHub.
-> *English:* version 0.1.0; packages are built by CI. A pre-release
-> (`v0.1.0-rc1`) comes first, for testing the downloads.
+> **Estado (14 nov. 2026):** versão 0.1.1 (a primeira publicada foi a
+> 0.1.0). Os pacotes saem da integração contínua do repositório
+> `lucioaraujo/batruc`.
+> *English:* version 0.1.1 (the first release was 0.1.0); packages are
+> built by CI.
 
 ## Matriz de plataformas
 

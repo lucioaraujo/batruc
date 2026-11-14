@@ -16,7 +16,7 @@ if(APPLE)
     set(CMAKE_OSX_ARCHITECTURES "x86_64;arm64" CACHE STRING "Build a Universal 2 binary" FORCE)
 endif()
 
-project(Batruc VERSION 0.1.0 LANGUAGES C CXX)
+project(Batruc VERSION 0.1.1 LANGUAGES C CXX)
 
 # Pilha de 8 MB no Windows, como o padrão do Linux. O Windows reserva só 1 MB
 # por padrão, e a composição guarda estruturas grandes na pilha
