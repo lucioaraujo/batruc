@@ -1,0 +1,197 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Tutorial — Batruc</title>
+<meta name="description" content="Primeiros passos no Batruc: seed, modos RITMO e GERATIVO, o Study, a caixa com ornamentos, o baixo, as pautas em MusicXML, cenas e gravação." />
+<link rel="icon" href="assets/batruc-b.svg" type="image/svg+xml" />
+<link rel="stylesheet" href="styles.css" />
+<script src="assets/contact.js" defer></script>
+<!-- SEO:INICIO — gerado por seo.py; editar lá, não aqui -->
+<link rel="canonical" href="https://lucioaraujo.github.io/batruc/tutorial.html">
+<link rel="alternate" hreflang="pt-BR" href="https://lucioaraujo.github.io/batruc/tutorial.html">
+<link rel="alternate" hreflang="en" href="https://lucioaraujo.github.io/batruc/tutorial-en.html">
+<link rel="alternate" hreflang="fr" href="https://lucioaraujo.github.io/batruc/tutorial-fr.html">
+<link rel="alternate" hreflang="es" href="https://lucioaraujo.github.io/batruc/tutorial-es.html">
+<link rel="alternate" hreflang="x-default" href="https://lucioaraujo.github.io/batruc/tutorial.html">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Batruc">
+<meta property="og:title" content="Tutorial — Batruc">
+<meta property="og:description" content="Primeiros passos no Batruc: seed, modos RITMO e GERATIVO, o Study, a caixa com ornamentos, o baixo, as pautas em MusicXML, cenas e gravação.">
+<meta property="og:url" content="https://lucioaraujo.github.io/batruc/tutorial.html">
+<meta property="og:image" content="https://lucioaraujo.github.io/batruc/assets/og-batruc.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Batruc — a tela Compor: o editor de ciclos com o estudo circular das vozes e o gráfico de onda e fluxo.">
+<meta property="og:locale" content="pt_BR">
+<meta property="og:locale:alternate" content="en_US">
+<meta property="og:locale:alternate" content="fr_FR">
+<meta property="og:locale:alternate" content="es_ES">
+<meta name="twitter:card" content="summary_large_image">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "Batruc",
+  "description": "Primeiros passos no Batruc: seed, modos RITMO e GERATIVO, o Study, a caixa com ornamentos, o baixo, as pautas em MusicXML, cenas e gravação.",
+  "url": "https://lucioaraujo.github.io/batruc/",
+  "inLanguage": "pt-BR",
+  "image": "https://lucioaraujo.github.io/batruc/assets/og-batruc.jpg",
+  "applicationCategory": "MultimediaApplication",
+  "applicationSubCategory": "Music composition",
+  "operatingSystem": "Windows, macOS, Linux",
+  "downloadUrl": "https://github.com/lucioaraujo/batruc/releases/tag/v0.1.0",
+  "softwareVersion": "0.1.0",
+  "license": "https://www.gnu.org/licenses/agpl-3.0.html",
+  "isAccessibleForFree": true,
+  "author": {
+    "@type": "Person",
+    "name": "Lúcio de Araújo"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "RASGO",
+    "url": "https://rasgoinstruments.arquiviagem.net/"
+  },
+  "sameAs": [
+    "https://github.com/lucioaraujo/batruc"
+  ]
+}
+</script>
+<!-- SEO:FIM -->
+</head>
+<body>
+<div class="rasgo-strip"><a href="https://rasgoinstruments.arquiviagem.net/">RASGO — família de instrumentos e pesquisa sonora</a></div>
+<a class="skip-link" href="#conteudo">Pular para o conteúdo</a>
+
+<div class="site-header">
+  <a class="brand" href="index.html" aria-label="Batruc">
+    <img src="assets/batruc-b.svg" alt="" width="36" height="36" />
+    <span>BATRUC</span>
+  </a>
+  <div class="header-nav">
+    <nav class="page-nav" aria-label="Páginas">
+      <a href="index.html">Sobre</a>
+      <a href="tutorial.html" aria-current="page">Tutorial</a>
+      <a href="learn.html">LEARN</a>
+      <a href="instalacao.html">Instalação</a>
+      <a href="index.html#baixar">Baixar</a>
+    </nav>
+    <nav class="lang-switch" aria-label="Idioma">
+      <a href="tutorial.html" aria-current="true">PT</a>
+      <a href="tutorial-en.html">EN</a>
+      <a href="tutorial-fr.html">FR</a>
+      <a href="tutorial-es.html">ES</a>
+    </nav>
+  </div>
+</div>
+
+<main id="conteudo">
+<section class="hero hero-inner" id="top">
+  <h1>Tutorial</h1>
+  <p class="lead">Oito passos para tocar, escrever e guardar um ritmo no Batruc. Os nomes entre aspas são os da interface.</p>
+</section>
+<section class="section lessons">
+  <article class="lesson">
+    <h2>1. Começar · a seed</h2>
+    <p>Abra o Batruc e clique em “Tocar”. A seed — o código de oito caracteres no cabeçalho — escreve a composição inteira: figuras de bumbo, caixa e chimbal, o tom do baixo e a forma em sete ciclos.</p>
+    <ul>
+      <li>“Nova seed” sorteia outra composição.</li>
+      <li>Digite um código no campo da seed e tecle Enter para voltar a uma seed conhecida.</li>
+      <li>“VOZES” escolhe quantas vozes tocam.</li>
+    </ul>
+  </article>
+  <article class="lesson">
+    <h2>2. RITMO ou GERATIVO</h2>
+    <p>O botão do modo, no cabeçalho, alterna os dois jeitos de tocar.</p>
+    <ul>
+      <li>“RITMO” toca exatamente o que está escrito: células, MIDI, figuras. Nada age escondido.</li>
+      <li>“GERATIVO” acrescenta as máscaras do campo, as leis de intensidade e a forma.</li>
+      <li>“GER”, na barra de baixo, regula a profundidade do GERATIVO (30 % de partida).</li>
+    </ul>
+  </article>
+  <article class="lesson">
+    <h2>3. Ler e editar no Study</h2>
+    <p>Em “Compor”, o “STUDY” mostra o ciclo compartilhado: cada voz é um anel, e cada ponto é um ataque.</p>
+    <ul>
+      <li>Clique num trecho vazio do anel para criar um ataque; botão direito ou duplo clique no ponto o remove.</li>
+      <li>Arraste um ponto para mover só aquele ataque; arraste um trecho vazio do anel para deslocar o stem inteiro.</li>
+      <li>Shift + arrastar para dentro ou para fora ajusta a força.</li>
+      <li>“DESFAZER”, “REFAZER”, “LIMPAR” e “RESTAURAR” agem na voz selecionada.</li>
+    </ul>
+  </article>
+  <article class="lesson">
+    <h2>4. Outras figuras</h2>
+    <p>O botão “RITMO” do Study abre o menu de escrita da voz selecionada.</p>
+    <ul>
+      <li>Redistribuição euclidiana dos ataques da célula.</li>
+      <li>“Escrever figuras do pêndulo” ou “de outro modelo”: bilhar, Lissajous, Fourier, curvas rolantes.</li>
+      <li>“RITMOS / MIDI” traz um ritmo do catálogo (Groove MIDI Dataset) ou um MIDI seu.</li>
+    </ul>
+  </article>
+  <article class="lesson">
+    <h2>5. A caixa</h2>
+    <p>Os ornamentos ficam guardados na nota: uma marca só por ataque, e os toques nascem na hora de tocar.</p>
+    <ul>
+      <li>No menu “RITMO” do Study: “Ornamentar (caixa)”, “Ginga da caixa (gênero)” — frevo, maracatu, baião — e “Microtempo medido”.</li>
+      <li>No “Mixer”, o botão “ORN” de cada stem alterna entre a batida normal e a caixa completa.</li>
+    </ul>
+  </article>
+  <article class="lesson">
+    <h2>6. O baixo e o tom</h2>
+    <p>A seed escolhe um tom — doze tônicas e dez modos — e o baixo segue a composição.</p>
+    <ul>
+      <li>Na aba “Baixo”, “FRASE” (ligado de partida) dá ao baixo voz própria: progressão de graus, respostas e notas de passagem.</li>
+      <li>A pauta do baixo, com 16 tempos, fica acima do gráfico; botão direito nela exporta MusicXML.</li>
+      <li>No “Mixer”, “PERC. NO TOM” afina a percussão no tom da seed (desligado de partida).</li>
+    </ul>
+  </article>
+  <article class="lesson">
+    <h2>7. A pauta de bateria</h2>
+    <p>No Study, o chip “♩ PAUTA ⇄ ◯ CÍRCULO” troca o círculo pela pauta de bateria.</p>
+    <ul>
+      <li>A pauta mostra os sinais de ornamento e a manulação (D/E).</li>
+      <li>Botão direito: “Exportar MusicXML (bateria)…”, para abrir no MuseScore ou em outro editor de partitura.</li>
+    </ul>
+  </article>
+  <article class="lesson">
+    <h2>8. Cenas e gravação</h2>
+    <p>Guarde versões e grave o que tocou.</p>
+    <ul>
+      <li>“Cenas” guarda versões na sessão e exporta ou abre um arquivo .batruc.txt.</li>
+      <li>“REC” grava o master estéreo em WAV 24-bit; a caixa ao lado limita a duração (5 min de partida).</li>
+      <li>“Aprender” abre o LEARN dentro do app; “Sobre” mostra versão, créditos e licença.</li>
+    </ul>
+  </article>
+</section>
+<section class="section section-dark">
+  <h2>Regra central</h2>
+  <p>A geração escreve; ela não filtra às escondidas. O que o modelo escreve fica editável, e o modo RITMO toca exatamente o que está escrito.</p>
+</section>
+<section class="section">
+  <div class="contact-row">
+    <button type="button" class="button button-primary" data-contact-trigger>Contato</button>
+    <a class="button" href="https://github.com/lucioaraujo/batruc">GitHub</a>
+  </div>
+</section>
+</main>
+
+<footer class="site-footer">
+  <span>© Lúcio de Araújo · Batruc 2026 · RASGO</span>
+  <nav>
+    <a href="https://github.com/lucioaraujo/batruc">GitHub</a> ·
+    <a href="https://github.com/lucioaraujo/batruc/blob/main/CREDITS_AND_SOURCES.md">Créditos</a> ·
+    <a href="https://github.com/lucioaraujo/batruc/blob/main/LICENSE">Licença AGPLv3+</a>
+  </nav>
+</footer>
+<dialog class="contact-dialog" data-contact-dialog aria-labelledby="contact-title">
+  <button class="dialog-close" type="button" data-contact-close aria-label="Fechar janela de contato">×</button>
+  <h2 id="contact-title">CONTATO</h2>
+  <p>Copie o endereço de e-mail:</p>
+  <code data-contact-address></code>
+  <button class="button button-primary" type="button" data-contact-copy>Copiar e-mail</button>
+  <p class="contact-feedback" data-contact-feedback data-copied="E-mail copiado." data-fallback="Selecione e copie o endereço acima." aria-live="polite"></p>
+</dialog>
+</body>
+</html>

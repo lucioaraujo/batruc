@@ -22879,6 +22879,33 @@ public:
     bool moreThanOneInstanceAllowed() override { return true; }
 
     void initialise(const juce::String& commandLine) override {
+        // Exporta o Aprender (9 tópicos) e o Sobre nas 4 línguas, como o app
+        // os mostra, para a página LEARN do site (14/11/2026). A fonte única
+        // continua sendo este código.
+        const auto learnPrefix = juce::String("--export-learn=");
+        if (commandLine.startsWith(learnPrefix)) {
+            const juce::File output(commandLine.substring(learnPrefix.length()).trim());
+            const std::pair<UiLanguage, const char*> languages[] = {
+                {UiLanguage::portuguese, "pt"}, {UiLanguage::english, "en"},
+                {UiLanguage::french, "fr"}, {UiLanguage::spanish, "es"}};
+            juce::Array<juce::var> topics;
+            for (int topic = 0; topic <= 9; ++topic) {
+                auto* entry = new juce::DynamicObject();
+                entry->setProperty("topic", topic);
+                for (const auto& [language, code] : languages) {
+                    const auto content = topic == 0 ? aboutContent(language)
+                                                    : learnTopicContent(language, topic);
+                    auto* text = new juce::DynamicObject();
+                    text->setProperty("title", content.title);
+                    text->setProperty("body", content.body);
+                    entry->setProperty(code, juce::var(text));
+                }
+                topics.add(juce::var(entry));
+            }
+            output.replaceWithText(juce::JSON::toString(juce::var(topics)));
+            quit();
+            return;
+        }
         const auto bassPrefix = juce::String("--diagnose-bass=");
         if (commandLine.startsWith(bassPrefix)) {
             const juce::File report(commandLine.substring(bassPrefix.length()).trim());

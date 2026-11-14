@@ -1,0 +1,192 @@
+[
+  {
+    "topic": 0,
+    "pt": {
+      "title": "Sobre o Batruc",
+      "body": "Instrumento de composição rítmica da família RASGO.\nVersão 0.1.0.\nNome histórico: Trucmetry.\nAutoria e direção artística: Lúcio de Araújo.\nCódigo do Batruc: GNU AGPL-3.0-or-later.\nJUCE 9.0.3 mantém sua licença própria (AGPLv3 ou comercial).\nModelos físicos e matemáticos (pêndulos acoplados, bilhar, Lissajous, Fourier, curvas rolantes) escrevem figuras rítmicas editáveis. Modos RITMO e GERATIVO; baixo com voz própria no tom da seed; ornamentos de caixa na nota, com ORN por stem; ginga por gênero e microtempo medido; pautas do baixo e da bateria com MusicXML; quatro línguas.\nDados: Groove MIDI Dataset (Google LLC, CC BY 4.0). Créditos completos em CREDITS_AND_SOURCES.md.\nTocado no Linux; Windows e macOS compilados e testados só na integração contínua."
+    },
+    "en": {
+      "title": "About Batruc",
+      "body": "Rhythm-composition instrument of the RASGO family.\nVersion 0.1.0.\nFormer name: Trucmetry.\nAuthorship and artistic direction: Lúcio de Araújo.\nBatruc code: GNU AGPL-3.0-or-later.\nJUCE 9.0.3 keeps its own licence (AGPLv3 or commercial).\nPhysical and mathematical models (coupled pendulums, billiard, Lissajous, Fourier, rolling curves) write editable rhythmic figures. RHYTHM and GENERATIVE modes; a bass with its own voice in the seed's key; snare ornaments on the note, with a per-stem ORN switch; genre grooves and measured microtiming; bass and drum staves with MusicXML; four languages.\nData: Groove MIDI Dataset (Google LLC, CC BY 4.0). Full credits in CREDITS_AND_SOURCES.md.\nPlayed on Linux; Windows and macOS built and tested in CI only."
+    },
+    "fr": {
+      "title": "À propos de Batruc",
+      "body": "Instrument de composition rythmique de la famille RASGO.\nVersion 0.1.0.\nAncien nom : Trucmetry.\nAuteur et direction artistique : Lúcio de Araújo.\nCode Batruc : GNU AGPL-3.0-or-later.\nJUCE 9.0.3 garde sa propre licence (AGPLv3 ou commerciale).\nDes modèles physiques et mathématiques (pendules couplés, billard, Lissajous, Fourier, courbes roulantes) écrivent des figures rythmiques modifiables. Modes RYTHME et GÉNÉRATIF ; une basse à voix propre dans la tonalité de la graine ; ornements de caisse claire sur la note, avec ORN par stem ; grooves par genre et microtiming mesuré ; portées de basse et de batterie avec MusicXML ; quatre langues.\nDonnées : Groove MIDI Dataset (Google LLC, CC BY 4.0). Crédits complets dans CREDITS_AND_SOURCES.md.\nJoué sous Linux ; Windows et macOS compilés et testés en intégration continue seulement."
+    },
+    "es": {
+      "title": "Acerca de Batruc",
+      "body": "Instrumento de composición rítmica de la familia RASGO.\nVersión 0.1.0.\nNombre histórico: Trucmetry.\nAutoría y dirección artística: Lúcio de Araújo.\nCódigo de Batruc: GNU AGPL-3.0-or-later.\nJUCE 9.0.3 mantiene su propia licencia (AGPLv3 o comercial).\nModelos físicos y matemáticos (péndulos acoplados, billar, Lissajous, Fourier, curvas rodantes) escriben figuras rítmicas editables. Modos RITMO y GENERATIVO; un bajo con voz propia en la tonalidad de la seed; ornamentos de caja en la nota, con ORN por stem; groove por género y microtiming medido; pentagramas de bajo y batería con MusicXML; cuatro idiomas.\nDatos: Groove MIDI Dataset (Google LLC, CC BY 4.0). Créditos completos en CREDITS_AND_SOURCES.md.\nTocado en Linux; Windows y macOS compilados y probados solo en integración continua."
+    }
+  },
+  {
+    "topic": 1,
+    "pt": {
+      "title": "Fórmula e fase",
+      "body": "Cada dial representa uma fase θᵢ(t) = 2π nᵢ t/T + φᵢ. n indica quantas voltas cabem na seção T. A seção tem 16 tempos (quatro compassos em 4/4) e sua duração é T = 960/BPM segundos. Mudar BPM durante a reprodução aplica a nova duração no início da próxima seção. O ponto branco mostra o estado atual; os marcadores indicam ataques previstos. No Mixer, φ fórmula desloca a curva que calcula a intensidade de cada voz; os instantes dos ataques permanecem fixos.\n\nNo gráfico Estudo · ciclo compartilhado, arraste um trecho vazio do anel para adiantar ou atrasar o stem inteiro; os ataques mantêm suas distâncias. Arraste um ponto para mover só aquele ataque. Clique em um espaço vazio do anel para criar ataque; arraste o ponto com Shift e mova-o para dentro/fora para ajustar a força; botão direito ou duplo clique no ponto remove o ataque. Alt+clique no anel desativa a célula do stem."
+    },
+    "en": {
+      "title": "Formula and phase",
+      "body": "Each dial represents a phase θᵢ(t) = 2π nᵢ t/T + φᵢ. n is the number of turns within section T. The section has 16 beats (four bars in 4/4) and lasts T = 960/BPM seconds. A BPM change during playback applies at the next section. The white point shows the current state; markers show scheduled attacks. In the Mixer, φ formula shifts the curve that calculates each voice's attack intensity; event times stay fixed.\n\nIn Study · Shared Cycle, drag an empty part of a voice's ring to shift the whole stem earlier or later; spacing between hits stays the same. Drag a marker to move only that hit. Click an empty spot on the ring to add a hit. Hold Shift while dragging a marker inward or outward to change its strength. Right-click or double-click a marker to remove the hit. Alt-click the ring to disable the stem's cell."
+    },
+    "fr": {
+      "title": "Formule et phase",
+      "body": "Chaque cadran représente une phase θᵢ(t) = 2π nᵢ t/T + φᵢ. n indique le nombre de tours dans la section T. La section compte 16 temps (quatre mesures en 4/4) et dure T = 960/BPM secondes. Un changement de tempo en lecture s'applique au début de la section suivante. Le point blanc montre l'état actuel ; les repères indiquent les attaques prévues. Dans le mixeur, φ formule décale la courbe qui calcule l'intensité des attaques de chaque voix ; leurs instants restent fixes.\n\nDans Étude · Cycle partagé, faites glisser une partie vide de l'anneau d'une voix pour avancer ou retarder tout le stem ; l'espacement entre les attaques reste le même. Faites glisser un point pour déplacer uniquement cette attaque. Cliquez sur un espace vide de l'anneau pour ajouter une attaque. Maintenez Maj en faisant glisser un point vers l'intérieur ou l'extérieur pour régler sa force. Clic droit ou double-clic sur un point pour supprimer l'attaque. Alt-clic sur l'anneau pour désactiver la cellule du stem."
+    },
+    "es": {
+      "title": "Fórmula y fase",
+      "body": "Cada dial representa una fase θᵢ(t) = 2π nᵢ t/T + φᵢ. n indica cuántas vueltas caben en la sección T. La sección tiene 16 pulsos (cuatro compases en 4/4) y dura T = 960/BPM segundos. Los cambios de BPM durante la reproducción se aplican al inicio de la siguiente sección. El punto blanco muestra el estado actual; los marcadores indican ataques previstos. En el mezclador, φ fórmula desplaza la curva que calcula la intensidad de cada voz; los instantes de ataque permanecen fijos.\n\nEn Estudio · Ciclo compartido, arrastra una parte vacía del anillo de una voz para adelantar o retrasar todo el stem; se conservan las distancias entre golpes. Arrastra un punto para mover solo ese golpe. Pulsa en un espacio vacío del anillo para añadir un golpe; mantén Shift mientras arrastras un punto hacia dentro o fuera para ajustar su intensidad. El botón derecho o un doble clic en el punto elimina el golpe. Alt+clic en el anillo desactiva la célula del stem."
+    }
+  },
+  {
+    "topic": 2,
+    "pt": {
+      "title": "Regras de evento",
+      "body": "Centro dispara nas passagens θ = 0 ou π. Extremos dispara nas inversões θ = π/2 ou 3π/2. A regra altera os instantes de ataque sem mudar a oscilação desenhada."
+    },
+    "en": {
+      "title": "Event rules",
+      "body": "Center triggers at θ = 0 or π. Extrema triggers at turning points θ = π/2 or 3π/2. The rule changes attack times without changing the drawn oscillation."
+    },
+    "fr": {
+      "title": "Règles d'événement",
+      "body": "Centre déclenche aux passages θ = 0 ou π. Extrema déclenche aux inversions θ = π/2 ou 3π/2. La règle change les instants d'attaque sans modifier l'oscillation dessinée."
+    },
+    "es": {
+      "title": "Reglas de evento",
+      "body": "Centro dispara en los pasos por θ = 0 o π. Extremos dispara en las inversiones θ = π/2 o 3π/2. La regla cambia los instantes de ataque sin alterar la oscilación dibujada."
+    }
+  },
+  {
+    "topic": 3,
+    "pt": {
+      "title": "Superfície e geometria",
+      "body": "O plano combina x = sin θ₁ e y = sin θ₂. Campo livre mantém todos os ataques, mas uma Lupa móvel pesa a intensidade conforme a distância. Quatro ilhas pulsam e derivam em fases próprias com influência suave da vizinha; conectores transitórios incluem o corredor entre ilhas próximas no campo de ataques; duas microlinhas derivam e respiram de modo assimétrico. Cada ataque é recalculado no campo vigente e pode soar ou virar pausa. São agentes composicionais determinísticos, não uma simulação celular. O percurso XY anima a relação entre vozes. Fonte geométrica faz y(t) conduzir a V1; curvas Fourier só afetam o som quando escolhidas como essa fonte. Compasso, polígonos, espiral, Lissajous, curvas rolantes, cicloide, catenária e bilhar oferecem percursos. Área e perímetro são medidas informativas; o bilhar é operador de eventos, não reverberação de sala."
+    },
+    "en": {
+      "title": "Surface and geometry",
+      "body": "The plane combines x = sin θ₁ and y = sin θ₂. Open field keeps every attack, while a moving focus weights its intensity by distance. Four islands pulse and drift at distinct phases with gentle neighbour influence; temporary bridges add the corridor between nearby islands to the attack field; two microlanes drift and breathe asymmetrically. Each onset is checked against the current field and may sound or become a rest. These are deterministic compositional agents, not a cell simulation. The XY path animates the relation between voices. Geometric source makes y(t) drive V1; Fourier curves affect sound only when selected as that source. Compass, polygons, spiral, Lissajous, rolling curves, cycloid, catenary and billiard provide paths. Area and perimeter are informative; billiard is an event operator, not room reverberation."
+    },
+    "fr": {
+      "title": "Surface et géométrie",
+      "body": "Le plan combine x = sin θ₁ et y = sin θ₂. Le champ libre garde chaque attaque, mais une loupe mobile pondère son intensité selon la distance. Quatre îlots pulsent et dérivent avec des phases propres et une légère influence du voisin ; des connecteurs temporaires ajoutent au champ d'attaques le corridor entre îlots proches ; deux microlignes dérivent et respirent de façon asymétrique. Chaque attaque est évaluée dans le champ actuel et peut sonner ou devenir un silence. Ce sont des agents compositionnels déterministes, pas une simulation cellulaire. Le parcours XY anime la relation entre les voix. La source géométrique fait piloter V1 par y(t) ; les courbes de Fourier n'agissent sur le son que si elles sont choisies comme source. Compas, polygones, spirale, Lissajous, courbes roulantes, cycloïde, chaînette et billard fournissent des parcours. L'aire et le périmètre sont informatifs ; le billard est un opérateur d'événements, pas une réverbération de salle."
+    },
+    "es": {
+      "title": "Superficie y geometría",
+      "body": "El plano combina x = sin θ₁ e y = sin θ₂. El campo libre conserva todos los ataques, pero una lupa móvil pondera la intensidad según la distancia. Cuatro islas pulsan y derivan con fases propias e influencia suave de la vecina; los conectores transitorios incorporan al campo de ataques el corredor entre islas próximas; dos microlíneas derivan y respiran de forma asimétrica. Cada ataque se recalcula en el campo vigente y puede sonar o convertirse en silencio. Son agentes compositivos deterministas, no una simulación celular. El recorrido XY anima la relación entre las voces. La fuente geométrica hace que y(t) conduzca V1; las curvas de Fourier solo afectan el sonido cuando se eligen como fuente. Compás, polígonos, espiral, Lissajous, curvas rodantes, cicloide, catenaria y billar ofrecen recorridos. Área y perímetro son medidas informativas; el billar es un operador de eventos, no reverberación de sala."
+    }
+  },
+  {
+    "topic": 4,
+    "pt": {
+      "title": "Espaço acústico",
+      "body": "A geometria de uma sala altera caminhos e tempos das reflexões. O bilhar ideal acompanha um raio: v′=v−2(v·n)n; percurso dividido pela velocidade do som aproxima o atraso e a energia pode ser reduzida em cada parede. Isso descreve melhor altas frequências quando o comprimento de onda é pequeno diante da sala. Em baixas frequências, as ondas interferem e formam modos próprios; uma resposta de sala precisa incluir modos ou uma resposta ao impulso. O bilhar atual é só um operador composicional de eventos, não reverberação acústica. Ainda não há efeito de sala no áudio."
+    },
+    "en": {
+      "title": "Acoustic space",
+      "body": "Room geometry changes reflection paths and arrival times. An ideal billiard follows a ray: v′=v−2(v·n)n; path length divided by the speed of sound approximates delay, and energy can be reduced at each wall. This is more suitable at high frequencies when wavelength is small compared with the room. At low frequencies, waves interfere and form room modes; a room response needs modes or an impulse response. The current billiard is a compositional event operator, not acoustic reverberation. No room effect is applied to the audio yet."
+    },
+    "fr": {
+      "title": "Espace acoustique",
+      "body": "La géométrie d'une salle modifie les trajets et les temps des réflexions. Un billard idéal suit un rayon : v′=v−2(v·n)n ; la longueur du trajet divisée par la vitesse du son approche le retard, et l'énergie peut diminuer à chaque paroi. Cette approximation convient mieux aux hautes fréquences lorsque la longueur d'onde est petite par rapport à la salle. Aux basses fréquences, les ondes interfèrent et forment des modes propres ; une réponse de salle doit inclure des modes ou une réponse impulsionnelle. Le billard actuel est un opérateur compositionnel d'événements, pas une réverbération acoustique. Aucun effet de salle n'est encore appliqué au son."
+    },
+    "es": {
+      "title": "Espacio acústico",
+      "body": "La geometría de una sala altera los caminos y los tiempos de las reflexiones. El billar ideal sigue un rayo: v′=v−2(v·n)n; el recorrido dividido por la velocidad del sonido aproxima el retardo y la energía puede reducirse en cada pared. Esto describe mejor las altas frecuencias, cuando la longitud de onda es pequeña frente a la sala. En bajas frecuencias, las ondas interfieren y forman modos propios; una respuesta de sala necesita incluir modos o una respuesta al impulso. El billar actual es solo un operador compositivo de eventos, no reverberación acústica. Todavía no hay efecto de sala en el audio."
+    }
+  },
+  {
+    "topic": 5,
+    "pt": {
+      "title": "Som e modelo",
+      "body": "A lei I oferece oito funções: constante, projeção y, produto xy, diferença x²−y², Gauss no centro, bandas cosseno, energia potencial U e energia cinética K. Para U e K, x e y são deslocamentos normalizados de dois osciladores de mesma massa, com frequências proporcionais aos ciclos por seção: U=(n₁²x²+n₂²y²)/(n₁²+n₂²), K=1−U. É um modelo idealizado, não uma medição de energia acústica. O parâmetro λ mistura a função escolhida com intensidade uniforme. No Mixer, Cauda encurta o amortecimento e Fundamental reduz o primeiro modo nos timbres harmônicos.\n\nEm MIDI de bateria, V1–V8 são papéis internos, não números de pista: V1 bumbo (GM 35–36); V2 caixa, aro e variações (37–40); V3 chimbal fechado/pedal (42/44); V4 chimbal aberto (46); V5 tons (41, 43, 45, 47, 48, 50); V6 pratos (49, 51–53, 55, 57, 59); V7 tambores de mão (60–66); V8 acessórios e outras notas. No corpus GMD com mapa TD-11, 22/26 são chimbais e 58 é aro de tom. A seed escolhe uma família sonora sem trocar o mapa das vozes; a máscara começa em Campo livre. Para estudar um beat, importe-o, faça solo de cada stem no Mixer e identifique pulso, guia e resposta antes de comparar timbres. O rótulo do arquivo é metadado, não prova de autenticidade estilística."
+    },
+    "en": {
+      "title": "Sound and model",
+      "body": "Law I offers eight functions: uniform, projection y, product xy, difference x²−y², central Gaussian, cosine bands, potential energy U and kinetic energy K. For U and K, x and y are normalized displacements of two equal-mass oscillators with frequencies proportional to their section cycles: U=(n₁²x²+n₂²y²)/(n₁²+n₂²), K=1−U. This is an idealized model, not a measurement of acoustic energy. λ blends the selected function with uniform intensity. In the Mixer, Decay shortens modal tails and Fundamental lowers the first mode in harmonic timbres. The global sound material is the default; each channel can inherit it or select an override.\n\nIn drum MIDI, V1–V8 are internal roles, not track numbers: V1 kick (GM 35–36); V2 snare, rim and variants (37–40); V3 closed/pedal hi-hat (42/44); V4 open hi-hat (46); V5 toms (41, 43, 45, 47, 48, 50); V6 cymbals (49, 51–53, 55, 57, 59); V7 hand drums (60–66); V8 accessories and other notes. In the GMD corpus with the TD-11 map, 22/26 are hi-hats and 58 is a tom rim. The seed chooses a sound family without changing the voice map; the mask starts in Open Field. To study a beat, import it, solo each stem in the Mixer, and identify pulse, guide and response before comparing timbres. A file's style label is metadata, not proof of stylistic authenticity."
+    },
+    "fr": {
+      "title": "Son et modèle",
+      "body": "La loi I propose huit fonctions : uniforme, projection y, produit xy, différence x²−y², gaussienne centrale, bandes cosinus, énergie potentielle U et énergie cinétique K. Pour U et K, x et y sont les déplacements normalisés de deux oscillateurs de même masse, avec des fréquences proportionnelles aux cycles par section : U=(n₁²x²+n₂²y²)/(n₁²+n₂²), K=1−U. C'est un modèle idéalisé, pas une mesure d'énergie acoustique. λ mélange la fonction avec l'intensité uniforme. Dans le mixeur, Décroissance raccourcit les queues modales et Fondamentale réduit le premier mode des timbres harmoniques. La matière sonore globale est le profil par défaut ; chaque canal peut l'hériter ou choisir une exception.\n\nEn MIDI de batterie, V1–V8 désignent des rôles internes, pas des numéros de piste : V1 grosse caisse (GM 35–36) ; V2 caisse claire, cercle et variantes (37–40) ; V3 charleston fermé/pédale (42/44) ; V4 charleston ouvert (46) ; V5 toms (41, 43, 45, 47, 48, 50) ; V6 cymbales (49, 51–53, 55, 57, 59) ; V7 percussions à main (60–66) ; V8 accessoires et autres notes. Dans le corpus GMD avec la carte TD-11, 22/26 sont des charlestons et 58 le cercle d'un tom. La graine choisit une famille sonore sans changer la carte des voix ; le masque commence en Champ libre. Pour étudier un beat, importez-le, isolez chaque stem dans le mixeur et repérez pulsation, guide et réponse avant de comparer les timbres. L'étiquette de style du fichier est une métadonnée, pas une preuve d'authenticité stylistique."
+    },
+    "es": {
+      "title": "Sonido y modelo",
+      "body": "La ley I ofrece ocho funciones: constante, proyección y, producto xy, diferencia x²−y², Gauss en el centro, bandas coseno, energía potencial U y energía cinética K. Para U y K, x e y son desplazamientos normalizados de dos osciladores de igual masa, con frecuencias proporcionales a los ciclos por sección: U=(n₁²x²+n₂²y²)/(n₁²+n₂²), K=1−U. Es un modelo idealizado, no una medición de energía acústica. El parámetro λ mezcla la función elegida con intensidad uniforme. En el mezclador, Cola acorta el amortiguamiento y Fundamental reduce el primer modo en los timbres armónicos.\n\nEn MIDI de batería, V1–V8 son funciones internas, no números de pista: V1 bombo (GM 35–36); V2 caja, aro y variantes (37–40); V3 charles cerrado/pedal (42/44); V4 charles abierto (46); V5 toms (41, 43, 45, 47, 48, 50); V6 platillos (49, 51–53, 55, 57, 59); V7 tambores de mano (60–66); V8 accesorios y otras notas. En el corpus GMD con el mapa TD-11, 22/26 son charles y 58 es el aro de un tom. La semilla elige una familia sonora sin cambiar el mapa de voces; la máscara empieza en Campo libre. Para estudiar un beat, impórtalo, pon cada stem en solo en el mezclador e identifica pulso, guía y respuesta antes de comparar timbres. La etiqueta de estilo del archivo es un metadato, no una prueba de autenticidad estilística."
+    }
+  },
+  {
+    "topic": 6,
+    "pt": {
+      "title": "Zoom do gráfico",
+      "body": "Cada voz aparece em sua própria faixa. O botão com seta alterna o fluxo das ondas para a esquerda, para a direita ou a linha temporal fixa. Em fluxo, o tempo tocado fica no centro e as curvas passam por ele. Use + e − ou a roda do mouse para ampliar até uma janela de um segundo. Arrastar um trecho ampliado volta à linha fixa e permite percorrer a seção. O movimento desta vista não altera o som. No Mixer, Movimento V2 desloca a fase da segunda voz por compasso e muda seus ataques."
+    },
+    "en": {
+      "title": "Graph zoom",
+      "body": "Each voice has its own lane. The arrow button cycles through waves flowing left, flowing right, and a fixed timeline. In flow, the played time stays in the centre while curves move past it. Use + and − or the mouse wheel to zoom down to a one-second window. Dragging a zoomed section returns to the fixed timeline for navigation. This view motion does not change sound. In the Mixer, V2 Motion shifts the second voice's phase per bar and changes its onsets."
+    },
+    "fr": {
+      "title": "Zoom du graphique",
+      "body": "Chaque voix a sa propre bande. Le bouton fléché alterne entre flux vers la gauche, vers la droite et ligne temporelle fixe. En flux, le temps joué reste au centre tandis que les courbes défilent. Utilisez + et − ou la molette pour zoomer jusqu'à une seconde. Glisser une section agrandie revient à la ligne fixe pour naviguer. Ce mouvement de la vue ne change pas le son. Dans le mixeur, Mouvement V2 déplace la phase de la deuxième voix par mesure et change ses attaques."
+    },
+    "es": {
+      "title": "Zoom del gráfico",
+      "body": "Cada voz aparece en su propia franja. El botón con flecha alterna el flujo de ondas hacia la izquierda, hacia la derecha o la línea temporal fija. En flujo, el tiempo tocado queda en el centro y las curvas pasan por él. Use + y − o la rueda del ratón para ampliar hasta una ventana de un segundo. Arrastrar un tramo ampliado vuelve a la línea fija y permite recorrer la sección. El movimiento de esta vista no cambia el sonido. En el mezclador, Movimiento V2 desplaza la fase de la segunda voz por compás y cambia sus ataques."
+    }
+  },
+  {
+    "topic": 7,
+    "pt": {
+      "title": "Cenas e versões",
+      "body": "Guardar cria uma versão na sessão. Exportar cena grava um .batruc.txt; Abrir cena restaura esse arquivo e acrescenta a versão ao histórico. REC escolhe o destino e grava o master estéreo em PCM 24-bit. O botão fica vermelho e mostra STOP com o tempo decorrido; o limite padrão é 5 min, ajustável entre 1 e 15 min pela caixa ao lado. STOP fecha WAV e TXT em segundo plano. A conclusão normal aparece no status sem janela modal; falhas de escrita são avisadas. Se você pausar o transporte, esse intervalo será gravado como silêncio; a forma gerada não inclui passagens inteiras silenciosas. Arquivos existentes não são substituídos. O histórico mantém até 16 versões nesta sessão."
+    },
+    "en": {
+      "title": "Scenes and versions",
+      "body": "Save creates a session version. Export scene writes a .batruc.txt; Open scene restores it and adds the version to the history. REC chooses a destination and records the stereo master in 24-bit PCM. The button turns red and shows STOP with elapsed time; the default limit is 5 min, adjustable from 1 to 15 min in the adjacent selector. STOP closes WAV and TXT in the background. Successful completion appears in the status area without a modal dialog; write failures are reported. If you pause the transport, that interval is recorded as silence; generated form passages are never wholly silent. Existing files are never replaced. History keeps up to 16 versions in this session."
+    },
+    "fr": {
+      "title": "Scènes et versions",
+      "body": "Enregistrer crée une version pour la session. Exporter la scène écrit un .batruc.txt ; Ouvrir la scène la restaure et l'ajoute à l'historique. REC choisit le dossier et enregistre le master stéréo en PCM 24 bits. Le bouton devient rouge et affiche STOP avec le temps écoulé ; la limite par défaut est de 5 min, réglable de 1 à 15 min dans le sélecteur voisin. STOP ferme le WAV et le TXT en arrière-plan. La réussite apparaît dans la zone d'état sans fenêtre modale ; les échecs d'écriture sont signalés. Si vous mettez le transport en pause, cet intervalle est enregistré en silence ; les passages de la forme générée ne sont jamais entièrement silencieux. Les fichiers existants ne sont jamais remplacés. L'historique conserve jusqu'à 16 versions dans cette session."
+    },
+    "es": {
+      "title": "Escenas y versiones",
+      "body": "Guardar crea una versión en la sesión. Exportar escena graba un .batruc.txt; Abrir escena restaura ese archivo y añade la versión al historial. REC elige el destino y graba el máster estéreo en PCM de 24 bits. El botón se pone rojo y muestra STOP con el tiempo transcurrido; el límite por defecto es 5 min, ajustable entre 1 y 15 min en la caja de al lado. STOP cierra WAV y TXT en segundo plano. La conclusión normal aparece en el estado sin ventana modal; los fallos de escritura se avisan. Si pausas el transporte, ese intervalo se graba como silencio; la forma generada no incluye pasajes enteros en silencio. Los archivos existentes no se sustituyen. El historial guarda hasta 16 versiones en esta sesión."
+    }
+  },
+  {
+    "topic": 8,
+    "pt": {
+      "title": "Ritmos possíveis",
+      "body": "Com n posições e dois estados por posição — pausa ou ataque — existem 2ⁿ padrões. Escolha n para ver cada subdivisão e percorra os padrões pelo número ou pelas células. Em n=4 há 16 possibilidades; n=12 tem 4.096. Compasso 4/4 usa 16 semicolcheias e sorteia uma entre 65.536 combinações. O explorador e a prévia sonora não alteram a composição. O desafio Praticar oculta um padrão para você ouvir e reconstruir. O botão Percurso propõe cinco desafios: 4, 6, 8, 12 e 16 posições; ouça cada padrão, reconstrua-o e avance após acertar. Sequências didáticas com ritmos e contextos musicais ainda serão desenvolvidas.\n\nTrilha de escuta: importe um MIDI com origem, compasso e BPM identificados; ouça por stem e procure marcação, guia e resposta; mude uma camada e compare. Os rótulos brasileiros do GMD descrevem performances de bateria, não definem tradições. No Maracatu Nação, compare fontes contextualizadas e não trate um baque como universal.\n\nUma batida dividida em tercina tem n=3 e 2³=8 padrões. Em um compasso 3/4 com tercinas em cada tempo, n=9 e 2⁹=512. A regra continua 2ⁿ; muda o total de posições consideradas.\n\nA opção de compasso percorre 4/4 em 16 semicolcheias ou 3/4 com tercinas, em 9 posições ao longo de três tempos. No seletor, n posições por batida continuam sendo uma batida; no compasso ternário, 3 posições por batida se repetem por três tempos."
+    },
+    "en": {
+      "title": "Rhythm counts",
+      "body": "With n positions and two states per position — rest or hit — there are 2ⁿ patterns. Choose n to see each subdivision and browse patterns by number or by clicking the cells. At n=4 there are 16 possibilities; n=12 has 4,096. A 4/4 bar uses 16 sixteenths and rolls one of 65,536 combinations. The explorer and audio preview do not alter the composition. Practice hides a pattern for you to hear and rebuild. Path offers five challenges: 4, 6, 8, 12 and 16 positions. Hear each pattern, rebuild it, then advance when correct. Further lessons with musical rhythms and contexts remain to be developed.\n\nListening sequence: import a MIDI with source, meter and BPM identified; listen by stem and look for timekeeping, guide and response roles; change one layer and compare. GMD Brazilian labels describe drum performances; they do not define traditions. For Maracatu Nação, compare contextual sources and do not treat one baque as universal.\n\nOne beat divided into a triplet has n=3 and 2³=8 patterns. A 3/4 bar with triplets in every beat has n=9 and 2⁹=512. The rule remains 2ⁿ; the total number of positions changes.\n\nThe bar preset plays 4/4 as 16 sixteenths or 3/4 with triplets as 9 positions across three beats. In the subdivision selector, n positions per beat remain one beat; in the ternary bar, 3 positions per beat repeat across three beats."
+    },
+    "fr": {
+      "title": "Comptes rythmiques",
+      "body": "Avec n positions et deux états par position — silence ou attaque — il existe 2ⁿ motifs. Choisissez n pour voir chaque subdivision et parcourez les motifs par numéro ou en cliquant sur les cellules. Pour n=4, il y a 16 possibilités ; n=12 en compte 4 096. Une mesure 4/4 utilise 16 doubles-croches et en tire une parmi 65 536 combinaisons. L'explorateur et l'écoute ne modifient pas la composition. Pratiquer masque un motif à écouter puis à reconstruire. Parcours propose cinq défis : 4, 6, 8, 12 et 16 positions. Écoutez chaque motif, reconstruisez-le puis avancez après une réponse correcte. Les séquences pédagogiques avec des rythmes et contextes musicaux restent à développer.\n\nParcours d’écoute : importez un MIDI dont la source, la mesure et le BPM sont identifiés ; écoutez chaque stem et repérez les rôles de marquage, de guide et de réponse ; modifiez une couche puis comparez. Les étiquettes brésiliennes du GMD décrivent des interprétations de batterie, elles ne définissent pas les traditions. Pour le Maracatu Nação, comparez des sources contextualisées et ne considérez pas un baque comme universel.\n\nUn temps divisé en triolet a n=3 et 2³=8 motifs. Une mesure à 3/4 avec des triolets sur chaque temps a n=9 et 2⁹=512. La règle reste 2ⁿ ; seul change le nombre total de positions.\n\nLe préréglage de mesure joue le 4/4 en 16 doubles-croches ou le 3/4 avec triolets en 9 positions sur trois temps. Dans le sélecteur, n positions par temps restent un seul temps ; dans la mesure ternaire, 3 positions par temps se répètent sur trois temps."
+    },
+    "es": {
+      "title": "Recuentos rítmicos",
+      "body": "Con n posiciones y dos estados por posición — silencio o golpe — hay 2ⁿ patrones. Elige n para ver cada subdivisión y recorre los patrones por número o haciendo clic en las celdas. Para n=4 hay 16 posibilidades; n=12 tiene 4.096. Un compás 4/4 usa 16 semicorcheas y sortea una de 65.536 combinaciones. El explorador y la preescucha no alteran la composición. El reto Practicar oculta un patrón para escucharlo y reconstruirlo. Los recorridos progresivos y las secuencias de ejercicios aún están por desarrollar.\n\nRuta de escucha: importa un MIDI con origen, compás y BPM identificados; escucha cada stem y busca marcación, guía y respuesta; cambia una capa y compara. Las etiquetas brasileñas del GMD describen interpretaciones de batería, no definen tradiciones. En el Maracatu Nação, compara fuentes contextualizadas y no trates un baque como universal.\n\nPara un pulso dividido en tresillo, n=3 y hay 8 patrones. En un compás de 3/4 con tresillos en cada pulso, n=9 y hay 512. La regla sigue siendo 2ⁿ; cambia el número total de posiciones consideradas.\n\nLa opción de compás recorre 4/4 en 16 semicorcheas o 3/4 con tresillos, en 9 posiciones a lo largo de tres pulsos. En el selector, n posiciones por pulso siguen siendo un pulso; en el compás ternario, 3 posiciones por pulso se repiten durante tres pulsos."
+    }
+  },
+  {
+    "topic": 9,
+    "pt": {
+      "title": "Baixo e Mixer",
+      "body": "A linha seeded do baixo parte dos ataques das vozes e da seed da composição. O campo hexadecimal e Novo baixo definem uma seed própria: ela muda o contorno de alturas e as escolhas de frase sem alterar o MIDI de origem. O nível 0 mantém as âncoras; níveis 1–3 acrescentam contratempos em subdivisões livres quando há ataques próximos como estímulo. O Mixer tem uma faixa BAIXO própria: Ativar liga a voz, o slider ajusta o nível, M silencia, S isola e Pan distribui o sinal no estéreo. Os mesmos controles aparecem na página Baixo. Editar o piano roll substitui a linha calculada; Novo baixo retorna à geração."
+    },
+    "en": {
+      "title": "Bass and Mixer",
+      "body": "The seeded bass line starts from voice attacks and the composition seed. The hexadecimal field and New Bass set a separate seed: it changes the pitch contour and phrase choices without changing the source MIDI. Level 0 keeps the anchors; levels 1–3 add counterbeats on free subdivisions when nearby attacks provide a cue. The Mixer has a dedicated BASS strip: Enable switches it on, the slider sets its level, M mutes it, S solos it, and Pan places it in the stereo field. The same controls appear on the Bass page. Editing the piano roll replaces the generated line; New Bass returns to generation."
+    },
+    "fr": {
+      "title": "Basse et mixeur",
+      "body": "La ligne de basse générée part des attaques des voix et de la graine de composition. Le champ hexadécimal et Nouvelle basse définissent une graine propre : elle modifie le contour des hauteurs et les choix de phrase sans changer le MIDI source. Le niveau 0 conserve les ancrages ; les niveaux 1–3 ajoutent des contretemps sur des subdivisions libres lorsqu'une attaque proche sert de repère. Le mixeur possède une tranche BASSE dédiée : Activer la met en marche, le curseur règle son niveau, M la rend muette, S l'isole et Pan la place dans le champ stéréo. Les mêmes réglages figurent dans la page Basse. Modifier le piano-roll remplace la ligne générée ; Nouvelle basse revient à la génération."
+    },
+    "es": {
+      "title": "Bajo y mezclador",
+      "body": "La línea de bajo generada parte de los ataques de las voces y de la semilla de composición. El campo hexadecimal y Nuevo bajo definen una semilla propia: cambia el contorno de alturas y las decisiones de frase sin alterar el MIDI de origen. El nivel 0 mantiene los anclajes; los niveles 1–3 añaden contratiempos en subdivisiones libres cuando hay ataques cercanos como estímulo. El mezclador tiene una tira BAJO propia: Activar enciende la voz, el deslizador ajusta el nivel, M silencia, S la aísla y Pan coloca la señal en estéreo. Los mismos controles aparecen en la página Bajo. Editar el piano roll sustituye la línea calculada; Nuevo bajo vuelve a generarla."
+    }
+  }
+]

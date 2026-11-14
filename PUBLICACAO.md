@@ -138,3 +138,23 @@ depois do Asterismus. A cena da família no topo (cada instrumento tem a sua)
   tonalidad de la seed; pentagramas de bajo y batería exportables a
   MusicXML.» «Disponible para Linux, Windows y Mac.» «Sitio y descargas de
   Batruc →».
+
+## Site completo (14/11/2026)
+
+Autor: "faltou os botões no cabeçalho", "tutoriais, etc como temos feito os
+últimos instrumentos", "verifique os idiomas também".
+
+- Cabeçalho no padrão do Asterismus: Sobre · Tutorial · LEARN · Instalação ·
+  Baixar, nas 4 línguas.
+- **Tutorial** (8 passos, `website/textos_paginas.py`): cada nome de controle
+  foi conferido contra o texto que o app mostra em cada língua (3 correções:
+  VOZES, DRUMS IN KEY, "Groove de caisse claire").
+- **LEARN**: os 9 tópicos do painel Aprender, exportados pelo próprio app
+  (`--export-learn`, novo), sem segunda cópia do texto.
+- **Instalação**: resumo do `INSTALL.md`.
+- **Línguas:** os 9 tópicos têm os 4 idiomas, parágrafo por parágrafo; o app
+  tem tradução espanhola para todas as 683 chamadas `localized()` (677
+  pares); as tabelas do site têm as mesmas chaves e listas nas 4 línguas.
+- Validação: links e âncoras internos das 16 páginas (0 problemas),
+  `seo.py --verificar`, render de index, tutorial e learn-es.
+- Portal: a imagem do card passou a 1920×1006 (captura nova do app).

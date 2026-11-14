@@ -7,12 +7,21 @@ idioma. Estrutura copiada do site do Trioio (13/11/2026); textos próprios.
 
 Editar os TEXTOS aqui, não nos .html (eles são derivados).
 
+Desde 14/11/2026 gera também Tutorial, LEARN e Instalação (tutorial*.html,
+learn*.html, instalacao*.html), com o menu do cabeçalho no padrão do site do
+Asterismus. Textos dessas páginas em textos_paginas.py. O LEARN vem do app:
+
+    ./run --export-learn=website/learn_textos.json   (na raiz do projeto)
+
 PUBLICADO = False enquanto não houver release: a página diz "em preparação",
 leva noindex e não mostra a seção Baixar (links quebrados não vão ao ar).
 """
 
 import html
+import json
 import pathlib
+
+from textos_paginas import NAV, TUTORIAL, LEARN, INSTALACAO
 
 AQUI = pathlib.Path(__file__).parent
 PORTAL = "https://rasgoinstruments.arquiviagem.net/"
@@ -240,11 +249,32 @@ T = {
 }
 
 
+
+def rodape(lang):
+    t = T[lang]
+    e = lambda x: html.escape(x, quote=False)
+    a = lambda x: html.escape(x, quote=True)
+    return f"""<footer class="site-footer">
+  <span>© Lúcio de Araújo · Batruc 2026 · RASGO</span>
+  <nav>
+    <a href="{REPO}">GitHub</a> ·
+    <a href="{BLOB}/CREDITS_AND_SOURCES.md">{e(t["footer_credits"])}</a> ·
+    <a href="{BLOB}/LICENSE">{e(t["footer_license"])}</a>
+  </nav>
+</footer>
+<dialog class="contact-dialog" data-contact-dialog aria-labelledby="contact-title">
+  <button class="dialog-close" type="button" data-contact-close aria-label="{a(t["dialog_close"])}">×</button>
+  <h2 id="contact-title">{e(t["dialog_title"])}</h2>
+  <p>{e(t["dialog_copy_hint"])}</p>
+  <code data-contact-address></code>
+  <button class="button button-primary" type="button" data-contact-copy>{e(t["dialog_copy"])}</button>
+  <p class="contact-feedback" data-contact-feedback data-copied="{a(t["copied"])}" data-fallback="{a(t["fallback"])}" aria-live="polite"></p>
+</dialog>"""
+
 def pagina(arquivo, lang):
     t = T[lang]
     e = lambda s: html.escape(s, quote=False)
     a = lambda s: html.escape(s, quote=True)
-    langs = "\n".join('      <a href="%s"%s>%s</a>' % (f, ' aria-current="true"' if f == arquivo else "", c) for f, _, c in PAGINAS)
     passos = "\n".join('    <li><h3>%s</h3><p>%s</p></li>' % (e(h), e(p)) for h, p in t["steps"])
     fatos = "\n".join("    <li>%s</li>" % e(f) for f in t["facts"])
     pacotes = "\n".join(
@@ -283,15 +313,7 @@ def pagina(arquivo, lang):
 <div class="rasgo-strip"><a href="{PORTAL}">{e(t["strip"])}</a></div>
 <a class="skip-link" href="#conteudo">{e(t["skip"])}</a>
 
-<div class="site-header">
-  <a class="brand" href="#top" aria-label="Batruc">
-    <img src="assets/batruc-b.svg" alt="" width="36" height="36" />
-    <span>BATRUC</span>
-  </a>
-  <nav class="lang-switch" aria-label="{a(t["langnav"])}">
-{langs}
-  </nav>
-</div>
+{cabecalho(lang, "sobre")}
 
 <main id="conteudo">
 <section class="hero" id="top">
@@ -343,31 +365,197 @@ def pagina(arquivo, lang):
 </section>
 </main>
 
-<footer class="site-footer">
-  <span>© Lúcio de Araújo · Batruc 2026 · RASGO</span>
-  <nav>
-    <a href="{REPO}">GitHub</a> ·
-    <a href="{BLOB}/CREDITS_AND_SOURCES.md">{e(t["footer_credits"])}</a> ·
-    <a href="{BLOB}/LICENSE">{e(t["footer_license"])}</a>
-  </nav>
-</footer>
-<dialog class="contact-dialog" data-contact-dialog aria-labelledby="contact-title">
-  <button class="dialog-close" type="button" data-contact-close aria-label="{a(t["dialog_close"])}">×</button>
-  <h2 id="contact-title">{e(t["dialog_title"])}</h2>
-  <p>{e(t["dialog_copy_hint"])}</p>
-  <code data-contact-address></code>
-  <button class="button button-primary" type="button" data-contact-copy>{e(t["dialog_copy"])}</button>
-  <p class="contact-feedback" data-contact-feedback data-copied="{a(t["copied"])}" data-fallback="{a(t["fallback"])}" aria-live="polite"></p>
-</dialog>
+{rodape(lang)}
 </body>
 </html>
 """
 
 
+# ---- páginas internas (14/11/2026, padrão do site do Asterismus) ----------
+SUFIXO = {"pt-BR": "", "en": "-en", "fr": "-fr", "es": "-es"}
+SOBRE = {lang: arq for arq, lang, _ in PAGINAS}
+CODIGO = {lang: c for _, lang, c in PAGINAS}
+TIPOS = ("tutorial", "learn", "instalacao")
+
+
+def arquivo_de(tipo, lang):
+    return SOBRE[lang] if tipo == "sobre" else "%s%s.html" % (tipo, SUFIXO[lang])
+
+
+def cabecalho(lang, atual):
+    n = NAV[lang]
+    a = lambda x: html.escape(x, quote=True)
+    itens = [("sobre", arquivo_de("sobre", lang)), ("tutorial", arquivo_de("tutorial", lang)),
+             ("learn", arquivo_de("learn", lang)), ("instalacao", arquivo_de("instalacao", lang))]
+    if PUBLICADO:
+        itens.append(("baixar", arquivo_de("sobre", lang) + "#baixar"))
+    menu = "\n".join('      <a href="%s"%s>%s</a>' % (href, ' aria-current="page"' if tipo == atual else "", html.escape(n[tipo]))
+                     for tipo, href in itens)
+    langs = "\n".join('      <a href="%s"%s>%s</a>' % (arquivo_de(atual if atual != "baixar" else "sobre", l),
+                                                       ' aria-current="true"' if l == lang else "", CODIGO[l])
+                      for _, l, _ in PAGINAS)
+    return f"""<div class="site-header">
+  <a class="brand" href="{arquivo_de("sobre", lang)}" aria-label="Batruc">
+    <img src="assets/batruc-b.svg" alt="" width="36" height="36" />
+    <span>BATRUC</span>
+  </a>
+  <div class="header-nav">
+    <nav class="page-nav" aria-label="{a(n["aria"])}">
+{menu}
+    </nav>
+    <nav class="lang-switch" aria-label="{a(T[lang]["langnav"])}">
+{langs}
+    </nav>
+  </div>
+</div>"""
+
+
+def paragrafos(texto):
+    e = lambda x: html.escape(x, quote=False)
+    blocos = [b.strip() for b in texto.split("\n\n") if b.strip()]
+    return "\n".join("  <p>%s</p>" % "<br />".join(e(l) for l in b.split("\n")) for b in blocos)
+
+
+def corpo_tutorial(lang):
+    t = TUTORIAL[lang]
+    e = lambda x: html.escape(x, quote=False)
+    passos = []
+    for h, intro, itens in t["steps"]:
+        lista = "\n".join("      <li>%s</li>" % e(i) for i in itens)
+        passos.append(f"""  <article class="lesson">
+    <h2>{e(h)}</h2>
+    <p>{e(intro)}</p>
+    <ul>
+{lista}
+    </ul>
+  </article>""")
+    return f"""<section class="hero hero-inner" id="top">
+  <h1>{e(t["h1"])}</h1>
+  <p class="lead">{e(t["lead"])}</p>
+</section>
+<section class="section lessons">
+{chr(10).join(passos)}
+</section>
+<section class="section section-dark">
+  <h2>{e(t["rule_h"])}</h2>
+  <p>{e(t["rule"])}</p>
+</section>"""
+
+
+LEARN_CODIGO = {"pt-BR": "pt", "en": "en", "fr": "fr", "es": "es"}
+
+
+def corpo_learn(lang):
+    t = LEARN[lang]
+    e = lambda x: html.escape(x, quote=False)
+    topicos = [x for x in json.loads((AQUI / "learn_textos.json").read_text(encoding="utf-8")) if x["topic"] >= 1]
+    indice = "\n".join('    <li><a href="#t%d">%s</a></li>' % (x["topic"], e(x[LEARN_CODIGO[lang]]["title"])) for x in topicos)
+    fichas = "\n".join(f"""  <article class="lesson" id="t{x["topic"]}">
+    <h2>{x["topic"]}. {e(x[LEARN_CODIGO[lang]]["title"])}</h2>
+{paragrafos(x[LEARN_CODIGO[lang]]["body"])}
+  </article>""" for x in topicos)
+    return f"""<section class="hero hero-inner" id="top">
+  <h1>{e(t["h1"])}</h1>
+  <p class="lead">{e(t["lead"])}</p>
+  <ol class="toc">
+{indice}
+  </ol>
+</section>
+<section class="section lessons">
+{fichas}
+</section>"""
+
+
+def corpo_instalacao(lang):
+    t = INSTALACAO[lang]
+    e = lambda x: html.escape(x, quote=False)
+    lista = lambda xs: "\n".join("    <li>%s</li>" % e(x) for x in xs)
+    return f"""<section class="hero hero-inner" id="top">
+  <h1>{e(t["h1"])}</h1>
+  <p class="lead">{e(t["lead"])}</p>
+</section>
+<section class="section lessons">
+  <article class="lesson">
+    <h2>{e(t["win_h"])}</h2>
+    <ol>
+{lista(t["win"])}
+    </ol>
+  </article>
+  <article class="lesson">
+    <h2>{e(t["mac_h"])}</h2>
+    <ol>
+{lista(t["mac"])}
+    </ol>
+    <pre><code>{e(t["mac_cmd"])}</code></pre>
+  </article>
+  <article class="lesson">
+    <h2>{e(t["lin_h"])}</h2>
+    <ul>
+{lista(t["lin"])}
+    </ul>
+  </article>
+  <article class="lesson">
+    <h2>{e(t["onde_h"])}</h2>
+    <ul>
+{lista(t["onde"])}
+    </ul>
+  </article>
+</section>
+<section class="section section-dark">
+  <p>{e(t["estado"])}</p>
+  <div class="contact-row">
+    <a class="button button-primary" href="{BLOB}/INSTALL.md">{e(t["guia"])}</a>
+    <a class="button" href="{RELEASE}">{e(T[lang]["dl_all"])}</a>
+  </div>
+</section>"""
+
+
+def pagina_interna(tipo, lang):
+    t = T[lang]
+    meta = {"tutorial": TUTORIAL, "learn": LEARN, "instalacao": INSTALACAO}[tipo][lang]
+    corpo = {"tutorial": corpo_tutorial, "learn": corpo_learn, "instalacao": corpo_instalacao}[tipo](lang)
+    e = lambda x: html.escape(x, quote=False)
+    a = lambda x: html.escape(x, quote=True)
+    noindex = "" if PUBLICADO else '<meta name="robots" content="noindex" />\n'
+    return f"""<!doctype html>
+<html lang="{lang}">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+{noindex}<title>{e(meta["title"])}</title>
+<meta name="description" content="{a(meta["desc"])}" />
+<link rel="icon" href="assets/batruc-b.svg" type="image/svg+xml" />
+<link rel="stylesheet" href="styles.css" />
+<script src="assets/contact.js" defer></script>
+</head>
+<body>
+<div class="rasgo-strip"><a href="{PORTAL}">{e(t["strip"])}</a></div>
+<a class="skip-link" href="#conteudo">{e(t["skip"])}</a>
+
+{cabecalho(lang, tipo)}
+
+<main id="conteudo">
+{corpo}
+<section class="section">
+  <div class="contact-row">
+    <button type="button" class="button button-primary" data-contact-trigger>{e(t["contact"])}</button>
+    <a class="button" href="{REPO}">GitHub</a>
+  </div>
+</section>
+</main>
+
+{rodape(lang)}
+</body>
+</html>
+"""
+
 def main():
     for arquivo, lang, _ in PAGINAS:
         (AQUI / arquivo).write_text(pagina(arquivo, lang), encoding="utf-8")
-    print("gerar_paginas.py: %d páginas (PUBLICADO=%s)" % (len(PAGINAS), PUBLICADO))
+    for tipo in TIPOS:
+        for _, lang, _ in PAGINAS:
+            (AQUI / arquivo_de(tipo, lang)).write_text(pagina_interna(tipo, lang), encoding="utf-8")
+    print("gerar_paginas.py: %d páginas (PUBLICADO=%s)" % (len(PAGINAS) * (1 + len(TIPOS)), PUBLICADO))
 
 
 if __name__ == "__main__":
