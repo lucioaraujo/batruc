@@ -1,5 +1,23 @@
 # Batruc — notas de versão / changelog
 
+## 0.1.2 — em preparação
+
+**English summary.** All menus now open inside the app window, so the desktop
+no longer shows through them on Linux; the header fits its labels in every
+language.
+
+- **Menus dentro da janela:** no Linux, cada menu do JUCE era uma janela
+  própria do sistema, criada transparente; até ser pintada, mostrava a área
+  de trabalho (relato do autor na 0.1.1: FAMÍLIA, GLOBAL e outras caixas).
+  Agora todas as caixas, os menus próprios e as caixas dos diálogos abrem
+  dentro da janela que os chamou. A auditoria abre pelo código as 50–55
+  caixas e menus de cada língua e confere que nenhum vira janela do sistema.
+- **Cabeçalho nas 4 línguas:** cada botão mede o próprio texto; em espanhol e
+  francês os rótulos não saem mais cortados nem miúdos (em 1080 px, a largura
+  mínima, volta às larguras fixas).
+- **Diagnóstico:** `BATRUC_AUDIT_LANGUAGE=0..3` faz as capturas da auditoria
+  na língua pedida, sem gravar a preferência do usuário.
+
 ## 0.1.1 — 14/11/2026
 
 **English summary.** Menus no longer show the desktop through them for the

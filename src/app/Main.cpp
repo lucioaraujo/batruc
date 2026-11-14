@@ -3399,8 +3399,36 @@ juce::Font monoFont(const float height, const int style = juce::Font::plain) {
                           .withName("DejaVu Sans Mono"));
 }
 
+// Menus dentro da janela (14/11/2026). No Linux, cada PopupMenu do JUCE é
+// uma janela própria do sistema, criada transparente e recriada opaca; até a
+// primeira pintura o compositor mostrava a área de trabalho através dela
+// (relato do autor: FAMÍLIA, GLOBAL e outras caixas). Com um componente-pai,
+// o menu é desenhado dentro da janela que o abriu, sem janela nova.
+juce::Component* inWindowMenuParent(const juce::PopupMenu::Options& options) {
+    if (auto* parent = options.getParentComponent())
+        return parent;
+    if (auto* target = options.getTargetComponent())
+        return target->getTopLevelComponent();
+    return nullptr;
+}
+
+// Visual padrão do JUCE (LookAndFeel_V4), só com os menus dentro da janela:
+// cobre os menus próprios do app e as caixas dos diálogos sem mudar a aparência.
+class InWindowMenusLookAndFeel final : public juce::LookAndFeel_V4 {
+public:
+    juce::Component* getParentComponentForMenuOptions(
+        const juce::PopupMenu::Options& options) override {
+        return inWindowMenuParent(options);
+    }
+};
+
 class BatrucLookAndFeel final : public juce::LookAndFeel_V4 {
 public:
+    juce::Component* getParentComponentForMenuOptions(
+        const juce::PopupMenu::Options& options) override {
+        return inWindowMenuParent(options);
+    }
+
     juce::Font getTextButtonFont(juce::TextButton&, int) override {
         return monoFont(14.0f);
     }
@@ -3610,6 +3638,7 @@ public:
     void setBrandWordmark(const juce::Image& image) { brandWordmark_ = image; }
     void setLanguage(const UiLanguage language) noexcept { language_ = language; }
     void setVoiceLabelY(const int y) noexcept { voiceLabelY_ = y; }
+    void setVoiceLabelX(const int x) noexcept { voiceLabelX_ = x; }
 
     void paint(juce::Graphics& graphics) override {
         graphics.fillAll(kind_ == Kind::header
@@ -3634,7 +3663,8 @@ public:
         graphics.setColour(colour(palette::soft));
         graphics.setFont(monoFont(10.5f));
         graphics.drawText(localized(language_, "VOZES", "VOICES", "VOIX"),
-                          juce::jmax(248, getWidth() - 832) + 477,
+                          voiceLabelX_ >= 0 ? voiceLabelX_
+                                            : juce::jmax(248, getWidth() - 832) + 477,
                           voiceLabelY_, 70, 14,
                           juce::Justification::centredLeft);
     }
@@ -3644,6 +3674,7 @@ private:
     juce::Image brandWordmark_;
     UiLanguage language_ = UiLanguage::portuguese;
     int voiceLabelY_ = 0;
+    int voiceLabelX_ = -1;
 };
 
 class GeometryTraceView final : public juce::Component {
@@ -11639,6 +11670,55 @@ public:
         return patternBox_.getSelectedId();
     }
 
+    // Auditoria dos menus (14/11/2026): abre pelo código (showPopup, sem
+    // entrada sintética) cada caixa visível da página e o menu RITMO do Study,
+    // e conta os menus que nasceram como janela própria do sistema.
+    static int desktopMenuWindows() {
+        int count = 0;
+        auto& desktop = juce::Desktop::getInstance();
+        for (int i = 0; i < desktop.getNumComponents(); ++i)
+            if (auto* component = desktop.getComponent(i))
+                if (component->getName() == "menu" && component->isVisible())
+                    ++count;
+        return count;
+    }
+
+    void diagnosticMenusInsideWindow(int& tested, juce::StringArray& onDesktop) {
+        juce::Array<juce::ComboBox*> boxes;
+        std::function<void(juce::Component&)> visit = [&](juce::Component& component) {
+            for (auto* child : component.getChildren()) {
+                if (auto* box = dynamic_cast<juce::ComboBox*>(child))
+                    if (box->isShowing() && box->isEnabled() && box->getNumItems() > 0)
+                        boxes.add(box);
+                visit(*child);
+            }
+        };
+        visit(*this);
+        for (auto* box : boxes) {
+            box->showPopup();
+            if (desktopMenuWindows() > 0)
+                onDesktop.add(box->getText());
+            juce::PopupMenu::dismissAllActiveMenus();
+            ++tested;
+        }
+        showEuclideanRedistributionMenu();
+        if (desktopMenuWindows() > 0)
+            onDesktop.add("menu RITMO (Study)");
+        juce::PopupMenu::dismissAllActiveMenus();
+        ++tested;
+    }
+
+    void diagnosticShowFamilyMenu() { soundFamilyBox_.showPopup(); }
+
+    // Só para capturas de documentação (site, 14/11/2026): troca a língua
+    // da interface sem gravar a preferência do usuário.
+    void diagnosticSetLanguage(const int index) {
+        language_ = static_cast<UiLanguage>(juce::jlimit(0, 3, index));
+        languageBox_.setSelectedId(static_cast<int>(language_) + 1,
+                                   juce::dontSendNotification);
+        updateInterfaceLanguage();
+    }
+
     bool diagnosticInitialKitBalance() const noexcept {
         const int family = soundFamilyIndex_.load(std::memory_order_relaxed);
         if (family < 0 || family >= 17)
@@ -13868,20 +13948,39 @@ private:
         return juce::jmax(248, width - 832);
     }
 
+    // 14/11/2026: as larguras acima eram fixas para o português em 1080 px;
+    // em espanhol e francês os rótulos saíam cortados ("Mezcla…", "Apprend…")
+    // ou com letra miúda. Agora cada botão mede o próprio texto, e o bloco se
+    // alinha à direita; se não couber, volta às larguras fixas.
     void layoutHeaderControls(const int viewY) {
-        const int x = headerControlsX(getWidth());
         const int y = viewY + topControlsY();
-        compositionModeButton_.setBounds(x, y, 82, 26);
-        editorButton_.setBounds(x + 88, y, 68, 26);
-        mixerButton_.setBounds(x + 162, y, 62, 26);
-        bassButton_.setBounds(x + 230, y, 60, 26);
-        seedEditor_.setBounds(x + 299, y, 84, 26);
-        newSeedButton_.setBounds(x + 389, y, 82, 26);
-        voiceCountBox_.setBounds(x + 477, y, 54, 26);
-        scenesButton_.setBounds(x + 537, y, 56, 26);
-        aboutButton_.setBounds(x + 599, y, 50, 26);
-        learnButton_.setBounds(x + 655, y, 68, 26);
-        languageBox_.setBounds(x + 729, y, 96, 26);
+        struct Slot { juce::Component* component; int base; int gapAfter; };
+        std::array<Slot, 11> slots = {{
+            {&compositionModeButton_, 82, 6}, {&editorButton_, 68, 6},
+            {&mixerButton_, 62, 6}, {&bassButton_, 60, 9}, {&seedEditor_, 84, 6},
+            {&newSeedButton_, 82, 6}, {&voiceCountBox_, 54, 6},
+            {&scenesButton_, 56, 6}, {&aboutButton_, 50, 6},
+            {&learnButton_, 68, 6}, {&languageBox_, 96, 0}}};
+        const auto font = monoFont(14.0f).withHeight(26.0f * 0.6f);
+        std::array<int, 11> widths{};
+        int fitted = 0, fixed = 0;
+        for (std::size_t i = 0; i < slots.size(); ++i) {
+            int width = slots[i].base;
+            if (auto* button = dynamic_cast<juce::TextButton*>(slots[i].component))
+                width = juce::jmax(width, juce::GlyphArrangement::getStringWidthInt(
+                    font, button->getButtonText()) + 20);
+            widths[i] = width;
+            fitted += width + slots[i].gapAfter;
+            fixed += slots[i].base + slots[i].gapAfter;
+        }
+        const bool fits = getWidth() - fitted - 7 >= 248;
+        int x = fits ? getWidth() - fitted - 7 : headerControlsX(getWidth());
+        for (std::size_t i = 0; i < slots.size(); ++i) {
+            const int width = fits ? widths[i] : slots[i].base;
+            slots[i].component->setBounds(x, y, width, 26);
+            x += width + slots[i].gapAfter;
+        }
+        juce::ignoreUnused(fixed);
     }
 
     void updateNavigationButtons(const int viewY) {
@@ -13906,6 +14005,8 @@ private:
         headerChrome_.setVoiceLabelY(topControlsY() - 17);
         headerChrome_.setBounds(0, viewY, getWidth(), pinnedHeaderHeight());
         layoutHeaderControls(viewY);
+        headerChrome_.setVoiceLabelX(voiceCountBox_.getX());
+        headerChrome_.repaint();
         updateNavigationButtons(viewY);
 
         if (viewHeight <= 0)
@@ -20791,6 +20892,9 @@ private:
         refreshInfoPanelLanguage();
         updateChannelLevels();
         updateStatusLabel();
+        // larguras do cabeçalho dependem do texto na língua escolhida
+        updatePinnedChrome(pageViewport_ != nullptr
+            ? pageViewport_->getViewArea() : getLocalBounds());
         repaint();
     }
 
@@ -22889,6 +22993,7 @@ public:
     bool moreThanOneInstanceAllowed() override { return true; }
 
     void initialise(const juce::String& commandLine) override {
+        juce::LookAndFeel::setDefaultLookAndFeel(&defaultLookAndFeel_);
         // Exporta o Aprender (9 tópicos) e o Sobre nas 4 línguas, como o app
         // os mostra, para a página LEARN do site (14/11/2026). A fonte única
         // continua sendo este código.
@@ -22982,6 +23087,16 @@ public:
                 juce::String geometryAudit;
                 juce::String mixerOverlapAudit;
                 juce::String mixerOverlapDetails;
+                // BATRUC_AUDIT_LANGUAGE=0..3 (pt, en, es, fr): capturas na
+                // língua pedida, para as páginas do site.
+                if (page != nullptr) {
+                    const auto requested = juce::SystemStats::getEnvironmentVariable(
+                        "BATRUC_AUDIT_LANGUAGE", {});
+                    if (requested.isNotEmpty())
+                        page->diagnosticSetLanguage(requested.getIntValue());
+                }
+                int menusTested = 0;
+                juce::StringArray menusOnDesktop;
                 bool chip8SceneRoundTrip = false;
                 bool intensityGraphCaptured = false;
                 bool patternFieldMotion = false;
@@ -23127,6 +23242,19 @@ public:
                         }
                         if (!captured) break;
                     }
+                    if (captured) {
+                        page->diagnosticMenusInsideWindow(menusTested, menusOnDesktop);
+                        viewport->setViewPosition(0, page->diagnosticMixerTopViewY());
+                        page->diagnosticShowFamilyMenu();
+                        auto shot = window_->createComponentSnapshot(
+                            window_->getLocalBounds());
+                        if (auto out = directory.getChildFile("menu-familia.png")
+                                .createOutputStream()) {
+                            juce::PNGImageFormat png;
+                            png.writeImageToStream(shot, *out);
+                        }
+                        juce::PopupMenu::dismissAllActiveMenus();
+                    }
                     // Captura para o card do portal da família (14/11/2026): as
                     // capturas dos outros instrumentos têm 1920×1006.
                     if (captured) {
@@ -23138,6 +23266,8 @@ public:
                     error = "Falha ao capturar telas de layout.";
                 auto* result = new juce::DynamicObject();
                 result->setProperty("captured", captured);
+                result->setProperty("menus_tested", menusTested);
+                result->setProperty("menus_on_desktop", menusOnDesktop.joinIntoString(" | "));
                 result->setProperty("local_rhythms",
                     page != nullptr ? page->diagnosticLocalRhythmCount() : 0);
                 result->setProperty("error", error);
@@ -23195,10 +23325,14 @@ public:
         });
     }
 
-    void shutdown() override { window_.reset(); }
+    void shutdown() override {
+        window_.reset();
+        juce::LookAndFeel::setDefaultLookAndFeel(nullptr);
+    }
     void systemRequestedQuit() override { quit(); }
 
 private:
+    InWindowMenusLookAndFeel defaultLookAndFeel_;
     std::unique_ptr<BatrucWindow> window_;
 };
 
