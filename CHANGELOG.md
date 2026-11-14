@@ -11,7 +11,8 @@ first seconds while playing; the snare starts a little lower (0.80).
   10 Hz (relato do autor, 14/11/2026).
 - **Caixa mais baixa de partida:** o nível inicial de V2 passou de 1,00 para
   0,80 (cerca de −2 dB) em todas as seeds e famílias. Cenas salvas mantêm os
-  níveis delas (autor: "a caixa um pouco mais baixo", 14/11/2026).
+  níveis delas (autor: "a caixa um pouco mais baixo", 14/11/2026). Ouvido e
+  aprovado pelo autor ("ficou melhor", 14/11/2026).
 - **Diagnóstico:** `--export-learn` exporta o Aprender nas 4 línguas (fonte
   da página LEARN do site); `--audit-layout` salva também uma captura
   1920×1006 para o portal.
