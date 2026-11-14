@@ -165,3 +165,11 @@ Tag `v0.1.1`, run 43536756977 verde (três sistemas e abertura em Fedora,
 Debian 12, Ubuntu 24.04 e Arch); seis pacotes na release "Latest"; site
 republicado com os downloads da 0.1.1 (os seis links respondem 200). Falta o
 teste do autor da correção dos menus.
+
+## 0.1.2 (14/11/2026)
+
+Menus dentro da janela (fim da transparência no Linux), troca de língua
+completa (auditoria de textos por língua), cabeçalho que cabe nas 4 línguas,
+Tutorial e LEARN com recortes reais. Run 43550294155 verde; seis pacotes na
+release "Latest"; site republicado (downloads e imagens respondem 200). Falta o
+teste do autor dos menus na versão instalada.
