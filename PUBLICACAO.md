@@ -158,3 +158,10 @@ Autor: "faltou os botões no cabeçalho", "tutoriais, etc como temos feito os
 - Validação: links e âncoras internos das 16 páginas (0 problemas),
   `seo.py --verificar`, render de index, tutorial e learn-es.
 - Portal: a imagem do card passou a 1920×1006 (captura nova do app).
+
+## 0.1.1 (14/11/2026)
+
+Tag `v0.1.1`, run 43536756977 verde (três sistemas e abertura em Fedora,
+Debian 12, Ubuntu 24.04 e Arch); seis pacotes na release "Latest"; site
+republicado com os downloads da 0.1.1 (os seis links respondem 200). Falta o
+teste do autor da correção dos menus.
