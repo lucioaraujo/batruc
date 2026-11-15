@@ -11745,10 +11745,11 @@ public:
             for (std::size_t voice = 0; voice < active; ++voice)
                 channels.push_back({static_cast<int>(voice), "V" + juce::String(static_cast<int>(voice) + 1),
                     db(channelSliders_[voice].getValue()), muteButtons_[voice].getToggleState(),
-                    soloButtons_[voice].getToggleState()});
+                    soloButtons_[voice].getToggleState(), "nivel,mudo,solo", -90.0f, 0.0f});
             channels.push_back({static_cast<int>(kMaxVoices), localized(language_, "BAIXO", "BASS", "BASSE"),
                 db(bassMixerLevelSlider_.getValue()), bassMixerMuteButton_.getToggleState(),
-                bassMixerSoloButton_.getToggleState()});
+                bassMixerSoloButton_.getToggleState(), "nivel,mudo,solo", -90.0f,
+                static_cast<float>(20.0 * std::log10(bassMixerLevelSlider_.getMaximum()))});
         };
         h.mixerSet = [this](const int index, const juce::String& what, const float value) {
             const auto active = juce::jlimit(2, static_cast<int>(kMaxActiveVoices),
