@@ -1,9 +1,9 @@
 # Batruc — instalação / installation
 
-> **Estado (14 nov. 2026):** versão 0.1.2 (a primeira publicada foi a
+> **Estado (15 nov. 2026):** versão 0.1.3 (a primeira publicada foi a
 > 0.1.0). Os pacotes saem da integração contínua do repositório
 > `lucioaraujo/batruc`.
-> *English:* version 0.1.2 (the first release was 0.1.0); packages are
+> *English:* version 0.1.3 (the first release was 0.1.0); packages are
 > built by CI.
 
 ## Matriz de plataformas

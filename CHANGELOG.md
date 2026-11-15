@@ -1,5 +1,32 @@
 # Batruc — notas de versão / changelog
 
+## Não publicado
+
+- **Receptor do Maestruc** (o regente da família RASGO, protocolo
+  `maestruc.link/1`): com `--maestruc` ou `BATRUC_MAESTRUC=1`, o Batruc
+  aceita play/stop, tempo, seed e início/fim do REC vindos do Maestruc, por
+  OSC só na máquina local. Desligado por padrão: sem a opção, nada muda.
+  Tom, seção e macros respondem "capacidade ausente" até o autor decidir o
+  que significam no Batruc. Cópia de `MAESTRUC/receptor/MaestrucLink.h`;
+  módulo `juce_osc` no app.
+- **Abertura regida** (15/11/2026): `--abrir /caminho/cena.batruc.txt` e
+  `--seed XXXXXXXX` ao abrir o app (com as duas, a seed vem depois da cena);
+  pelo Maestruc, a mensagem `open` abre uma cena com o mesmo caminho de
+  Abrir cena (entra no histórico; tocando, entra no próximo compasso). Sem as
+  opções, nada muda.
+- **Ponte de som para o Maestruc** (Windows, macOS e Linux, sem driver de
+  áudio virtual): com `--maestruc`, a mistura vai ao Maestruc por um arquivo de
+  memória compartilhada que só o usuário lê; enquanto o Maestruc lê, o Batruc
+  cala a própria saída e, se o Maestruc fecha ou para, volta a tocar sozinho
+  em cerca de meio segundo. A gravação do app fica igual. Cópia de
+  `MAESTRUC/receptor/PonteDeSom.h`.
+- **Mixer pelo Maestruc:** as vozes ativas (nível, M, S) e a faixa BAIXO,
+  pelos mesmos controles do Mixer; o que se muda à mão volta ao Maestruc.
+- **Senha da sessão:** os comandos do Maestruc só valem com a senha que ele
+  grava num arquivo só do usuário.
+- **Correção:** mensagens de erro com acento (ex.: ao abrir uma cena inválida)
+  apareciam quebradas ("invÃ¡lido"); agora saem certas.
+
 ## 0.1.2 — 14/11/2026
 
 **English summary.** All menus now open inside the app window, so the desktop

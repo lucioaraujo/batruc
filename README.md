@@ -8,7 +8,7 @@ Mathematical and physical models write editable rhythms: coupled pendulums,
 billiard, Lissajous figures, Fourier series and rolling curves. You then play,
 shape and write them down. Its former name was Trucmetry.
 
-**Version:** 0.1.2 · **License:** GNU AGPL-3.0-or-later ([`LICENSE`](LICENSE))
+**Version:** 0.1.3 · **License:** GNU AGPL-3.0-or-later ([`LICENSE`](LICENSE))
 · **Packages:** Linux, Windows, macOS ([releases](https://github.com/lucioaraujo/batruc/releases))
 
 ## What it does
@@ -62,7 +62,7 @@ Modelos matemáticos e físicos escrevem ritmos editáveis: pêndulos acoplados,
 bilhar, figuras de Lissajous, séries de Fourier e curvas rolantes. Depois
 você toca, molda e escreve esses ritmos. O nome anterior era Trucmetry.
 
-**Versão:** 0.1.2 · **Licença:** GNU AGPL-3.0-or-later · **Pacotes:** Linux,
+**Versão:** 0.1.3 · **Licença:** GNU AGPL-3.0-or-later · **Pacotes:** Linux,
 Windows e macOS ([releases](https://github.com/lucioaraujo/batruc/releases))
 
 - **Seeds que escrevem ritmo:** figuras de bumbo, caixa e chimbal a partir
@@ -107,7 +107,7 @@ Il propose :
 - des ornements de caisse claire sur la note, avec ORN par stem ;
 - des portées de basse et de batterie exportables en MusicXML.
 
-Version 0.1.2 ; paquets Linux, Windows et macOS (Windows et macOS testés en
+Version 0.1.3 ; paquets Linux, Windows et macOS (Windows et macOS testés en
 CI seulement). Licence
 AGPL-3.0-or-later. Installation : [`INSTALL.md`](INSTALL.md).
 
@@ -123,6 +123,6 @@ Ofrece:
 - ornamentos de caja en la nota, con ORN por stem;
 - pentagramas de bajo y batería exportables a MusicXML.
 
-Versión 0.1.2; paquetes Linux, Windows y macOS (Windows y macOS probados
+Versión 0.1.3; paquetes Linux, Windows y macOS (Windows y macOS probados
 solo en CI). Licencia
 AGPL-3.0-or-later. Instalación: [`INSTALL.md`](INSTALL.md).

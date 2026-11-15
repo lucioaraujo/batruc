@@ -11997,3 +11997,55 @@ passou; a suíte CTest completa passou **18/18** em 69,30 s. `git diff --check`
 passou. SHA-256 do app Release:
 `2e3ae3509e763841fc83f3d198bd1f2e2a6fd2ac1513febaa2104bd9318c9b1e`. O menu,
 undo/redo e a musicalidade precisam de confirmação visual/auditiva no app.
+
+## Receptor do Maestruc — 14/11/2026
+
+- **Objetivo:** primeira prova do Maestruc (autor: "avance").
+- **Mudança:** `src/app/MaestrucLink.h` (cópia com proveniência), `juce_osc`
+  no `CMakeLists.txt`, `enableMaestrucLink()` no `Main.cpp`: play/stop
+  (`togglePlayback`, só quando muda o estado; início agendado até 10 s),
+  tempo (`bpmSlider_`, 20–220), seed (o mesmo caminho do campo SEED),
+  REC (`startRecording` com `Batruc-<take>.wav` na pasta dada,
+  `finishRecording(false)`), estado. Liga com `--maestruc` ou
+  `BATRUC_MAESTRUC=1`; desligado por padrão.
+- **Validação:** build Release (3 min 41 s, 1,3 GB de pico); o app aberto
+  com `--maestruc` se anunciou ao Maestruc (`transport,tempo,seed,rec`),
+  aceitou tempo 97 e seed `1A2B3C4D` (estado confirmou), recusou seção
+  ("capacidade ausente") e voltou a 120 BPM; CPU medida pelo Maestruc 0,24
+  núcleo parado. **Play e REC não foram ensaiados** (fariam som e gravariam
+  na máquina do autor). CTest não rodado (o núcleo não mudou). Nada
+  commitado nem enviado.
+- **Próximo passo:** o autor ensaia play/stop e REC regidos; depois, decidir
+  o que tom, seção e intensidade significam no Batruc.
+
+## Abertura regida pelo Maestruc — 15/11/2026
+
+- **Objetivo:** o Maestruc definir seed e abrir peças (autor: "por exemplo
+  definir seeds, abrir peças"; "ok, comece pelo batruc"; "cuide para não
+  bugar os instrumentos que já funcionam").
+- **Mudança:** `Main.cpp`: `applySeedFromOutside` (o caminho do campo SEED,
+  agora usado também pelo handler de seed) e `openSceneFromOutside`
+  (`parseSceneFile` → `appendSceneVersion` → `applySceneVersion`, como Abrir
+  cena, sem janela); handler `open` do receptor; `--abrir` e `--seed` no
+  `initialise` (tokens com aspas; caminho absoluto). `MaestrucLink.h`
+  recopiado do Maestruc (mensagem `open`; nota "tônica" em UTF-8);
+  `#include <cstdio>`.
+- **Validação:** build Release do app (43 s, 1,2 GB de pico); CTest **28/28**
+  em 70,8 s. App aberto de verdade, sem tocar: sem opções abre normalmente e
+  não abre porta UDP; `--seed 1A2B3C4D --maestruc` → estado parado com
+  `1A2B3C4D`; `--abrir chip8-scene.batruc.txt` → seed da cena `5EED2027`;
+  pelo Maestruc, seed → `1A2B3C4D`, `open` de outra cena → ok e `5EED2027`,
+  arquivo inexistente e arquivo inválido → ok = 0 com o motivo e estado
+  mantido. SHA-256 do app:
+  `c55c235577016521a299c6cdda73bcf65daeba282f63e98fbce109a12f8b5bd5`.
+- **Acentos nas mensagens de erro** (autor: "pode corrigir o batruc"): as
+  172 atribuições `error = "…"` com acento (leitor de cenas, MIDI, polígonos,
+  diagnósticos) passaram a usar `utf8(…)`, o mesmo helper do `localized()`;
+  antes o `juce::String` as lia como ASCII e a janela "Não foi possível abrir
+  a cena" mostrava "invÃ¡lido". Troca mecânica (texto e lógica iguais);
+  declaração de `utf8` antes de `parseSceneFile`. **Validação:** CTest 28/28
+  (73,8 s); recusa de cena inválida pelo Maestruc chegou como "Formato de
+  cena inválido ou versão não suportada." SHA-256 do app:
+  `2309398c50c37b408f5495abe73e7fb9c32d1053cc544e0331fb9a8b89276432`.
+- **Limite:** play/stop e REC regidos continuam sem ensaio com som. Nada
+  commitado nem enviado.

@@ -18,9 +18,11 @@
 #include <BinaryData.h>
 #include <juce_audio_utils/juce_audio_utils.h>
 #include <juce_cryptography/juce_cryptography.h>
+#include "MaestrucLink.h"
 
 #include <algorithm>
 #include <array>
+#include <cstdio>
 #include <atomic>
 #include <cmath>
 #include <cstdlib>
@@ -1116,6 +1118,10 @@ bool readSceneBool(const juce::DynamicObject& object, const char* key,
     return true;
 }
 
+// Literais com acento precisam do utf8() (definido abaixo); sem ele o
+// juce::String os lê como ASCII e a janela mostra "invÃ¡lido" (15/11/2026).
+juce::String utf8(const char* text);
+
 bool parseSceneFile(const juce::File& file, SceneVersion& scene,
                     juce::String& error, bool* recoveredRecordingScore = nullptr) {
     if (recoveredRecordingScore != nullptr)
@@ -1134,7 +1140,7 @@ bool parseSceneFile(const juce::File& file, SceneVersion& scene,
     if (format == "batruc-recording-score") {
         const auto initialConfiguration = root->getProperty("initial_configuration");
         if (initialConfiguration.getDynamicObject() == nullptr) {
-            error = "A partitura não contém uma configuração inicial recuperável.";
+            error = utf8("A partitura não contém uma configuração inicial recuperável.");
             return false;
         }
         parsed = initialConfiguration;
@@ -1143,21 +1149,21 @@ bool parseSceneFile(const juce::File& file, SceneVersion& scene,
                                  : juce::String{};
         if (format != "batruc-scene" && format != "trucmetry-scene"
             && root != nullptr && root->getProperty("voiceCycles").isArray()) {
-            error = "Esta gravação veio do HTML; importar composições web no JUCE ainda está pendente.";
+            error = utf8("Esta gravação veio do HTML; importar composições web no JUCE ainda está pendente.");
             return false;
         }
         if (recoveredRecordingScore != nullptr)
             *recoveredRecordingScore = true;
     }
     if (format == "batruc-composition") {
-        error = "Esta composição foi salva no HTML; importar composições web no JUCE ainda está pendente.";
+        error = utf8("Esta composição foi salva no HTML; importar composições web no JUCE ainda está pendente.");
         return false;
     }
     if (root == nullptr
         || (format != "batruc-scene" && format != "trucmetry-scene")
         || !readSceneNumber(*root, "schema_version", 1.0, 64.0, schemaVersionNumber)
         || std::floor(schemaVersionNumber) < schemaVersionNumber) {
-        error = "Formato de cena inválido ou versão não suportada.";
+        error = utf8("Formato de cena inválido ou versão não suportada.");
         return false;
     }
     const int schemaVersion = static_cast<int>(schemaVersionNumber);
@@ -1166,7 +1172,7 @@ bool parseSceneFile(const juce::File& file, SceneVersion& scene,
     if (!readSceneNumber(*root, "recipe_index", 0.0,
                          static_cast<double>(kRecipeVariantCount - 1), numeric)
         || std::floor(numeric) < numeric) {
-        error = "Índice de receita inválido.";
+        error = utf8("Índice de receita inválido.");
         return false;
     }
     const double recipeIndexValue = numeric;
@@ -1180,7 +1186,7 @@ bool parseSceneFile(const juce::File& file, SceneVersion& scene,
             || !readSceneBool(*source, "present", scene.hasMidiSource)
             || !readSceneNumber(*source, "bars", 1.0, 16.0, numeric)
             || std::floor(numeric) < numeric) {
-            error = "Proveniência MIDI da cena inválida.";
+            error = utf8("Proveniência MIDI da cena inválida.");
             return false;
         }
         scene.midiSourceBars = static_cast<int>(numeric);
@@ -1202,7 +1208,7 @@ bool parseSceneFile(const juce::File& file, SceneVersion& scene,
             if (!validDigest
                 || (scene.midiSourceRightsStatus != "unverified"
                     && scene.midiSourceRightsStatus != "verified")) {
-                error = "Identificador ou estado de direitos da fonte MIDI inválido.";
+                error = utf8("Identificador ou estado de direitos da fonte MIDI inválido.");
                 return false;
             }
         }
@@ -1220,14 +1226,14 @@ bool parseSceneFile(const juce::File& file, SceneVersion& scene,
             const auto* operations = source->getProperty("operations").getArray();
             if (scene.midiSourceVersion.length() > 256 || operations == nullptr
                 || operations->size() > 64) {
-                error = "Versão ou histórico de operações MIDI inválido.";
+                error = utf8("Versão ou histórico de operações MIDI inválido.");
                 return false;
             }
             for (const auto& operation : *operations) {
                 const auto name = operation.toString();
                 if (!operation.isString() || name.isEmpty()
                     || name.length() > 128) {
-                    error = "Entrada do histórico MIDI inválida.";
+                    error = utf8("Entrada do histórico MIDI inválida.");
                     return false;
                 }
                 scene.midiOperationHistory.push_back(name);
@@ -1236,13 +1242,13 @@ bool parseSceneFile(const juce::File& file, SceneVersion& scene,
         if (schemaVersion >= 57) {
             const auto* derived = source->getProperty("derived").getArray();
             if (derived == nullptr || derived->size() > 64) {
-                error = "Registro de derivados MIDI inválido.";
+                error = utf8("Registro de derivados MIDI inválido.");
                 return false;
             }
             for (const auto& entry : *derived) {
                 const auto* object = entry.getDynamicObject();
                 if (object == nullptr) {
-                    error = "Entrada do registro de derivados MIDI inválida.";
+                    error = utf8("Entrada do registro de derivados MIDI inválida.");
                     return false;
                 }
                 MidiDerivedRecord record;
@@ -1252,7 +1258,7 @@ bool parseSceneFile(const juce::File& file, SceneVersion& scene,
                 const auto result = object->getProperty("result");
                 if (!id.isString() || !operation.isString()
                     || !parameters.isString() || !result.isString()) {
-                    error = "Entrada do registro de derivados MIDI inválida.";
+                    error = utf8("Entrada do registro de derivados MIDI inválida.");
                     return false;
                 }
                 record.id = id.toString();
@@ -1264,7 +1270,7 @@ bool parseSceneFile(const juce::File& file, SceneVersion& scene,
                     || record.operation.isEmpty() || record.operation.length() > 128
                     || record.parameters.length() > 128
                     || record.result.length() > 256) {
-                    error = "Entrada do registro de derivados MIDI inválida.";
+                    error = utf8("Entrada do registro de derivados MIDI inválida.");
                     return false;
                 }
                 scene.midiDerivedRecords.push_back(record);
@@ -1282,7 +1288,7 @@ bool parseSceneFile(const juce::File& file, SceneVersion& scene,
                 || !editorialSplit.isString()
                 || !readSceneNumber(*source, "editorial_bpm", 0.0, 300.0, numeric)
                 || std::floor(numeric) < numeric) {
-                error = "Metadados editoriais da fonte MIDI inválidos.";
+                error = utf8("Metadados editoriais da fonte MIDI inválidos.");
                 return false;
             }
             scene.midiEditorialMetadata.present = static_cast<bool>(editorialPresent);
@@ -1309,7 +1315,7 @@ bool parseSceneFile(const juce::File& file, SceneVersion& scene,
                 ? cellObject->getProperty("attacks").getArray() : nullptr;
             auto& cell = scene.midiSourceCells[lane];
             if (attacks == nullptr || attacks->size() > static_cast<int>(kMaxRhythmicCellAttacks)) {
-                error = "Células da fonte MIDI inválidas.";
+                error = utf8("Células da fonte MIDI inválidas.");
                 return false;
             }
             cell.enabled = true;
@@ -1318,34 +1324,34 @@ bool parseSceneFile(const juce::File& file, SceneVersion& scene,
                 const auto* attack = (*attacks)[static_cast<int>(index)].getDynamicObject();
                 if (attack == nullptr
                     || !readSceneNumber(*attack, "position", 0.0, 1.0, numeric)) {
-                    error = "Posição da fonte MIDI inválida.";
+                    error = utf8("Posição da fonte MIDI inválida.");
                     return false;
                 }
                 cell.positions[index] = numeric;
                 if (!readSceneNumber(*attack, "strength", 0.0, 1.0, numeric)) {
-                    error = "Intensidade da fonte MIDI inválida.";
+                    error = utf8("Intensidade da fonte MIDI inválida.");
                     return false;
                 }
                 cell.strengths[index] = static_cast<float>(numeric);
                 if (schemaVersion >= 48
                     && !readOptionalMidiNote(*attack, "midi_note",
                                              cell.midiNotes[index])) {
-                    error = "Nota GM da fonte MIDI inválida.";
+                    error = utf8("Nota GM da fonte MIDI inválida.");
                     return false;
                 }
                 if (schemaVersion >= 52
                     && !readOptionalMidiControllerValue(*attack, "midi_hat_pedal",
                                                        cell.midiHatPedal[index])) {
-                    error = "Valor CC4 da fonte MIDI inválido.";
+                    error = utf8("Valor CC4 da fonte MIDI inválido.");
                     return false;
                 }
                 if (!readMidiCollisions(*attack, index, cell, schemaVersion)) {
-                    error = "Notas simultâneas da fonte MIDI inválidas.";
+                    error = utf8("Notas simultâneas da fonte MIDI inválidas.");
                     return false;
                 }
             }
             if (!validRhythmicCell(cell)) {
-                error = "Ataques da fonte MIDI inválidos.";
+                error = utf8("Ataques da fonte MIDI inválidos.");
                 return false;
             }
         }
@@ -1355,7 +1361,7 @@ bool parseSceneFile(const juce::File& file, SceneVersion& scene,
         const auto* model = modelValue.getDynamicObject();
         if (model == nullptr
             || !readSceneBool(*model, "enabled", scene.hasPolygonModel)) {
-            error = "Modelo de polígonos inválido.";
+            error = utf8("Modelo de polígonos inválido.");
             return false;
         }
         const auto shapesValue = model->getProperty("shapes");
@@ -1369,12 +1375,12 @@ bool parseSceneFile(const juce::File& file, SceneVersion& scene,
             if (polygon == nullptr
                 || !readSceneNumber(*polygon, "count", 0.0, 8.0, numeric)
                 || std::floor(numeric) < numeric) {
-                error = "Quantidade de vértices inválida.";
+                error = utf8("Quantidade de vértices inválida.");
                 return false;
             }
             scene.polygonCounts[shape] = static_cast<int>(numeric);
             if (scene.hasPolygonModel && scene.polygonCounts[shape] < 3) {
-                error = "Modelo ativo precisa de pelo menos três vértices.";
+                error = utf8("Modelo ativo precisa de pelo menos três vértices.");
                 return false;
             }
             const auto verticesValue = polygon->getProperty("vertices");
@@ -1383,25 +1389,25 @@ bool parseSceneFile(const juce::File& file, SceneVersion& scene,
             const auto* translation = translationValue.getArray();
             if (vertices == nullptr || vertices->size() != 8
                 || translation == nullptr || translation->size() != 2) {
-                error = "Coordenadas do modelo poligonal inválidas.";
+                error = utf8("Coordenadas do modelo poligonal inválidas.");
                 return false;
             }
             for (std::size_t vertex = 0; vertex < 8; ++vertex) {
                 const auto* point = (*vertices)[static_cast<int>(vertex)].getArray();
                 if (point == nullptr || point->size() != 2) {
-                    error = "Vértice poligonal inválido.";
+                    error = utf8("Vértice poligonal inválido.");
                     return false;
                 }
                 for (std::size_t axis = 0; axis < 2; ++axis) {
                     const auto value = (*point)[static_cast<int>(axis)];
                     if (!value.isDouble() && !value.isInt() && !value.isInt64()) {
-                        error = "Coordenada de vértice inválida.";
+                        error = utf8("Coordenada de vértice inválida.");
                         return false;
                     }
                     const double coordinate = static_cast<double>(value);
                     if (!std::isfinite(coordinate) || coordinate < -1.4
                         || coordinate > 1.4) {
-                        error = "Coordenada de vértice fora do limite.";
+                        error = utf8("Coordenada de vértice fora do limite.");
                         return false;
                     }
                     scene.polygonVertices[shape][vertex][axis] = coordinate;
@@ -1410,13 +1416,13 @@ bool parseSceneFile(const juce::File& file, SceneVersion& scene,
             for (std::size_t axis = 0; axis < 2; ++axis) {
                 const auto value = (*translation)[static_cast<int>(axis)];
                 if (!value.isDouble() && !value.isInt() && !value.isInt64()) {
-                    error = "Translação poligonal inválida.";
+                    error = utf8("Translação poligonal inválida.");
                     return false;
                 }
                 const double coordinate = static_cast<double>(value);
                 if (!std::isfinite(coordinate) || coordinate < -0.48
                     || coordinate > 0.48) {
-                    error = "Translação poligonal fora do limite.";
+                    error = utf8("Translação poligonal fora do limite.");
                     return false;
                 }
                 scene.polygonTranslations[shape][axis] = coordinate;
@@ -1429,72 +1435,72 @@ bool parseSceneFile(const juce::File& file, SceneVersion& scene,
             || !readSceneBool(*root, "metronome_swing", scene.metronomeSwing)
             || !readSceneNumber(*root, "metronome_subdivisions", 1.0, 8.0, numeric)
             || std::floor(numeric) < numeric) {
-            error = "Configuração rítmica do metrônomo inválida.";
+            error = utf8("Configuração rítmica do metrônomo inválida.");
             return false;
         }
         scene.metronomeSubdivisions = static_cast<int>(numeric);
         if (schemaVersion >= 51
             && !readSceneBool(*root, "metronome_count_in", scene.metronomeCountIn)) {
-            error = "Contagem de entrada do metrônomo inválida.";
+            error = utf8("Contagem de entrada do metrônomo inválida.");
             return false;
         }
         if (!readSceneNumber(*root, "metronome_sound", 0.0, 4.0, numeric)
             || std::floor(numeric) < numeric) {
-            error = "Som do metrônomo inválido.";
+            error = utf8("Som do metrônomo inválido.");
             return false;
         }
         scene.metronomeSound = static_cast<int>(numeric);
         if (!readSceneNumber(*root, "metronome_level_db", -48.0, 0.0, numeric)) {
-            error = "Nível do metrônomo inválido.";
+            error = utf8("Nível do metrônomo inválido.");
             return false;
         }
         scene.metronomeLevelDb = static_cast<float>(numeric);
     }
     if (schemaVersion >= 26
         && !readSceneBool(*root, "manual_bass_score", scene.manualBassScore)) {
-        error = "Estado manual da linha de baixo inválido.";
+        error = utf8("Estado manual da linha de baixo inválido.");
         return false;
     }
     if (schemaVersion >= 30
         && !readSceneBool(*root, "bass_temporal_retrograde",
                           scene.bassTemporalRetrograde)) {
-        error = "Operação temporal do baixo inválida.";
+        error = utf8("Operação temporal do baixo inválida.");
         return false;
     }
     if (schemaVersion >= 31
         && !readSceneBool(*root, "bass_pitch_inverted", scene.bassPitchInverted)) {
-        error = "Inversão de altura do baixo inválida.";
+        error = utf8("Inversão de altura do baixo inválida.");
         return false;
     }
     if (schemaVersion >= 32
         && !readSceneBool(*root, "bass_cycle_recombined",
                           scene.bassCycleRecombined)) {
-        error = "Recombinação cíclica do baixo inválida.";
+        error = utf8("Recombinação cíclica do baixo inválida.");
         return false;
     }
     if (schemaVersion >= 22) {
         if (!readSceneNumber(*root, "composition_variation", 0.0, 100.0,
                              scene.compositionVariation)
             || !readSceneBool(*root, "has_variation_base", scene.hasVariationBase)) {
-            error = "Variação de composição inválida.";
+            error = utf8("Variação de composição inválida.");
             return false;
         }
     }
     if (schemaVersion >= 23
         && !readSceneBool(*root, "phase_base_includes_voice_stagger",
                           scene.phaseBaseIncludesVoiceStagger)) {
-        error = "Perfil de fase-base inválido.";
+        error = utf8("Perfil de fase-base inválido.");
         return false;
     }
     scene.recipeIndex = static_cast<std::size_t>(recipeIndexValue);
     if (!readSceneNumber(*root, "scene_version", 0.0, 1.0e12, numeric)
         || std::floor(numeric) < numeric) {
-        error = "Versão de cena inválida.";
+        error = utf8("Versão de cena inválida.");
         return false;
     }
     scene.version = static_cast<std::uint64_t>(numeric);
     if (!readSceneBool(*root, "has_seed", scene.hasSeed)) {
-        error = "Indicador de seed inválido.";
+        error = utf8("Indicador de seed inválido.");
         return false;
     }
     const auto seed = root->getProperty("seed").toString().toUpperCase();
@@ -1507,7 +1513,7 @@ bool parseSceneFile(const juce::File& file, SceneVersion& scene,
         for (const auto character : seed) {
             const int digit = juce::CharacterFunctions::getHexDigitValue(character);
             if (digit < 0) {
-                error = "A seed contém um caractere inválido.";
+                error = utf8("A seed contém um caractere inválido.");
                 return false;
             }
             parsedSeed = (parsedSeed << 4u) | static_cast<std::uint32_t>(digit);
@@ -1518,25 +1524,25 @@ bool parseSceneFile(const juce::File& file, SceneVersion& scene,
     if (!readSceneNumber(*root, "bpm", 20.0, 220.0, scene.bpm)
         || !readSceneNumber(*root, "intensity_law", 0.0, 7.0, numeric)
         || std::floor(numeric) < numeric) {
-        error = "Andamento ou lei de intensidade inválidos.";
+        error = utf8("Andamento ou lei de intensidade inválidos.");
         return false;
     }
     if (schemaVersion >= 14
         && !readSceneNumber(*root, "swing_percent", 50.0, 67.0,
                             scene.swingPercent)) {
-        error = "Swing inválido.";
+        error = utf8("Swing inválido.");
         return false;
     }
     scene.intensityLaw = static_cast<int>(numeric);
     if (schemaVersion >= 42) {
         if (!readSceneNumber(*root, "intensity_law_b", 0.0, 7.0, numeric)
             || std::floor(numeric) < numeric) {
-            error = "Segunda lei de intensidade inválida.";
+            error = utf8("Segunda lei de intensidade inválida.");
             return false;
         }
         scene.secondIntensityLaw = static_cast<int>(numeric);
         if (!readSceneNumber(*root, "intensity_blend", 0.0, 1.0, numeric)) {
-            error = "Mistura de leis inválida.";
+            error = utf8("Mistura de leis inválida.");
             return false;
         }
         scene.intensityBlend = static_cast<float>(numeric);
@@ -1547,7 +1553,7 @@ bool parseSceneFile(const juce::File& file, SceneVersion& scene,
     if (schemaVersion >= 15) {
         if (!readSceneNumber(*root, "groove_mode", 0.0, 3.0, numeric)
             || std::floor(numeric) < numeric) {
-            error = "Groove inválido.";
+            error = utf8("Groove inválido.");
             return false;
         }
         scene.grooveMode = static_cast<int>(numeric);
@@ -1555,38 +1561,38 @@ bool parseSceneFile(const juce::File& file, SceneVersion& scene,
     if (schemaVersion >= 58) {
         const auto mode = root->getProperty("composition_mode").toString();
         if (mode != "rhythm" && mode != "generative") {
-            error = "Modo de composição inválido.";
+            error = utf8("Modo de composição inválido.");
             return false;
         }
         scene.rhythmMode = mode == "rhythm";
     }
     if (schemaVersion >= 60) {
         if (!readSceneNumber(*root, "generative_depth", 0.0, 1.0, numeric)) {
-            error = "Profundidade do gerativo inválida.";
+            error = utf8("Profundidade do gerativo inválida.");
             return false;
         }
         scene.generativeDepth = static_cast<float>(numeric);
     }
     if (schemaVersion >= 64
         && !readSceneBool(*root, "percussion_key", scene.percussionKey)) {
-        error = "Percussão no tom inválida.";
+        error = utf8("Percussão no tom inválida.");
         return false;
     }
     if (schemaVersion >= 61
         && !readSceneBool(*root, "bass_phrase", scene.bassPhrase)) {
-        error = "Frase do baixo inválida.";
+        error = utf8("Frase do baixo inválida.");
         return false;
     }
     if (schemaVersion >= 16) {
         if (!readSceneNumber(*root, "intention", 0.0, 3.0, numeric)
             || std::floor(numeric) < numeric) {
-            error = "Intenção inválida.";
+            error = utf8("Intenção inválida.");
             return false;
         }
         scene.intention = static_cast<int>(numeric);
         if (!readSceneNumber(*root, "dynamics", 0.0, 3.0, numeric)
             || std::floor(numeric) < numeric) {
-            error = "Dinâmica inválida.";
+            error = utf8("Dinâmica inválida.");
             return false;
         }
         scene.dynamics = static_cast<int>(numeric);
@@ -1594,31 +1600,31 @@ bool parseSceneFile(const juce::File& file, SceneVersion& scene,
     if (schemaVersion >= 17) {
         if (!readSceneNumber(*root, "meter_index", 0.0, 3.0, numeric)
             || std::floor(numeric) < numeric) {
-            error = "Compasso inválido.";
+            error = utf8("Compasso inválido.");
             return false;
         }
         scene.meterIndex = static_cast<int>(numeric);
     }
     if (!readSceneNumber(*root, "intensity_amount", 0.0, 1.0, numeric)) {
-        error = "Quantidade da lei de intensidade inválida.";
+        error = utf8("Quantidade da lei de intensidade inválida.");
         return false;
     }
     scene.intensityAmount = static_cast<float>(numeric);
     if (!readSceneNumber(*root, "voice_count", 2.0,
                          static_cast<double>(kMaxVoices), numeric)
         || std::floor(numeric) < numeric) {
-        error = "Quantidade de vozes inválida.";
+        error = utf8("Quantidade de vozes inválida.");
         return false;
     }
     scene.voiceCount = static_cast<int>(numeric);
     if (!readSceneNumber(*root, "master_gain", 0.0, 1.0, numeric)) {
-        error = "Volume master inválido.";
+        error = utf8("Volume master inválido.");
         return false;
     }
     scene.masterGain = static_cast<float>(numeric);
     if (schemaVersionNumber >= 9.0) {
         if (!readSceneNumber(*root, "formula_bus_gain_db", -12.0, 24.0, numeric)) {
-            error = "Compensação das vozes inválida.";
+            error = utf8("Compensação das vozes inválida.");
             return false;
         }
         scene.formulaBusGainDb = static_cast<float>(numeric);
@@ -1626,14 +1632,14 @@ bool parseSceneFile(const juce::File& file, SceneVersion& scene,
     if (!readSceneNumber(*root, "sound_character", 0.0,
             schemaVersion >= 53 ? 17.0 : 12.0, numeric)
         || std::floor(numeric) < numeric) {
-        error = "Matéria sonora inválida.";
+        error = utf8("Matéria sonora inválida.");
         return false;
     }
     scene.soundCharacter = static_cast<int>(numeric);
     if (schemaVersion >= 43) {
         if (!readSceneNumber(*root, "sound_family_index", -1.0, 16.0, numeric)
             || std::floor(numeric) < numeric) {
-            error = "Família sonora da cena inválida.";
+            error = utf8("Família sonora da cena inválida.");
             return false;
         }
         scene.soundFamilyIndex = static_cast<int>(numeric);
@@ -1642,21 +1648,21 @@ bool parseSceneFile(const juce::File& file, SceneVersion& scene,
         if (!readSceneBool(*root, "geometry_source_v1", scene.geometrySourceVoiceOne)
             || !readSceneNumber(*root, "geometry_shape", 0.0, 16.0, numeric)
             || std::floor(numeric) < numeric) {
-            error = "Fonte geométrica da voz 1 inválida.";
+            error = utf8("Fonte geométrica da voz 1 inválida.");
             return false;
         }
         scene.geometryShape = static_cast<int>(numeric);
         if (!readSceneNumber(*root, "geometry_fourier_terms", 1.0,
                              kMaximumGeometryFourierTerms, numeric)
             || std::floor(numeric) < numeric) {
-            error = "Ordem de Fourier inválida.";
+            error = utf8("Ordem de Fourier inválida.");
             return false;
         }
         scene.geometryFourierTerms = static_cast<int>(numeric);
         if (schemaVersion >= 24) {
             if (!readSceneNumber(*root, "geometry_billiard_pattern", 0.0, 6.0, numeric)
                 || std::floor(numeric) < numeric) {
-                error = "Padrão de bilhar inválido.";
+                error = utf8("Padrão de bilhar inválido.");
                 return false;
             }
             scene.geometryBilliardPattern = static_cast<int>(numeric);
@@ -1664,45 +1670,45 @@ bool parseSceneFile(const juce::File& file, SceneVersion& scene,
         if (schemaVersion >= 33) {
             if (!readSceneNumber(*root, "lissajous_x_frequency", 1.0, 12.0, numeric)
                 || std::floor(numeric) < numeric) {
-                error = "Frequência horizontal da curva Lissajous inválida.";
+                error = utf8("Frequência horizontal da curva Lissajous inválida.");
                 return false;
             }
             scene.lissajous.xFrequency = static_cast<int>(numeric);
             if (!readSceneNumber(*root, "lissajous_y_frequency", 1.0, 12.0, numeric)
                 || std::floor(numeric) < numeric) {
-                error = "Frequência vertical da curva Lissajous inválida.";
+                error = utf8("Frequência vertical da curva Lissajous inválida.");
                 return false;
             }
             scene.lissajous.yFrequency = static_cast<int>(numeric);
             if (!readSceneNumber(*root, "lissajous_y_phase_turns", 0.0, 1.0, numeric)) {
-                error = "Fase relativa da curva Lissajous inválida.";
+                error = utf8("Fase relativa da curva Lissajous inválida.");
                 return false;
             }
             scene.lissajous.yPhaseTurns = numeric;
             if (!readSceneNumber(*root, "lissajous_x_amplitude", 0.0, 1.0, numeric)) {
-                error = "Amplitude horizontal da curva Lissajous inválida.";
+                error = utf8("Amplitude horizontal da curva Lissajous inválida.");
                 return false;
             }
             scene.lissajous.xAmplitude = numeric;
             if (!readSceneNumber(*root, "lissajous_y_amplitude", 0.0, 1.0, numeric)) {
-                error = "Amplitude vertical da curva Lissajous inválida.";
+                error = utf8("Amplitude vertical da curva Lissajous inválida.");
                 return false;
             }
             scene.lissajous.yAmplitude = numeric;
         }
     }
     if (!readSceneNumber(*root, "decay_scale", 0.15, 1.5, numeric)) {
-        error = "Escala de cauda inválida.";
+        error = utf8("Escala de cauda inválida.");
         return false;
     }
     scene.decayScale = static_cast<float>(numeric);
     if (!readSceneNumber(*root, "fundamental_level", 0.0, 1.0, numeric)) {
-        error = "Nível fundamental inválido.";
+        error = utf8("Nível fundamental inválido.");
         return false;
     }
     scene.fundamentalLevel = static_cast<float>(numeric);
     if (!readSceneNumber(*root, "voice_two_travel_per_bar", 0.0, 0.125, numeric)) {
-        error = "Movimento da voz 2 inválido.";
+        error = utf8("Movimento da voz 2 inválido.");
         return false;
     }
     scene.voiceTwoTravelPerBar = static_cast<float>(numeric);
@@ -1723,12 +1729,12 @@ bool parseSceneFile(const juce::File& file, SceneVersion& scene,
             || !readSceneBool(*bass, "enabled", scene.bassEnabled)
             || !readSceneBool(*bass, "mute", scene.bassMuted)
             || !readSceneBool(*bass, "solo", scene.bassSolo)) {
-            error = "Estado do baixo inválido.";
+            error = utf8("Estado do baixo inválido.");
             return false;
         }
         if (schemaVersion >= 50) {
             if (!readSceneNumber(*bass, "channel_pan", -1.0, 1.0, numeric)) {
-                error = "Panorama do canal do baixo inválido.";
+                error = utf8("Panorama do canal do baixo inválido.");
                 return false;
             }
             scene.bassChannelPan = static_cast<float>(numeric);
@@ -1736,20 +1742,20 @@ bool parseSceneFile(const juce::File& file, SceneVersion& scene,
         if (schemaVersion >= 39
             && !readSceneBool(*bass, "logistic_dynamics",
                               scene.bassLogisticDynamics)) {
-            error = "Estado da dinâmica logística do baixo inválido.";
+            error = utf8("Estado da dinâmica logística do baixo inválido.");
             return false;
         }
         if (schemaVersion >= 13) {
             if (!readSceneNumber(*bass, "oscillator_profile", 0.0, 3.0, numeric)
                 || std::floor(numeric) < numeric) {
-                error = "Perfil espectral do baixo inválido.";
+                error = utf8("Perfil espectral do baixo inválido.");
                 return false;
             }
             scene.bassOscillatorProfile = static_cast<int>(numeric);
         }
         if (schemaVersion >= 22) {
             if (!readSceneNumber(*bass, "variation_base_pitch", 0.0, 1.0, numeric)) {
-                error = "Variação-base de altura do baixo inválida.";
+                error = utf8("Variação-base de altura do baixo inválida.");
                 return false;
             }
             scene.variationBaseBassPitch = static_cast<float>(numeric);
@@ -1759,7 +1765,7 @@ bool parseSceneFile(const juce::File& file, SceneVersion& scene,
         for (std::size_t i = 0; i < bassParameterCount; ++i) {
             if (!readSceneNumber(*bass, bassKeys[i], bassRanges[i][0],
                                  bassRanges[i][1], numeric)) {
-                error = "Parâmetro de baixo inválido.";
+                error = utf8("Parâmetro de baixo inválido.");
                 return false;
             }
             scene.bassParameters[i] = static_cast<float>(numeric);
@@ -1767,57 +1773,57 @@ bool parseSceneFile(const juce::File& file, SceneVersion& scene,
         if (schemaVersion >= 8) {
             if (!readSceneNumber(*bass, "duration_law", 0.0, 2.0, numeric)
                 || std::floor(numeric) < numeric) {
-                error = "Lei de duração do baixo inválida.";
+                error = utf8("Lei de duração do baixo inválida.");
                 return false;
             }
             scene.bassRecipe.durationLaw = static_cast<BassDurationLaw>(
                 static_cast<int>(numeric));
             if (!readSceneNumber(*bass, "phrase_mode", 0.0, 3.0, numeric)
                 || std::floor(numeric) < numeric) {
-                error = "Forma de frase do baixo inválida.";
+                error = utf8("Forma de frase do baixo inválida.");
                 return false;
             }
             scene.bassRecipe.phraseMode = static_cast<BassPhraseMode>(
                 static_cast<int>(numeric));
             if (!readSceneNumber(*bass, "geometric_ratio", 1.2, 2.0, numeric)) {
-                error = "Razão geométrica do baixo inválida.";
+                error = utf8("Razão geométrica do baixo inválida.");
                 return false;
             }
             scene.bassRecipe.geometricRatio = numeric;
             if (!readSceneNumber(*bass, "seed", 0.0, 4294967295.0, numeric)
                 || std::floor(numeric) < numeric) {
-                error = "Seed da linha de baixo inválida.";
+                error = utf8("Seed da linha de baixo inválida.");
                 return false;
             }
             scene.bassRecipe.seed = static_cast<std::uint32_t>(numeric);
             if (schemaVersion >= 49) {
                 if (!readSceneNumber(*bass, "variation_level", 0.0, 3.0, numeric)
                     || std::floor(numeric) < numeric) {
-                    error = "Nível de variação do baixo inválido.";
+                    error = utf8("Nível de variação do baixo inválido.");
                     return false;
                 }
                 scene.bassRecipe.variationLevel = static_cast<std::uint8_t>(numeric);
             }
             if (!readSceneNumber(*bass, "pitch_variation", 0.0, 1.0, numeric)) {
-                error = "Variação de altura do baixo inválida.";
+                error = utf8("Variação de altura do baixo inválida.");
                 return false;
             }
             scene.bassRecipe.pitchVariation = static_cast<float>(numeric);
             if (schemaVersion >= 27) {
                 if (!readSceneNumber(*bass, "path_memory", 0.0, 0.95, numeric)) {
-                    error = "Memória do percurso do baixo inválida.";
+                    error = utf8("Memória do percurso do baixo inválida.");
                     return false;
                 }
                 scene.bassRecipe.pathMemory = static_cast<float>(numeric);
                 if (!readSceneNumber(*bass, "path_breath", 0.0, 2.0, numeric)) {
-                    error = "Força dos respiros do baixo inválida.";
+                    error = utf8("Força dos respiros do baixo inválida.");
                     return false;
                 }
                 scene.bassRecipe.pathBreath = static_cast<float>(numeric);
             }
             if (schemaVersion >= 12) {
                 if (!readSceneNumber(*bass, "swing", 0.0, 0.67, numeric)) {
-                    error = "Balanço do baixo inválido.";
+                    error = utf8("Balanço do baixo inválido.");
                     return false;
                 }
                 scene.bassSwing = static_cast<float>(numeric);
@@ -1827,7 +1833,7 @@ bool parseSceneFile(const juce::File& file, SceneVersion& scene,
                                    scene.bassRecipe.lfoEnabled)
                     || !readSceneNumber(*bass, "lfo_shape", 0.0, 2.0, numeric)
                     || std::floor(numeric) < numeric) {
-                    error = "Configuração de forma do LFO inválida.";
+                    error = utf8("Configuração de forma do LFO inválida.");
                     return false;
                 }
                 scene.bassRecipe.lfoShape = static_cast<BassLfoShape>(
@@ -1835,7 +1841,7 @@ bool parseSceneFile(const juce::File& file, SceneVersion& scene,
                 if (schemaVersion >= 29) {
                     if (!readSceneNumber(*bass, "lfo_target", 0.0, 2.0, numeric)
                         || std::floor(numeric) < numeric) {
-                        error = "Destino do LFO inválido.";
+                        error = utf8("Destino do LFO inválido.");
                         return false;
                     }
                     scene.bassRecipe.lfoTarget = static_cast<BassLfoTarget>(
@@ -1846,14 +1852,14 @@ bool parseSceneFile(const juce::File& file, SceneVersion& scene,
                     || (static_cast<int>(numeric) != 1
                         && static_cast<int>(numeric) != 2
                         && static_cast<int>(numeric) != 4)) {
-                    error = "Período do LFO inválido.";
+                    error = utf8("Período do LFO inválido.");
                     return false;
                 }
                 scene.bassRecipe.lfoPeriodCycles = static_cast<std::uint8_t>(numeric);
                 if (!readSceneNumber(*bass, "lfo_depth_semitones", 0.0, 12.0,
                                      numeric)
                     || std::floor(numeric) < numeric) {
-                    error = "Profundidade do LFO inválida.";
+                    error = utf8("Profundidade do LFO inválida.");
                     return false;
                 }
                 scene.bassRecipe.lfoDepthSemitones = static_cast<std::uint8_t>(numeric);
@@ -1863,7 +1869,7 @@ bool parseSceneFile(const juce::File& file, SceneVersion& scene,
             const int expectedCellCount = schemaVersion >= 18
                 ? static_cast<int>(kBassStepsPerBar) : 16;
             if (cells == nullptr || cells->size() != expectedCellCount) {
-                error = "A quantidade de células do baixo não corresponde ao esquema.";
+                error = utf8("A quantidade de células do baixo não corresponde ao esquema.");
                 return false;
             }
             for (int index = 0; index < expectedCellCount; ++index) {
@@ -1872,14 +1878,14 @@ bool parseSceneFile(const juce::File& file, SceneVersion& scene,
                 if (item == nullptr
                     || !readSceneNumber(*item, "kind", 0.0, 2.0, numeric)
                     || std::floor(numeric) < numeric) {
-                    error = "Tipo de célula do baixo inválido.";
+                    error = utf8("Tipo de célula do baixo inválido.");
                     return false;
                 }
                 auto& cell = scene.bassRecipe.cells[i];
                 cell.kind = static_cast<BassCellKind>(static_cast<int>(numeric));
                 if (!readSceneNumber(*item, "midi", 24.0, 60.0, numeric)
                     || std::floor(numeric) < numeric) {
-                    error = "Altura de célula do baixo inválida.";
+                    error = utf8("Altura de célula do baixo inválida.");
                     return false;
                 }
                 cell.midi = static_cast<std::uint8_t>(numeric);
@@ -1890,7 +1896,7 @@ bool parseSceneFile(const juce::File& file, SceneVersion& scene,
                         && static_cast<int>(numeric) != 4
                         && static_cast<int>(numeric) != 8
                         && static_cast<int>(numeric) != 16)) {
-                    error = "Duração de célula do baixo inválida.";
+                    error = utf8("Duração de célula do baixo inválida.");
                     return false;
                 }
                 cell.durationSteps = static_cast<std::uint8_t>(numeric);
@@ -1900,13 +1906,13 @@ bool parseSceneFile(const juce::File& file, SceneVersion& scene,
                         && static_cast<int>(numeric) != 2
                         && static_cast<int>(numeric) != 4
                         && static_cast<int>(numeric) != 8)) {
-                    error = "Repetições de célula do baixo inválidas.";
+                    error = utf8("Repetições de célula do baixo inválidas.");
                     return false;
                 }
                 cell.repeats = static_cast<std::uint8_t>(numeric);
                 if (!readSceneNumber(*item, "intent", 0.0, 2.0, numeric)
                     || std::floor(numeric) < numeric) {
-                    error = "Intenção de célula do baixo inválida.";
+                    error = utf8("Intenção de célula do baixo inválida.");
                     return false;
                 }
                 cell.intent = static_cast<BassIntent>(static_cast<int>(numeric));
@@ -1917,7 +1923,7 @@ bool parseSceneFile(const juce::File& file, SceneVersion& scene,
             if (!readSceneNumber(*bass, "rhythm_relation", 0.0,
                                  maxRhythmRelation, numeric)
                 || std::floor(numeric) < numeric) {
-                error = "Relação rítmica do baixo inválida.";
+                error = utf8("Relação rítmica do baixo inválida.");
                 return false;
             }
             scene.bassRhythmRelation = static_cast<BassRhythmRelation>(
@@ -1926,7 +1932,7 @@ bool parseSceneFile(const juce::File& file, SceneVersion& scene,
         if (schemaVersion >= 21) {
             if (!readSceneNumber(*bass, "material", 0.0, 5.0, numeric)
                 || std::floor(numeric) < numeric) {
-                error = "Matéria sonora do baixo inválida.";
+                error = utf8("Matéria sonora do baixo inválida.");
                 return false;
             }
             scene.bassMaterial = static_cast<BassMaterial>(static_cast<int>(numeric));
@@ -1944,18 +1950,18 @@ bool parseSceneFile(const juce::File& file, SceneVersion& scene,
         const auto* channel = (*channels)[static_cast<int>(voice)].getDynamicObject();
         if (channel == nullptr
             || !readSceneNumber(*channel, "level", 0.0, 1.0, numeric)) {
-            error = "Nível de canal inválido.";
+            error = utf8("Nível de canal inválido.");
             return false;
         }
         scene.channelLevels[voice] = static_cast<float>(numeric);
         if (!readSceneNumber(*channel, "pan", -1.0, 1.0, numeric)) {
-            error = "Panorama de canal inválido.";
+            error = utf8("Panorama de canal inválido.");
             return false;
         }
         scene.channelPans[voice] = static_cast<float>(numeric);
         if (schemaVersion >= 35) {
             if (!readSceneNumber(*channel, "pan_motion", 0.0, 1.0, numeric)) {
-                error = "Movimento de panorama inválido.";
+                error = utf8("Movimento de panorama inválido.");
                 return false;
             }
             scene.channelPanMotion[voice] = static_cast<float>(numeric);
@@ -1966,7 +1972,7 @@ bool parseSceneFile(const juce::File& file, SceneVersion& scene,
             if (!channel->hasProperty("pan_path_enabled") || path == nullptr
                 || !channel->getProperty("pan_path_enabled").isBool()
                 || path->size() != static_cast<int>(PanTrajectory::pointCount)) {
-                error = "Trajetória de panorama inválida.";
+                error = utf8("Trajetória de panorama inválida.");
                 return false;
             }
             scene.channelPanTrajectories[voice].enabled =
@@ -1975,12 +1981,12 @@ bool parseSceneFile(const juce::File& file, SceneVersion& scene,
                 const auto pathPoint = (*path)[static_cast<int>(point)];
                 if (!(pathPoint.isInt() || pathPoint.isInt64()
                       || pathPoint.isDouble())) {
-                    error = "Ponto de trajetória de panorama inválido.";
+                    error = utf8("Ponto de trajetória de panorama inválido.");
                     return false;
                 }
                 numeric = static_cast<double>(pathPoint);
                 if (!std::isfinite(numeric) || numeric < -1.0 || numeric > 1.0) {
-                    error = "Ponto de trajetória de panorama inválido.";
+                    error = utf8("Ponto de trajetória de panorama inválido.");
                     return false;
                 }
                 scene.channelPanTrajectories[voice].points[point] =
@@ -1989,7 +1995,7 @@ bool parseSceneFile(const juce::File& file, SceneVersion& scene,
         }
         if (schemaVersion >= 36) {
             if (!readSceneNumber(*channel, "variation", 0.0, 1.0, numeric)) {
-                error = "Variação de stem inválida.";
+                error = utf8("Variação de stem inválida.");
                 return false;
             }
             scene.channelVariation[voice] = static_cast<float>(numeric);
@@ -1998,29 +2004,29 @@ bool parseSceneFile(const juce::File& file, SceneVersion& scene,
         }
         if (!readSceneBool(*channel, "mute", scene.channelMuted[voice])
             || !readSceneBool(*channel, "solo", scene.channelSolo[voice])) {
-            error = "Estado de mute/solo inválido.";
+            error = utf8("Estado de mute/solo inválido.");
             return false;
         }
         if (schemaVersion >= 63
             && !readSceneBool(*channel, "ornaments", scene.channelOrnaments[voice])) {
-            error = "Estado de ornamentos do canal inválido.";
+            error = utf8("Estado de ornamentos do canal inválido.");
             return false;
         }
         const double maximumTransform = schemaVersion >= 4 ? 9.0 : 5.0;
         if (!readSceneNumber(*channel, "transform", 0.0, maximumTransform, numeric)
             || std::floor(numeric) < numeric) {
-            error = "Transformação de voz inválida.";
+            error = utf8("Transformação de voz inválida.");
             return false;
         }
         scene.voiceTransforms[voice] = static_cast<int>(numeric);
         if (!readSceneNumber(*channel, "coupling", 0.0, 0.800001, numeric)) {
-            error = "Acoplamento de voz inválido.";
+            error = utf8("Acoplamento de voz inválido.");
             return false;
         }
         scene.voiceCouplings[voice] = static_cast<float>(juce::jmin(0.8, numeric));
         if (schemaVersion >= 2) {
             if (!readSceneNumber(*channel, "formula_phase_offset", -0.5, 0.5, numeric)) {
-                error = "Fase da fórmula por voz inválida.";
+                error = utf8("Fase da fórmula por voz inválida.");
                 return false;
             }
             scene.formulaPhaseOffsets[voice] = static_cast<float>(numeric);
@@ -2029,31 +2035,31 @@ bool parseSceneFile(const juce::File& file, SceneVersion& scene,
             if (!readSceneNumber(*channel, "sound_override", -1.0,
                     schemaVersion >= 53 ? 17.0 : 14.0, numeric)
                 || std::floor(numeric) < numeric) {
-                error = "Matéria sonora do canal inválida.";
+                error = utf8("Matéria sonora do canal inválida.");
                 return false;
             }
             scene.voiceSoundOverrides[voice] = static_cast<int>(numeric);
         }
         if (schemaVersion >= 41) {
             if (!readSceneNumber(*channel, "chip_duty", 0.125, 0.875, numeric)) {
-                error = "Duty cycle 8-bit inválido.";
+                error = utf8("Duty cycle 8-bit inválido.");
                 return false;
             }
             scene.chipDutyCycles[voice] = static_cast<float>(numeric);
             if (!readSceneNumber(*channel, "chip_clock_hz", 1000.0, 24000.0,
                                  numeric)) {
-                error = "Clock 8-bit inválido.";
+                error = utf8("Clock 8-bit inválido.");
                 return false;
             }
             scene.chipClockHz[voice] = static_cast<float>(numeric);
             if (!readSceneNumber(*channel, "chip_bit_depth", 2.0, 8.0, numeric)
                 || std::floor(numeric) < numeric) {
-                error = "Profundidade 8-bit inválida.";
+                error = utf8("Profundidade 8-bit inválida.");
                 return false;
             }
             scene.chipBitDepth[voice] = static_cast<int>(numeric);
             if (!readSceneNumber(*channel, "chip_noise_mix", 0.0, 1.0, numeric)) {
-                error = "Ruído 8-bit inválido.";
+                error = utf8("Ruído 8-bit inválido.");
                 return false;
             }
             scene.chipNoiseMix[voice] = static_cast<float>(numeric);
@@ -2061,12 +2067,12 @@ bool parseSceneFile(const juce::File& file, SceneVersion& scene,
         if (schemaVersion >= 5) {
             if (!readSceneNumber(*channel, "cycle_override", 0.0, 16.0, numeric)
                 || (numeric > 0.0 && numeric < 0.5)) {
-                error = "Ciclo independente do canal inválido.";
+                error = utf8("Ciclo independente do canal inválido.");
                 return false;
             }
             scene.voiceCycleOverrides[voice] = static_cast<float>(numeric);
             if (!readSceneNumber(*channel, "event_phase_offset", -0.5, 0.5, numeric)) {
-                error = "Fase de ataque do canal inválida.";
+                error = utf8("Fase de ataque do canal inválida.");
                 return false;
             }
             scene.voiceRhythmPhaseOffsets[voice] = static_cast<float>(numeric);
@@ -2077,13 +2083,13 @@ bool parseSceneFile(const juce::File& file, SceneVersion& scene,
             if (cellObject == nullptr
                 || !readSceneBool(*cellObject, "enabled",
                                   scene.rhythmicCells[voice].enabled)) {
-                error = "Célula rítmica do canal inválida.";
+                error = utf8("Célula rítmica do canal inválida.");
                 return false;
             }
             const auto* attacks = cellObject->getProperty("attacks").getArray();
             if (attacks == nullptr
                 || attacks->size() > static_cast<int>(kMaxRhythmicCellAttacks)) {
-                error = "Quantidade de ataques da célula inválida.";
+                error = utf8("Quantidade de ataques da célula inválida.");
                 return false;
             }
             auto& cell = scene.rhythmicCells[voice];
@@ -2093,43 +2099,43 @@ bool parseSceneFile(const juce::File& file, SceneVersion& scene,
                     .getDynamicObject();
                 if (attack == nullptr
                     || !readSceneNumber(*attack, "position", 0.0, 1.0, numeric)) {
-                    error = "Posição de ataque da célula inválida.";
+                    error = utf8("Posição de ataque da célula inválida.");
                     return false;
                 }
                 cell.positions[index] = numeric;
                 if (!readSceneNumber(*attack, "strength", 0.0, 1.0, numeric)) {
-                    error = "Força de ataque da célula inválida.";
+                    error = utf8("Força de ataque da célula inválida.");
                     return false;
                 }
                 cell.strengths[index] = static_cast<float>(numeric);
                 if (schemaVersion >= 48
                     && !readOptionalMidiNote(*attack, "midi_note",
                                              cell.midiNotes[index])) {
-                    error = "Nota GM da célula rítmica inválida.";
+                    error = utf8("Nota GM da célula rítmica inválida.");
                     return false;
                 }
                 if (schemaVersion >= 52
                     && !readOptionalMidiControllerValue(*attack, "midi_hat_pedal",
                                                        cell.midiHatPedal[index])) {
-                    error = "Valor CC4 da célula rítmica inválido.";
+                    error = utf8("Valor CC4 da célula rítmica inválido.");
                     return false;
                 }
                 if (!readMidiCollisions(*attack, index, cell, schemaVersion)) {
-                    error = "Notas simultâneas da célula rítmica inválidas.";
+                    error = utf8("Notas simultâneas da célula rítmica inválidas.");
                     return false;
                 }
                 if (schemaVersion >= 62 && attack->hasProperty("ornament")) {
                     if (!readSceneNumber(*attack, "ornament", 0.0,
                             static_cast<double>(kMaxCellOrnamentCode), numeric)
                         || std::floor(numeric) < numeric) {
-                        error = "Ornamento de ataque da célula inválido.";
+                        error = utf8("Ornamento de ataque da célula inválido.");
                         return false;
                     }
                     cell.ornaments[index] = static_cast<std::uint8_t>(numeric);
                 }
             }
             if (!validRhythmicCell(cell)) {
-                error = "Ataques da célula rítmica fora de ordem ou sobrepostos.";
+                error = utf8("Ataques da célula rítmica fora de ordem ou sobrepostos.");
                 return false;
             }
         }
@@ -2142,7 +2148,7 @@ bool parseSceneFile(const juce::File& file, SceneVersion& scene,
             if (phrases == nullptr || cycles == nullptr
                 || cycles->size() != static_cast<int>(kFormalCycleCount)
                 || !readSceneBool(*phrases, "enabled", phrasesEnabled)) {
-                error = "Frases por ciclo da voz inválidas.";
+                error = utf8("Frases por ciclo da voz inválidas.");
                 return false;
             }
             scene.formalCycleCellsEnabled[voice] = phrasesEnabled;
@@ -2153,7 +2159,7 @@ bool parseSceneFile(const juce::File& file, SceneVersion& scene,
                 phrase.enabled = true;
                 if (phraseAttacks == nullptr
                     || phraseAttacks->size() > static_cast<int>(kMaxRhythmicCellAttacks)) {
-                    error = "Frase por ciclo da voz inválida.";
+                    error = utf8("Frase por ciclo da voz inválida.");
                     return false;
                 }
                 for (const auto& pairValue : *phraseAttacks) {
@@ -2161,7 +2167,7 @@ bool parseSceneFile(const juce::File& file, SceneVersion& scene,
                     if (pair == nullptr
                         || (pair->size() != 2 && !(schemaVersion >= 62 && pair->size() == 3))
                         || (!(*pair)[0].isDouble() && !(*pair)[0].isInt())) {
-                        error = "Ataque de frase por ciclo inválido.";
+                        error = utf8("Ataque de frase por ciclo inválido.");
                         return false;
                     }
                     const double position = static_cast<double>((*pair)[0]);
@@ -2170,13 +2176,13 @@ bool parseSceneFile(const juce::File& file, SceneVersion& scene,
                         || !std::isfinite(strength) || strength < 0.0 || strength > 1.0
                         || !insertRhythmicCellAttack(phrase, position,
                                                      static_cast<float>(strength))) {
-                        error = "Ataque de frase por ciclo inválido.";
+                        error = utf8("Ataque de frase por ciclo inválido.");
                         return false;
                     }
                     if (pair->size() == 3) {   // ornamento da nota (schema 62)
                         const int code = static_cast<int>((*pair)[2]);
                         if (code < 0 || code > kMaxCellOrnamentCode) {
-                            error = "Ornamento de frase por ciclo inválido.";
+                            error = utf8("Ornamento de frase por ciclo inválido.");
                             return false;
                         }
                         for (std::size_t i = 0; i < phrase.count; ++i)
@@ -2189,30 +2195,30 @@ bool parseSceneFile(const juce::File& file, SceneVersion& scene,
         if (schemaVersion >= 6) {
             if (!readSceneNumber(*channel, "event_rule_override", -1.0, 1.0, numeric)
                 || std::floor(numeric) < numeric) {
-                error = "Regra de ataque do canal inválida.";
+                error = utf8("Regra de ataque do canal inválida.");
                 return false;
             }
             scene.voiceEventRuleOverrides[voice] = static_cast<int>(numeric);
         }
         if (schemaVersion >= 22) {
             if (!readSceneNumber(*channel, "variation_base_cycles", 0.5, 16.0, numeric)) {
-                error = "Ciclo-base da variação inválido.";
+                error = utf8("Ciclo-base da variação inválido.");
                 return false;
             }
             scene.variationBaseCycles[voice] = static_cast<float>(numeric);
             if (!readSceneNumber(*channel, "variation_base_coupling", 0.0, 0.8, numeric)) {
-                error = "Acoplamento-base da variação inválido.";
+                error = utf8("Acoplamento-base da variação inválido.");
                 return false;
             }
             scene.variationBaseCouplings[voice] = static_cast<float>(numeric);
             if (!readSceneNumber(*channel, "variation_base_phase", -0.5, 0.5, numeric)) {
-                error = "Fase-base da variação inválida.";
+                error = utf8("Fase-base da variação inválida.");
                 return false;
             }
             scene.variationBasePhases[voice] = static_cast<float>(numeric);
             if (!readSceneNumber(*channel, "variation_base_transform", 0.0, 9.0, numeric)
                 || std::floor(numeric) < numeric) {
-                error = "Transformação-base da variação inválida.";
+                error = utf8("Transformação-base da variação inválida.");
                 return false;
             }
             scene.variationBaseTransforms[voice] = static_cast<int>(numeric);
@@ -2250,8 +2256,6 @@ enum class UiLanguage : std::uint8_t { portuguese, english, spanish, french };
 enum class AppStatus : std::uint8_t { preparing, ready, playing, countIn, paused, unavailable };
 enum class GraphMotion : std::uint8_t { left, right, timeline };
 enum class GraphAnalysis : std::uint8_t { signal, derivative, integral, intensity };
-
-juce::String utf8(const char* text);
 
 juce::String localized(const UiLanguage language,
                        const char* portuguese,
@@ -11137,7 +11141,7 @@ public:
         manualCell.ornaments[1] = 6;   // rulo (schema 62)
         const auto file = directory.getChildFile("chip8-scene.batruc.txt");
         if (!file.replaceWithText(sceneFileText(scene))) {
-            error = "Falha ao escrever cena 8-bit de diagnóstico.";
+            error = utf8("Falha ao escrever cena 8-bit de diagnóstico.");
             return false;
         }
         SceneVersion restored;
@@ -11187,7 +11191,7 @@ public:
             || !restored.channelPanTrajectories[1].enabled
             || restored.channelPanTrajectories[1].points
                 != scene.channelPanTrajectories[1].points) {
-            error = "Cena não preservou seed, blend, leis, pan ou metadados 8-bit.";
+            error = utf8("Cena não preservou seed, blend, leis, pan ou metadados 8-bit.");
             return false;
         }
         if (!restored.rhythmicCells[4].enabled
@@ -11197,7 +11201,7 @@ public:
             || !close(restored.rhythmicCells[4].strengths[0], 0.77f)
             || !close(restored.rhythmicCells[4].strengths[1], 0.35f)
             || restored.rhythmicCells[4].ornaments[1] != 6) {
-            error = "Cena não preservou a célula rítmica editada manualmente.";
+            error = utf8("Cena não preservou a célula rítmica editada manualmente.");
             return false;
         }
         if (restored.midiSourceCells[0].count != 1
@@ -11215,11 +11219,11 @@ public:
                 .midiCollisionStrengths[0][0], 0.625f)
             || restored.midiSourceCells[2]
                 .midiCollisionHatPedal[0][0] != 8u) {
-            error = "Cena não preservou notas, CC4 ou ataques MIDI simultâneos.";
+            error = utf8("Cena não preservou notas, CC4 ou ataques MIDI simultâneos.");
             return false;
         }
         if (!close(restored.bassChannelPan, scene.bassChannelPan)) {
-            error = "Cena não preservou o panorama do canal do baixo.";
+            error = utf8("Cena não preservou o panorama do canal do baixo.");
             return false;
         }
 
@@ -11229,14 +11233,14 @@ public:
         auto* schema56Source = schema56Root != nullptr
             ? schema56Root->getProperty("midi_source").getDynamicObject() : nullptr;
         if (schema56Source == nullptr) {
-            error = "Cena schema 56 de diagnóstico inválida.";
+            error = utf8("Cena schema 56 de diagnóstico inválida.");
             return false;
         }
         schema56Root->setProperty("schema_version", 56);
         schema56Source->removeProperty("derived");
         const auto schema56File = directory.getChildFile("derived-schema56.batruc.txt");
         if (!schema56File.replaceWithText(juce::JSON::toString(schema56, true))) {
-            error = "Falha ao escrever cena schema 56 de diagnóstico.";
+            error = utf8("Falha ao escrever cena schema 56 de diagnóstico.");
             return false;
         }
         SceneVersion restoredSchema56;
@@ -11244,7 +11248,7 @@ public:
             || !restoredSchema56.midiDerivedRecords.empty()
             || restoredSchema56.midiOperationHistory != scene.midiOperationHistory) {
             if (error.isEmpty())
-                error = "Schema 56 não abriu sem registro de derivados.";
+                error = utf8("Schema 56 não abriu sem registro de derivados.");
             return false;
         }
 
@@ -11254,14 +11258,14 @@ public:
             ? schema55Root->getProperty("channels").getArray() : nullptr;
         if (schema55Root == nullptr || schema55Channels == nullptr
             || schema55Channels->size() != static_cast<int>(kMaxVoices)) {
-            error = "Cena schema 55 de diagnóstico inválida.";
+            error = utf8("Cena schema 55 de diagnóstico inválida.");
             return false;
         }
         schema55Root->setProperty("schema_version", 55);
         for (auto& channelValue : *schema55Channels) {
             auto* channel = channelValue.getDynamicObject();
             if (channel == nullptr) {
-                error = "Canal inválido na cena schema 55 de diagnóstico.";
+                error = utf8("Canal inválido na cena schema 55 de diagnóstico.");
                 return false;
             }
             channel->removeProperty("pan_path_enabled");
@@ -11270,14 +11274,14 @@ public:
         const auto schema55File = directory.getChildFile(
             "pan-path-schema55.batruc.txt");
         if (!schema55File.replaceWithText(juce::JSON::toString(schema55, true))) {
-            error = "Falha ao escrever cena schema 55 de diagnóstico.";
+            error = utf8("Falha ao escrever cena schema 55 de diagnóstico.");
             return false;
         }
         SceneVersion restoredSchema55;
         if (!parseSceneFile(schema55File, restoredSchema55, error)
             || restoredSchema55.channelPanTrajectories[1].enabled) {
             if (error.isEmpty())
-                error = "Schema 55 não migrou para o pan automático do campo.";
+                error = utf8("Schema 55 não migrou para o pan automático do campo.");
             return false;
         }
 
@@ -11286,7 +11290,7 @@ public:
         auto* legacySource = legacyRoot != nullptr
             ? legacyRoot->getProperty("midi_source").getDynamicObject() : nullptr;
         if (legacySource == nullptr) {
-            error = "Cena GMD de diagnóstico não contém sua fonte MIDI.";
+            error = utf8("Cena GMD de diagnóstico não contém sua fonte MIDI.");
             return false;
         }
         legacyRoot->setProperty("schema_version", 54);
@@ -11321,14 +11325,14 @@ public:
             || restoredLegacy.midiSourceCells[2].midiCollisionCount[0] != 1u
             || restoredLegacy.midiSourceCells[2].midiCollisionNotes[0][0] != 46u) {
             if (error.isEmpty())
-                error = "Schema 54 perdeu conteúdo antigo ou recebeu metadados editoriais novos.";
+                error = utf8("Schema 54 perdeu conteúdo antigo ou recebeu metadados editoriais novos.");
             return false;
         }
 
         auto schema41 = juce::JSON::parse(sceneFileText(scene));
         auto* schema41Root = schema41.getDynamicObject();
         if (schema41Root == nullptr) {
-            error = "Cena schema 41 de diagnóstico inválida.";
+            error = utf8("Cena schema 41 de diagnóstico inválida.");
             return false;
         }
         schema41Root->setProperty("schema_version", 41);
@@ -11338,7 +11342,7 @@ public:
         const auto schema41File = directory.getChildFile(
             "manual-cell-schema41.batruc.txt");
         if (!schema41File.replaceWithText(juce::JSON::toString(schema41, true))) {
-            error = "Falha ao escrever cena schema 41 de diagnóstico.";
+            error = utf8("Falha ao escrever cena schema 41 de diagnóstico.");
             return false;
         }
         SceneVersion restoredSchema41;
@@ -11356,7 +11360,7 @@ public:
             || !close(restoredSchema41.rhythmicCells[4].strengths[0], 0.77f)
             || !close(restoredSchema41.rhythmicCells[4].strengths[1], 0.35f)) {
             if (error.isEmpty())
-                error = "Migração schema 41 perdeu célula ou aplicou blend inexistente.";
+                error = utf8("Migração schema 41 perdeu célula ou aplicou blend inexistente.");
             return false;
         }
 
@@ -11366,7 +11370,7 @@ public:
             auto* source = root != nullptr
                 ? root->getProperty("midi_source").getDynamicObject() : nullptr;
             if (root == nullptr || source == nullptr) {
-                error = "Cena MIDI legada de diagnóstico incompleta.";
+                error = utf8("Cena MIDI legada de diagnóstico incompleta.");
                 return false;
             }
             root->setProperty("schema_version", version);
@@ -11391,7 +11395,7 @@ public:
                 "midi-source-schema" + juce::String(version) + ".batruc.txt");
             if (!legacyMidiFile.replaceWithText(
                     juce::JSON::toString(legacyMidi, true))) {
-                error = "Falha ao escrever cena MIDI legada de diagnóstico.";
+                error = utf8("Falha ao escrever cena MIDI legada de diagnóstico.");
                 return false;
             }
             SceneVersion migrated;
@@ -11433,14 +11437,14 @@ public:
         auto schema48 = juce::JSON::parse(sceneFileText(scene));
         auto* schema48Root = schema48.getDynamicObject();
         if (schema48Root == nullptr) {
-            error = "Cena schema 48 de diagnóstico inválida.";
+            error = utf8("Cena schema 48 de diagnóstico inválida.");
             return false;
         }
         schema48Root->setProperty("schema_version", 48);
         auto* schema48Source = schema48Root->getProperty("midi_source")
             .getDynamicObject();
         if (schema48Source == nullptr) {
-            error = "Cena schema 48 não contém a fonte MIDI.";
+            error = utf8("Cena schema 48 não contém a fonte MIDI.");
             return false;
         }
         for (const auto* property : {"editorial_metadata_present", "editorial_style",
@@ -11450,7 +11454,7 @@ public:
         const auto schema48File = directory.getChildFile(
             "midi-source-schema48.batruc.txt");
         if (!schema48File.replaceWithText(juce::JSON::toString(schema48, true))) {
-            error = "Falha ao escrever cena schema 48 de diagnóstico.";
+            error = utf8("Falha ao escrever cena schema 48 de diagnóstico.");
             return false;
         }
         SceneVersion restoredSchema48;
@@ -11471,21 +11475,21 @@ public:
             || restoredSchema48.secondIntensityLaw != 2
             || !close(restoredSchema48.intensityBlend, 0.37f)) {
             if (error.isEmpty())
-                error = "Migração schema 48 perdeu notas ou antecipou CC4/colisões/metadados.";
+                error = utf8("Migração schema 48 perdeu notas ou antecipou CC4/colisões/metadados.");
             return false;
         }
 
         auto schema52 = juce::JSON::parse(sceneFileText(scene));
         auto* schema52Root = schema52.getDynamicObject();
         if (schema52Root == nullptr) {
-            error = "Cena schema 52 de diagnóstico inválida.";
+            error = utf8("Cena schema 52 de diagnóstico inválida.");
             return false;
         }
         schema52Root->setProperty("schema_version", 52);
         auto* schema52Source = schema52Root->getProperty("midi_source")
             .getDynamicObject();
         if (schema52Source == nullptr) {
-            error = "Cena schema 52 não contém a fonte MIDI.";
+            error = utf8("Cena schema 52 não contém a fonte MIDI.");
             return false;
         }
         for (const auto* property : {"editorial_metadata_present", "editorial_style",
@@ -11495,7 +11499,7 @@ public:
         const auto schema52File = directory.getChildFile(
             "midi-source-schema52.batruc.txt");
         if (!schema52File.replaceWithText(juce::JSON::toString(schema52, true))) {
-            error = "Falha ao escrever cena schema 52 de diagnóstico.";
+            error = utf8("Falha ao escrever cena schema 52 de diagnóstico.");
             return false;
         }
         SceneVersion restoredSchema52;
@@ -11510,7 +11514,7 @@ public:
                 != kNoMidiControllerValue
             || restoredSchema52.rhythmicCells[4].midiCollisionCount[0] != 0u) {
             if (error.isEmpty())
-                error = "Migração schema 52 perdeu CC4 ou antecipou colisões/metadados.";
+                error = utf8("Migração schema 52 perdeu CC4 ou antecipou colisões/metadados.");
             return false;
         }
         return true;
@@ -11682,6 +11686,135 @@ public:
         updateInterfaceLanguage();
     }
 
+    // Maestruc (maestruc.link/1, 14/11/2026): o regente da família pode dar
+    // play/stop, tempo, seed, abrir cena (15/11) e REC. Desligado por padrão; liga com
+    // --maestruc ou BATRUC_MAESTRUC=1. Tom, seção e macros respondem
+    // "capacidade ausente" até o autor decidir o que significam no Batruc.
+    void enableMaestrucLink() {
+        if (maestrucLink_ != nullptr)
+            return;
+        maestrucLink_ = std::make_unique<rasgo::maestruc::Link>(
+            "Batruc", JUCE_APPLICATION_VERSION_STRING);
+        auto& h = maestrucLink_->handlers;
+        h.play = [this](const juce::int64 startMicros) {
+            const auto now = juce::Time::currentTimeMillis() * 1000;
+            const int delayMs = startMicros > now
+                ? static_cast<int>(juce::jmin<juce::int64>((startMicros - now) / 1000, 10000)) : 0;
+            juce::Component::SafePointer<BatrucComponent> self(this);
+            juce::Timer::callAfterDelay(delayMs, [self] {
+                if (self != nullptr && !self->playing_.load(std::memory_order_acquire)
+                    && self->status_ != AppStatus::countIn)
+                    self->togglePlayback();
+            });
+        };
+        h.stop = [this] {
+            if (playing_.load(std::memory_order_acquire) || status_ == AppStatus::countIn)
+                togglePlayback();
+        };
+        h.tempo = [this](const float bpm) {
+            bpmSlider_.setValue(juce::jlimit(20.0, 220.0, std::round(static_cast<double>(bpm))),
+                                juce::sendNotificationSync);
+        };
+        h.seed = [this](const juce::String& seed) {
+            applySeedFromOutside(seed);   // inválida: ignorada como no campo SEED
+        };
+        h.open = [this](const juce::File& file, juce::String& note) {
+            return openSceneFromOutside(file, note);
+        };
+        h.recStart = [this](const juce::File& folder, const juce::String& take) {
+            if (recordingActive_.load(std::memory_order_acquire))
+                return;
+            const auto name = juce::File::createLegalFileName("Batruc-" + take);
+            startRecording(folder.getNonexistentChildFile(name, ".wav", false));
+        };
+        h.recStop = [this] { finishRecording(false); };
+        h.state = [this](bool& playing, juce::String& seed, float& bpm) {
+            playing = playing_.load(std::memory_order_acquire);
+            seed = hasCurrentSeed_ ? seedText(currentSeed_) : juce::String();
+            bpm = static_cast<float>(bpmSlider_.getValue());
+        };
+        // Mixer: as vozes ativas (V1…, nível, M, S) e a faixa BAIXO, pelos
+        // mesmos controles do Mixer da tela. Nível 0–1 do app = −90…0 dB (o
+        // BAIXO vai até 0,8, ≈ −1,9 dB).
+        h.mixerList = [this](std::vector<rasgo::maestruc::MixerChannel>& channels) {
+            const auto db = [](double g) {
+                return g > 0.0000317 ? static_cast<float>(20.0 * std::log10(g)) : -90.0f;
+            };
+            const auto active = static_cast<std::size_t>(juce::jlimit(2, static_cast<int>(kMaxActiveVoices),
+                activeVoiceCount_.load(std::memory_order_relaxed)));
+            for (std::size_t voice = 0; voice < active; ++voice)
+                channels.push_back({static_cast<int>(voice), "V" + juce::String(static_cast<int>(voice) + 1),
+                    db(channelSliders_[voice].getValue()), muteButtons_[voice].getToggleState(),
+                    soloButtons_[voice].getToggleState()});
+            channels.push_back({static_cast<int>(kMaxVoices), localized(language_, "BAIXO", "BASS", "BASSE"),
+                db(bassMixerLevelSlider_.getValue()), bassMixerMuteButton_.getToggleState(),
+                bassMixerSoloButton_.getToggleState()});
+        };
+        h.mixerSet = [this](const int index, const juce::String& what, const float value) {
+            const auto active = juce::jlimit(2, static_cast<int>(kMaxActiveVoices),
+                activeVoiceCount_.load(std::memory_order_relaxed));
+            const bool bass = index == static_cast<int>(kMaxVoices);
+            if (!bass && (index < 0 || index >= active))
+                return false;
+            const auto i = static_cast<std::size_t>(bass ? 0 : index);
+            juce::Slider& level = bass ? bassMixerLevelSlider_ : channelSliders_[i];
+            juce::TextButton& mute = bass ? bassMixerMuteButton_ : muteButtons_[i];
+            juce::TextButton& solo = bass ? bassMixerSoloButton_ : soloButtons_[i];
+            if (what == "nivel") {
+                const double gain = value <= -90.0f ? 0.0 : std::pow(10.0, value / 20.0);
+                level.setValue(juce::jlimit(level.getMinimum(), level.getMaximum(), gain),
+                               juce::sendNotificationSync);
+                return true;
+            }
+            juce::TextButton* button = what == "mudo" ? &mute : what == "solo" ? &solo : nullptr;
+            if (button == nullptr)
+                return false;
+            if (button->getToggleState() != (value > 0.5f)) {
+                button->setToggleState(value > 0.5f, juce::dontSendNotification);
+                if (button->onClick)
+                    button->onClick();
+            }
+            return true;
+        };
+        if (!maestrucLink_->start()) {
+            maestrucLink_.reset();
+            return;
+        }
+        openMaestrucBridge();
+    }
+
+    // Fio de mensagens. A ponte leva a mistura (um par estéreo) na taxa da placa.
+    void openMaestrucBridge() {
+        maestrucPortao_.fecharEsperar();
+        const double rate = sampleRate_.load(std::memory_order_relaxed);
+        if (maestrucLink_ == nullptr || rate <= 0.0)
+            return;
+        if (maestrucLink_->openSoundBridge(1, rate, {"mix"}))
+            maestrucPortao_.abrir(maestrucLink_.get());
+    }
+
+    // Seed vinda de fora (Maestruc ou --seed): o mesmo caminho do campo SEED.
+    bool applySeedFromOutside(const juce::String& seed) {
+        const auto text = seed.trim().toUpperCase();
+        if (text.length() != 8 || !text.containsOnly("0123456789ABCDEF"))
+            return false;
+        seedEditor_.setText(text, juce::dontSendNotification);
+        applySeedInput();
+        return true;
+    }
+
+    // Cena .batruc.txt vinda de fora (Maestruc ou --abrir), 15/11/2026: o
+    // mesmo caminho de Abrir cena (entra no histórico; tocando, entra no
+    // próximo compasso), sem janela de aviso — a resposta volta a quem pediu.
+    bool openSceneFromOutside(const juce::File& file, juce::String& error) {
+        SceneVersion scene;
+        if (!parseSceneFile(file, scene, error))
+            return false;
+        appendSceneVersion(scene);
+        applySceneVersion(scene);
+        return true;
+    }
+
     bool diagnosticInitialKitBalance() const noexcept {
         const int family = soundFamilyIndex_.load(std::memory_order_relaxed);
         if (family < 0 || family >= 17)
@@ -11717,7 +11850,7 @@ public:
         if (!insertRhythmicCellAttack(diagnosticCell, 0.0, 1.0f)
             || !insertRhythmicCellAttack(diagnosticCell, 0.375, 0.6f)
             || !insertRhythmicCellAttack(diagnosticCell, 0.75, 0.8f)) {
-            error = "Falha ao preparar célula rítmica de diagnóstico.";
+            error = utf8("Falha ao preparar célula rítmica de diagnóstico.");
             return false;
         }
 
@@ -11735,7 +11868,7 @@ public:
             || restored.rhythmicCells[0].count != 3
             || std::abs(restored.rhythmicCells[0].positions[1] - 0.375) > 1.0e-9
             || std::abs(restored.rhythmicCells[0].strengths[1] - 0.6f) > 1.0e-6f) {
-            if (error.isEmpty()) error = "Cena schema 40 perdeu a célula ou o mapa.";
+            if (error.isEmpty()) error = utf8("Cena schema 40 perdeu a célula ou o mapa.");
             return false;
         }
         auto invalid = juce::JSON::parse(sceneFileText(scene));
@@ -11751,13 +11884,13 @@ public:
         auto* invalidAttack = invalidAttacks != nullptr && invalidAttacks->size() > 1
             ? (*invalidAttacks)[1].getDynamicObject() : nullptr;
         if (invalidAttack == nullptr) {
-            error = "Célula de diagnóstico incompleta.";
+            error = utf8("Célula de diagnóstico incompleta.");
             return false;
         }
         invalidAttack->setProperty("position", 0.0);
         const auto invalidFile = directory.getChildFile("invalid-rhythmic-cell.batruc.txt");
         if (!invalidFile.replaceWithText(juce::JSON::toString(invalid, true))) {
-            error = "Falha ao escrever cena inválida de diagnóstico.";
+            error = utf8("Falha ao escrever cena inválida de diagnóstico.");
             return false;
         }
         SceneVersion rejected;
@@ -11772,7 +11905,7 @@ public:
         auto* bass = root != nullptr
             ? root->getProperty("bass").getDynamicObject() : nullptr;
         if (root == nullptr || bass == nullptr) {
-            error = "Cena de diagnóstico inválida.";
+            error = utf8("Cena de diagnóstico inválida.");
             return false;
         }
         root->setProperty("schema_version", 39);
@@ -11921,6 +12054,8 @@ public:
     }
 
     ~BatrucComponent() override {
+        maestrucPortao_.fecharEsperar();   // o áudio deixa de usar a ponte do Maestruc
+        maestrucLink_.reset();   // antes de tudo: nenhum comando chega a meio desmonte
         shutdownAudio();
         finishRecording(false);
         audioWriterThread_.stopThread(2000);
@@ -11949,6 +12084,13 @@ public:
         audioReady_.store(allReady, std::memory_order_release);
         if (!allReady)
             playing_.store(false, std::memory_order_release);
+        // Ponte do Maestruc: reabre na taxa nova pelo fio de mensagens (até
+        // lá, o Batruc toca nas próprias caixas).
+        maestrucPortao_.fecharEsperar();
+        juce::MessageManager::callAsync([safe = juce::Component::SafePointer<BatrucComponent>(this)] {
+            if (safe != nullptr)
+                safe->openMaestrucBridge();
+        });
     }
 
     void getNextAudioBlock(const juce::AudioSourceChannelInfo& info) override {
@@ -12302,6 +12444,13 @@ public:
         postMasterTruePeak_.store(outputGuard_.outputTruePeak(), std::memory_order_relaxed);
         limiterReduction_.store(outputGuard_.reductionDb(), std::memory_order_relaxed);
         writeRecordingBlock(buffer, info);
+        // Maestruc: a mistura vai pela ponte (a gravação acima fica igual);
+        // enquanto ele lê, o Batruc cala a própria saída.
+        {
+            const float* const bridge[2] { left, right };
+            if (maestrucPortao_.escrever(bridge, 2, info.numSamples))
+                info.clearActiveBufferRegion();
+        }
     }
 
     void releaseResources() override {}
@@ -21201,6 +21350,23 @@ private:
     }
 
     void timerCallback() override {
+        if (maestrucLink_ != nullptr) {
+            // o mixer mudou à mão (ou por cena): o Maestruc fica sabendo
+            std::vector<double> now;
+            now.push_back(static_cast<double>(activeVoiceCount_.load(std::memory_order_relaxed)));
+            for (std::size_t voice = 0; voice < kMaxVoices; ++voice) {
+                now.push_back(channelSliders_[voice].getValue());
+                now.push_back(muteButtons_[voice].getToggleState() ? 1.0 : 0.0);
+                now.push_back(soloButtons_[voice].getToggleState() ? 1.0 : 0.0);
+            }
+            now.push_back(bassMixerLevelSlider_.getValue());
+            now.push_back(bassMixerMuteButton_.getToggleState() ? 1.0 : 0.0);
+            now.push_back(bassMixerSoloButton_.getToggleState() ? 1.0 : 0.0);
+            if (now != maestrucMixerSeen_) {
+                maestrucMixerSeen_ = std::move(now);
+                maestrucLink_->mixerChanged();
+            }
+        }
         {   // contexto da pauta de bateria do Study: compasso e sons efetivos
             const auto signature = timeSignatureForChoice(meterBox_.getSelectedId());
             const int globalSound = juce::jlimit(0, 17, soundCharacter_.load(std::memory_order_relaxed));
@@ -22972,6 +23138,9 @@ private:
     std::uint64_t nextSceneVersion_ = 1;
     std::uint32_t currentSeed_ = 0;
     bool hasCurrentSeed_ = false;
+    std::vector<double> maestrucMixerSeen_;
+    rasgo::maestruc::PortaoDeSom maestrucPortao_;
+    std::unique_ptr<rasgo::maestruc::Link> maestrucLink_;
     std::atomic<std::uint32_t> audioDevelopmentSeed_{0};
     std::atomic<bool> audioDevelopmentEnabled_{false};
     bool manualBassScore_ = false;
@@ -23145,7 +23314,7 @@ public:
             juce::String error;
             bool roundTrip = directory.createDirectory();
             if (!roundTrip) {
-                error = "Falha ao criar a pasta do diagnóstico MIDI.";
+                error = utf8("Falha ao criar a pasta do diagnóstico MIDI.");
             } else {
                 auto diagnosticPage = std::make_unique<BatrucComponent>(false);
                 roundTrip = diagnosticPage->diagnosticChip8SceneRoundTrip(
@@ -23159,7 +23328,7 @@ public:
             if (roundTrip && !report.replaceWithText(
                     juce::JSON::toString(juce::var(result), true))) {
                 roundTrip = false;
-                error = "Round-trip passou, mas não foi possível gravar o relatório.";
+                error = utf8("Round-trip passou, mas não foi possível gravar o relatório.");
             } else if (!roundTrip) {
                 report.replaceWithText(juce::JSON::toString(
                     juce::var(result), true));
@@ -23168,6 +23337,26 @@ public:
             return;
         }
         window_ = std::make_unique<BatrucWindow>();
+        if (auto* viewport = dynamic_cast<juce::Viewport*>(window_->getContentComponent()))
+            if (auto* page = dynamic_cast<BatrucComponent*>(viewport->getViewedComponent())) {
+                // Abertura regida (15/11/2026): --abrir cena.batruc.txt e
+                // --seed XXXXXXXX. Com as duas, a seed vem depois da cena.
+                const auto args = juce::StringArray::fromTokens(commandLine, true);
+                if (const int i = args.indexOf("--abrir"); i >= 0 && i + 1 < args.size()) {
+                    const auto path = args[i + 1].unquoted();
+                    juce::String error;
+                    if (!juce::File::isAbsolutePath(path)
+                        || !page->openSceneFromOutside(juce::File(path), error))
+                        std::fprintf(stderr, "Batruc: --abrir %s: %s\n", path.toRawUTF8(),
+                                     error.isEmpty() ? "caminho absoluto exigido" : error.toRawUTF8());
+                }
+                if (const int i = args.indexOf("--seed"); i >= 0 && i + 1 < args.size())
+                    if (!page->applySeedFromOutside(args[i + 1].unquoted()))
+                        std::fprintf(stderr, "Batruc: --seed precisa de 8 dígitos hexadecimais\n");
+                if (args.contains("--maestruc")
+                    || juce::SystemStats::getEnvironmentVariable("BATRUC_MAESTRUC", {}) == "1")
+                    page->enableMaestrucLink();
+            }
         const auto auditPrefix = juce::String("--audit-layout=");
         if (commandLine.startsWith(auditPrefix)) {
             const juce::File directory(
@@ -23415,7 +23604,7 @@ public:
                 if (output == nullptr
                     || !png.writeImageToStream(snapshot, *output)) {
                     sceneOk = false;
-                    error = "Falha ao salvar imagem de diagnóstico.";
+                    error = utf8("Falha ao salvar imagem de diagnóstico.");
                 }
             }
             auto* result = new juce::DynamicObject();

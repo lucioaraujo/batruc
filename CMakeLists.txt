@@ -16,7 +16,7 @@ if(APPLE)
     set(CMAKE_OSX_ARCHITECTURES "x86_64;arm64" CACHE STRING "Build a Universal 2 binary" FORCE)
 endif()
 
-project(Batruc VERSION 0.1.2 LANGUAGES C CXX)
+project(Batruc VERSION 0.1.3 LANGUAGES C CXX)
 
 # Pilha de 8 MB no Windows, como o padrão do Linux. O Windows reserva só 1 MB
 # por padrão, e a composição guarda estruturas grandes na pilha
@@ -319,6 +319,7 @@ if(BATRUC_BUILD_JUCE_APP)
         juce::juce_audio_utils
         juce::juce_cryptography
         juce::juce_gui_extra
+        juce::juce_osc   # receptor do Maestruc (MaestrucLink.h), 14/11/2026
         juce::juce_recommended_config_flags
         juce::juce_recommended_warning_flags
     )
