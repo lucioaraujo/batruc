@@ -56,7 +56,16 @@ private:
 };
 
 // First local safety stage, informed by the RASGO output-stage design.
-// This is not a standards-compliant true-peak limiter.
+//
+// 16/11/2026 (nivelamento pela saida-ref 1.0, RASGO/REFERENCIAS/SAIDA_TECNICA):
+//  - DC out at 5 Hz before anything else (one pole). Before, a DC offset went
+//    straight to the output (0.3 in, 0.299 out) and ate the limiter's room.
+//    5 Hz, not the 18 Hz of other family stages: the Batruc is a bass; this
+//    costs 0.12 dB at 30 Hz and 0.07 dB at 41 Hz (low E).
+//  - "not standards-compliant" no longer holds: TruePeakEstimate4x is the same
+//    4x polyphase design as the reference TruePeakDetector and passes EBU
+//    Tech 3341 signals 15-23 (tests/output_safety.cpp); on hot signals the
+//    output true peak measured <= -1.27 dBTP under the -1 dBFS ceiling.
 class StereoLookaheadGuard {
 public:
     void prepare(const double sampleRate) {
@@ -68,6 +77,7 @@ public:
         gainAttack_ = 1.0f - std::exp(-1.0f / std::max(1.0f, sr * 0.0005f));
         truePeakLeft_.prepare(); truePeakRight_.prepare();
         truePeakOutLeft_.prepare(); truePeakOutRight_.prepare();
+        dcCoefficient_ = static_cast<float>(std::exp(-2.0 * 3.14159265358979323846 * 5.0 / std::max(8000.0, sampleRate)));
         reset();
     }
     void reset() noexcept {
@@ -76,12 +86,13 @@ public:
         index_ = holdSamples_ = 0;
         envelope_ = 0.0f; gain_ = 1.0f; minimumGain_ = 1.0f;
         inputTruePeak_ = outputTruePeak_ = 0.0f;
+        dcInL_ = dcInR_ = dcOutL_ = dcOutR_ = 0.0f;
         truePeakLeft_.reset(); truePeakRight_.reset();
         truePeakOutLeft_.reset(); truePeakOutRight_.reset();
     }
     void process(float& l, float& r) noexcept {
-        const float inL = std::isfinite(l) ? l : 0.0f;
-        const float inR = std::isfinite(r) ? r : 0.0f;
+        const float inL = dcBlock(std::isfinite(l) ? l : 0.0f, dcInL_, dcOutL_);
+        const float inR = dcBlock(std::isfinite(r) ? r : 0.0f, dcInR_, dcOutR_);
         const float tpL = truePeakLeft_.process(inL);
         const float tpR = truePeakRight_.process(inR);
         const float peak = std::max({std::abs(inL), std::abs(inR), tpL, tpR});
@@ -114,6 +125,12 @@ public:
     float inputTruePeak() const noexcept { return inputTruePeak_; }
     float outputTruePeak() const noexcept { return outputTruePeak_; }
 private:
+    float dcBlock(float x, float& previousIn, float& previousOut) const noexcept {
+        const float y = x - previousIn + dcCoefficient_ * previousOut;
+        previousIn = x; previousOut = y;
+        return y;
+    }
+    float dcCoefficient_ = 0.99935f, dcInL_ = 0.0f, dcInR_ = 0.0f, dcOutL_ = 0.0f, dcOutR_ = 0.0f;
     std::vector<float> left_, right_;
     std::size_t index_ = 0, holdSamples_ = 0;
     float envelope_ = 0.0f, gain_ = 1.0f, release_ = 0.999f;

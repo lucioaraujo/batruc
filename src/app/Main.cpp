@@ -12,6 +12,7 @@
 #include "core/TriangleGeometry.hpp"
 #include "core/GenerativeOperations.hpp"
 #include "core/PassageDevelopment.hpp"
+#include "core/Dither.hpp"
 #include "core/OutputSafety.hpp"
 #include "core/MidiRhythmImport.hpp"
 
@@ -19331,6 +19332,9 @@ private:
         {
             const juce::ScopedLock lock(recordingLock_);
             recordingWriter_ = std::move(threaded);
+            recordingDither_ = batruc::TpdfQuantiser(24);
+            recordingDitherLeft_.assign(kRecordingDitherChunk, 0.0f);
+            recordingDitherRight_.assign(kRecordingDitherChunk, 0.0f);
         }
         recordingActive_.store(true, std::memory_order_release);
         recordingUiElapsedSeconds_ = 0;
@@ -19462,10 +19466,27 @@ private:
             return;
         }
         if (recordingWriter_ != nullptr) {
-            const float* channels[2] = {
-                buffer->getReadPointer(0, info.startSample),
-                buffer->getReadPointer(1, info.startSample)};
-            if (recordingWriter_->write(channels, info.numSamples))
+            // TPDF dither at the 24-bit LSB, only where the take becomes
+            // integers (16/11/2026, saida-ref 1.0; before: plain rounding by
+            // JUCE). The floats handed over already are the dithered
+            // integers (floatForJuceInt24), which JUCE keeps exactly.
+            const float* sourceLeft = buffer->getReadPointer(0, info.startSample);
+            const float* sourceRight = buffer->getReadPointer(1, info.startSample);
+            bool written = true;
+            for (int done = 0; done < info.numSamples;) {
+                const int count = std::min(info.numSamples - done,
+                                           static_cast<int>(kRecordingDitherChunk));
+                for (int i = 0; i < count; ++i) {
+                    recordingDitherLeft_[static_cast<std::size_t>(i)] = batruc::floatForJuceInt24(
+                        recordingDither_.quantise(sourceLeft[done + i]));
+                    recordingDitherRight_[static_cast<std::size_t>(i)] = batruc::floatForJuceInt24(
+                        recordingDither_.quantise(sourceRight[done + i]));
+                }
+                const float* channels[2] = {recordingDitherLeft_.data(), recordingDitherRight_.data()};
+                written = recordingWriter_->write(channels, count) && written;
+                done += count;
+            }
+            if (written)
                 recordingWrittenFrames_.fetch_add(
                     static_cast<std::uint64_t>(info.numSamples),
                     std::memory_order_relaxed);
@@ -23069,6 +23090,11 @@ private:
     juce::TimeSliceThread audioWriterThread_{"Batruc WAV writer"};
     juce::CriticalSection recordingLock_;
     std::unique_ptr<juce::AudioFormatWriter::ThreadedWriter> recordingWriter_;
+    // REC dither (16/11/2026): state and buffers set in startRecording()
+    // under recordingLock_, used only by writeRecordingBlock()
+    static constexpr std::size_t kRecordingDitherChunk = 4096;
+    batruc::TpdfQuantiser recordingDither_{24};
+    std::vector<float> recordingDitherLeft_, recordingDitherRight_;
     juce::File recordingFile_;
     SceneVersion recordingScene_{};
     juce::String recordingInitialConfigurationJson_;
