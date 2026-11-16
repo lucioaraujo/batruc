@@ -13,6 +13,7 @@
 #include "core/GenerativeOperations.hpp"
 #include "core/PassageDevelopment.hpp"
 #include "core/Dither.hpp"
+#include "app/StreamingVersion.h"
 #include "core/OutputSafety.hpp"
 #include "core/MidiRhythmImport.hpp"
 
@@ -19444,6 +19445,11 @@ private:
                                 }
                             }
                     });
+                // Versão de entrega (16/11/2026, saida-ref 1.1): <nome>_streaming.wav
+                // a -14 LUFS / <= -1 dBTP e um .txt com as medidas, ao lado da
+                // tomada crua; depois do REC já liberado, no mesmo fio do
+                // finalizador. O som ao vivo e a tomada crua não mudam.
+                writeStreamingVersion(file);
             });
     }
 

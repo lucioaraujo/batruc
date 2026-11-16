@@ -47,6 +47,12 @@ add_library(batruc_core STATIC
     src/core/SnareOrnaments.cpp
     src/core/BassLineComposer.cpp
     src/core/ScoreNotation.cpp
+    # saida-ref 1.1 (16/11/2026): o master de entrega da gravação
+    src/core/saida/DeliveryMaster.cpp
+    src/core/saida/OutputStage.cpp
+    src/core/saida/LoudnessMeter.cpp
+    src/core/saida/TruePeakDetector.cpp
+    src/core/saida/TakeAnalysis.cpp
 )
 
 target_include_directories(batruc_core
