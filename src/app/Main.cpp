@@ -177,11 +177,10 @@ struct SceneVersion {
     float generativeDepth = 0.3f;   // schema 60: profundidade do GERATIVO (0–1)
     bool bassPhrase = false;   // schema 61: baixo com voz própria (FRASE)
     bool percussionKey = false;   // schema 64: percussão afinada no tom da seed
-    std::array<bool, kMaxVoices> channelOrnaments = [] {   // schema 63: ORN por stem
-        std::array<bool, kMaxVoices> on{};
-        on.fill(true);
-        return on;
-    }();
+    // schema 63: ORN por stem. Desligado por padrão (16/11/2026, pedido do
+    // autor: "deixe todos os botões de ornamentos do mixer desligados no
+    // início"); as cenas anteriores ao schema 63 continuam ligadas na leitura.
+    std::array<bool, kMaxVoices> channelOrnaments{};
     int intention = static_cast<int>(MusicalIntention::meet);
     int dynamics = static_cast<int>(DynamicCurve::arch);
     int meterIndex = 1;
@@ -2007,6 +2006,8 @@ bool parseSceneFile(const juce::File& file, SceneVersion& scene,
             error = utf8("Estado de mute/solo inválido.");
             return false;
         }
+        if (schemaVersion < 63)
+            scene.channelOrnaments[voice] = true;   // antes do ORN, tudo tocava ornado
         if (schemaVersion >= 63
             && !readSceneBool(*channel, "ornaments", scene.channelOrnaments[voice])) {
             error = utf8("Estado de ornamentos do canal inválido.");
@@ -2613,8 +2614,8 @@ juce::String localized(const UiLanguage language,
             {"Exportar MusicXML do baixo", "Exportar MusicXML del bajo"},
             {"MusicXML exportado", "MusicXML exportado"},
             {"Falha ao exportar MusicXML", "No se pudo exportar el MusicXML"},
-            {"Instrumento de composição rítmica da família RASGO.\nVersão 0.1.2.\nNome histórico: Trucmetry.\nAutoria e direção artística: Lúcio de Araújo.\nCódigo do Batruc: GNU AGPL-3.0-or-later.\nJUCE 9.0.3 mantém sua licença própria (AGPLv3 ou comercial).\nModelos físicos e matemáticos (pêndulos acoplados, bilhar, Lissajous, Fourier, curvas rolantes) escrevem figuras rítmicas editáveis. Modos RITMO e GERATIVO; baixo com voz própria no tom da seed; ornamentos de caixa na nota, com ORN por stem; ginga por gênero e microtempo medido; pautas do baixo e da bateria com MusicXML; quatro línguas.\nDados: Groove MIDI Dataset (Google LLC, CC BY 4.0). Créditos completos em CREDITS_AND_SOURCES.md.\nTocado no Linux; Windows e macOS compilados e testados só na integração contínua.",
-             "Instrumento de composición rítmica de la familia RASGO.\nVersión 0.1.2.\nNombre histórico: Trucmetry.\nAutoría y dirección artística: Lúcio de Araújo.\nCódigo de Batruc: GNU AGPL-3.0-or-later.\nJUCE 9.0.3 mantiene su propia licencia (AGPLv3 o comercial).\nModelos físicos y matemáticos (péndulos acoplados, billar, Lissajous, Fourier, curvas rodantes) escriben figuras rítmicas editables. Modos RITMO y GENERATIVO; un bajo con voz propia en la tonalidad de la seed; ornamentos de caja en la nota, con ORN por stem; groove por género y microtiming medido; pentagramas de bajo y batería con MusicXML; cuatro idiomas.\nDatos: Groove MIDI Dataset (Google LLC, CC BY 4.0). Créditos completos en CREDITS_AND_SOURCES.md.\nTocado en Linux; Windows y macOS compilados y probados solo en integración continua."},
+            {"Instrumento de composição rítmica da família RASGO.\nVersão 0.1.3.\nNome histórico: Trucmetry.\nAutoria e direção artística: Lúcio de Araújo.\nCódigo do Batruc: GNU AGPL-3.0-or-later.\nJUCE 9.0.3 mantém sua licença própria (AGPLv3 ou comercial).\nModelos físicos e matemáticos (pêndulos acoplados, bilhar, Lissajous, Fourier, curvas rolantes) escrevem figuras rítmicas editáveis. Modos RITMO e GERATIVO; baixo com voz própria no tom da seed; ornamentos de caixa na nota, com ORN por stem; ginga por gênero e microtempo medido; pautas do baixo e da bateria com MusicXML; quatro línguas.\nDados: Groove MIDI Dataset (Google LLC, CC BY 4.0). Créditos completos em CREDITS_AND_SOURCES.md.\nTocado no Linux; Windows e macOS compilados e testados só na integração contínua.",
+             "Instrumento de composición rítmica de la familia RASGO.\nVersión 0.1.3.\nNombre histórico: Trucmetry.\nAutoría y dirección artística: Lúcio de Araújo.\nCódigo de Batruc: GNU AGPL-3.0-or-later.\nJUCE 9.0.3 mantiene su propia licencia (AGPLv3 o comercial).\nModelos físicos y matemáticos (péndulos acoplados, billar, Lissajous, Fourier, curvas rodantes) escriben figuras rítmicas editables. Modos RITMO y GENERATIVO; un bajo con voz propia en la tonalidad de la seed; ornamentos de caja en la nota, con ORN por stem; groove por género y microtiming medido; pentagramas de bajo y batería con MusicXML; cuatro idiomas.\nDatos: Groove MIDI Dataset (Google LLC, CC BY 4.0). Créditos completos en CREDITS_AND_SOURCES.md.\nTocado en Linux; Windows y macOS compilados y probados solo en integración continua."},
             {"Centro dispara nas passagens θ = 0 ou π. Extremos dispara nas inversões θ = π/2 ou 3π/2. A regra altera os instantes de ataque sem mudar a oscilação desenhada.",
              "Centro dispara en los pasos por θ = 0 o π. Extremos dispara en las inversiones θ = π/2 o 3π/2. La regla cambia los instantes de ataque sin alterar la oscilación dibujada."},
             {"Espaço acústico",
@@ -3499,9 +3500,9 @@ InfoContent aboutContent(const UiLanguage language) {
     const auto title = localized(language, "Sobre o Batruc", "About Batruc",
                                  "À propos de Batruc");
     const auto body = localized(language,
-        "Instrumento de composição rítmica da família RASGO.\nVersão 0.1.2.\nNome histórico: Trucmetry.\nAutoria e direção artística: Lúcio de Araújo.\nCódigo do Batruc: GNU AGPL-3.0-or-later.\nJUCE 9.0.3 mantém sua licença própria (AGPLv3 ou comercial).\nModelos físicos e matemáticos (pêndulos acoplados, bilhar, Lissajous, Fourier, curvas rolantes) escrevem figuras rítmicas editáveis. Modos RITMO e GERATIVO; baixo com voz própria no tom da seed; ornamentos de caixa na nota, com ORN por stem; ginga por gênero e microtempo medido; pautas do baixo e da bateria com MusicXML; quatro línguas.\nDados: Groove MIDI Dataset (Google LLC, CC BY 4.0). Créditos completos em CREDITS_AND_SOURCES.md.\nTocado no Linux; Windows e macOS compilados e testados só na integração contínua.",
-        "Rhythm-composition instrument of the RASGO family.\nVersion 0.1.2.\nFormer name: Trucmetry.\nAuthorship and artistic direction: Lúcio de Araújo.\nBatruc code: GNU AGPL-3.0-or-later.\nJUCE 9.0.3 keeps its own licence (AGPLv3 or commercial).\nPhysical and mathematical models (coupled pendulums, billiard, Lissajous, Fourier, rolling curves) write editable rhythmic figures. RHYTHM and GENERATIVE modes; a bass with its own voice in the seed's key; snare ornaments on the note, with a per-stem ORN switch; genre grooves and measured microtiming; bass and drum staves with MusicXML; four languages.\nData: Groove MIDI Dataset (Google LLC, CC BY 4.0). Full credits in CREDITS_AND_SOURCES.md.\nPlayed on Linux; Windows and macOS built and tested in CI only.",
-        "Instrument de composition rythmique de la famille RASGO.\nVersion 0.1.2.\nAncien nom : Trucmetry.\nAuteur et direction artistique : Lúcio de Araújo.\nCode Batruc : GNU AGPL-3.0-or-later.\nJUCE 9.0.3 garde sa propre licence (AGPLv3 ou commerciale).\nDes modèles physiques et mathématiques (pendules couplés, billard, Lissajous, Fourier, courbes roulantes) écrivent des figures rythmiques modifiables. Modes RYTHME et GÉNÉRATIF ; une basse à voix propre dans la tonalité de la graine ; ornements de caisse claire sur la note, avec ORN par stem ; grooves par genre et microtiming mesuré ; portées de basse et de batterie avec MusicXML ; quatre langues.\nDonnées : Groove MIDI Dataset (Google LLC, CC BY 4.0). Crédits complets dans CREDITS_AND_SOURCES.md.\nJoué sous Linux ; Windows et macOS compilés et testés en intégration continue seulement.");
+        "Instrumento de composição rítmica da família RASGO.\nVersão 0.1.3.\nNome histórico: Trucmetry.\nAutoria e direção artística: Lúcio de Araújo.\nCódigo do Batruc: GNU AGPL-3.0-or-later.\nJUCE 9.0.3 mantém sua licença própria (AGPLv3 ou comercial).\nModelos físicos e matemáticos (pêndulos acoplados, bilhar, Lissajous, Fourier, curvas rolantes) escrevem figuras rítmicas editáveis. Modos RITMO e GERATIVO; baixo com voz própria no tom da seed; ornamentos de caixa na nota, com ORN por stem; ginga por gênero e microtempo medido; pautas do baixo e da bateria com MusicXML; quatro línguas.\nDados: Groove MIDI Dataset (Google LLC, CC BY 4.0). Créditos completos em CREDITS_AND_SOURCES.md.\nTocado no Linux; Windows e macOS compilados e testados só na integração contínua.",
+        "Rhythm-composition instrument of the RASGO family.\nVersion 0.1.3.\nFormer name: Trucmetry.\nAuthorship and artistic direction: Lúcio de Araújo.\nBatruc code: GNU AGPL-3.0-or-later.\nJUCE 9.0.3 keeps its own licence (AGPLv3 or commercial).\nPhysical and mathematical models (coupled pendulums, billiard, Lissajous, Fourier, rolling curves) write editable rhythmic figures. RHYTHM and GENERATIVE modes; a bass with its own voice in the seed's key; snare ornaments on the note, with a per-stem ORN switch; genre grooves and measured microtiming; bass and drum staves with MusicXML; four languages.\nData: Groove MIDI Dataset (Google LLC, CC BY 4.0). Full credits in CREDITS_AND_SOURCES.md.\nPlayed on Linux; Windows and macOS built and tested in CI only.",
+        "Instrument de composition rythmique de la famille RASGO.\nVersion 0.1.3.\nAncien nom : Trucmetry.\nAuteur et direction artistique : Lúcio de Araújo.\nCode Batruc : GNU AGPL-3.0-or-later.\nJUCE 9.0.3 garde sa propre licence (AGPLv3 ou commerciale).\nDes modèles physiques et mathématiques (pendules couplés, billard, Lissajous, Fourier, courbes roulantes) écrivent des figures rythmiques modifiables. Modes RYTHME et GÉNÉRATIF ; une basse à voix propre dans la tonalité de la graine ; ornements de caisse claire sur la note, avec ORN par stem ; grooves par genre et microtiming mesuré ; portées de basse et de batterie avec MusicXML ; quatre langues.\nDonnées : Groove MIDI Dataset (Google LLC, CC BY 4.0). Crédits complets dans CREDITS_AND_SOURCES.md.\nJoué sous Linux ; Windows et macOS compilés et testés en intégration continue seulement.");
     return {title, body};
 }
 
@@ -8989,7 +8990,7 @@ public:
                 displayPlanDirty_ = true;
                 requestBassPerformanceRebuild();
                 updateStatusLabel();
-                repaint(0, 0, getWidth(), kPerformancePageHeight);
+                repaintPerformancePage();
             };
             auto& rhythmPhaseLabel = voiceRhythmPhaseLabels_[voice];
             addAndMakeVisible(rhythmPhaseLabel);
@@ -9079,7 +9080,9 @@ public:
             orn.setVisible(false);
             orn.setButtonText("ORN");
             orn.setClickingTogglesState(true);
-            orn.setToggleState(true, juce::dontSendNotification);
+            // ORN começa desligado (16/11/2026, pedido do autor); a seed escreve
+            // os ornamentos nas notas, e o ORN de cada stem decide se tocam
+            orn.setToggleState(false, juce::dontSendNotification);
             orn.setColour(juce::TextButton::buttonColourId, colour(palette::white));
             orn.setColour(juce::TextButton::buttonOnColourId, voiceTint(voice));
             orn.setColour(juce::TextButton::textColourOffId, colour(palette::ink));
@@ -11094,6 +11097,7 @@ public:
         scene.generativeDepth = 0.65f;
         scene.bassPhrase = true;
         scene.percussionKey = true;
+        scene.channelOrnaments[0] = true;    // ORN começa desligado (16/11/2026)
         scene.channelOrnaments[1] = false;
         scene.formalCycleCellsEnabled = {true, false, true};
         for (auto& cycle : scene.formalCycleCells)
@@ -11996,6 +12000,14 @@ public:
     int bassTopPad() const noexcept {
         return juce::jmax(0, (bassSectionHeight() - kBassSectionHeight
             - bassPianoStretch()) / 2);
+    }
+
+    // A página de performance inteira, com a expansão vertical da janela
+    // (16/11/2026). Antes só os 800 px de cima eram redesenhados: numa janela
+    // alta, a grade CÉLULAS · 16 do Study fica abaixo disso e o quadrado
+    // clicado não se pintava (o toque entrava; o gráfico mostrava).
+    void repaintPerformancePage() {
+        repaint(0, 0, getWidth(), kPerformancePageHeight + performanceVerticalExpansion());
     }
 
     int performanceVerticalExpansion() const noexcept {
@@ -17061,7 +17073,7 @@ private:
         tryPublishRhythmicCells();
         displayPlanDirty_ = true;
         geometryTraceView_.setRhythmicCells(rhythmicCells_);
-        repaint(0, 0, getWidth(), kPerformancePageHeight);
+        repaintPerformancePage();
         updateStudyHistoryButtons();
     }
 
@@ -21308,7 +21320,7 @@ private:
             status_ = AppStatus::paused;
             playButton_.setButtonText(localized(language_, "Tocar", "Play", "Jouer"));
             updateStatusLabel();
-            repaint(0, 0, getWidth(), kPerformancePageHeight);
+            repaintPerformancePage();
             return;
         }
         const bool next = !playing_.load(std::memory_order_relaxed);
@@ -21337,7 +21349,7 @@ private:
             playButton_.setButtonText(localized(language_, "Cancelar", "Cancel",
                                                 "Annuler"));
             updateStatusLabel();
-            repaint(0, 0, getWidth(), kPerformancePageHeight);
+            repaintPerformancePage();
             return;
         }
         playing_.store(next, std::memory_order_release);
@@ -21346,7 +21358,7 @@ private:
                                             next ? "Stop" : "Play",
                                             next ? "Arrêter" : "Jouer"));
         updateStatusLabel();
-        repaint(0, 0, getWidth(), kPerformancePageHeight);
+        repaintPerformancePage();
         repaint(0, mixerSectionY(), getWidth(), mixerSectionHeight());
     }
 
@@ -23259,7 +23271,7 @@ public:
 class BatrucApplication final : public juce::JUCEApplication {
 public:
     const juce::String getApplicationName() override { return "Batruc"; }
-    const juce::String getApplicationVersion() override { return "0.1.2"; }
+    const juce::String getApplicationVersion() override { return JUCE_APPLICATION_VERSION_STRING; }
     bool moreThanOneInstanceAllowed() override { return true; }
 
     void initialise(const juce::String& commandLine) override {
