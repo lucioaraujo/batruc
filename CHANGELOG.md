@@ -2,6 +2,20 @@
 
 ## Não publicado
 
+- **Versão de entrega a −14 LUFS** (saida-ref 1.1, a saída técnica comum
+  da família): ao lado de cada gravação, `_streaming.wav` (−14 LUFS, true
+  peak ≤ −1 dBTP, PCM 24 com TPDF) e um `.txt` com as medidas, feitos
+  offline num fio próprio. O som ao vivo e a gravação crua não mudam. Guarda
+  de dinâmica: o limitador nunca tira mais de 6 dB; uma gravação dinâmica
+  demais fica abaixo de −14 e o `.txt` diz por quê.
+- **DC fora em 5 Hz** antes do guarda de saída: um offset de 0,3 saía 0,299
+  e comia a folga do limitador; agora sai 0. No grave, −0,08 dB a 41 Hz.
+- **REC com dither TPDF** no 24 bits (antes, o arredondamento do JUCE).
+- O estimador de true peak passa nos sinais 15–23 da EBU Tech 3341
+  (testes novos); o "não conforme" do comentário deixou de valer.
+
+## 0.1.3 — 16/11/2026
+
 - **Receptor do Maestruc** (o regente da família RASGO, protocolo
   `maestruc.link/1`): com `--maestruc` ou `BATRUC_MAESTRUC=1`, o Batruc
   aceita play/stop, tempo, seed e início/fim do REC vindos do Maestruc, por
