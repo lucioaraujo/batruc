@@ -1,6 +1,12 @@
 # Batruc — notas de versão / changelog
 
-## Não publicado
+## 0.1.5 — 17/11/2026
+
+- **Fechar o app logo depois do REC não corta mais a tomada**: o
+  finalizador (WAV, partitura e versão de entrega) termina antes de o app
+  sair. Antes, o pool de fios só esperava 5 s e depois o matava à força.
+
+## 0.1.4 — 17/11/2026
 
 - **Versão de entrega a −14 LUFS** (saida-ref 1.1, a saída técnica comum
   da família): ao lado de cada gravação, `_streaming.wav` (−14 LUFS, true
