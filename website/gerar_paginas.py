@@ -28,7 +28,7 @@ PORTAL = "https://rasgoinstruments.arquiviagem.net/"
 REPO = "https://github.com/lucioaraujo/batruc"
 BLOB = "https://github.com/lucioaraujo/batruc/blob/main"
 PUBLICADO = True
-VERSAO = "0.1.3"
+VERSAO = "0.1.5"
 RELEASE = "https://github.com/lucioaraujo/batruc/releases/tag/v" + VERSAO
 DL = "https://github.com/lucioaraujo/batruc/releases/download/v" + VERSAO + "/"
 # nomes amarrados ao CPACK_PACKAGE_FILE_NAME do CMakeLists (batruc-<versão>-<plataforma>)
