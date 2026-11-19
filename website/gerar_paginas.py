@@ -306,6 +306,8 @@ def pagina(arquivo, lang):
 {noindex}<title>{e(t["title"])}</title>
 <meta name="description" content="{a(t["desc"])}" />
 <link rel="icon" href="assets/batruc-b.svg" type="image/svg+xml" />
+<link rel="icon" href="assets/favicon-32.png" sizes="32x32" type="image/png" />
+<link rel="apple-touch-icon" href="assets/apple-touch-icon.png" />
 <link rel="stylesheet" href="styles.css" />
 <script src="assets/contact.js" defer></script>
 </head>
@@ -541,6 +543,8 @@ def pagina_interna(tipo, lang):
 {noindex}<title>{e(meta["title"])}</title>
 <meta name="description" content="{a(meta["desc"])}" />
 <link rel="icon" href="assets/batruc-b.svg" type="image/svg+xml" />
+<link rel="icon" href="assets/favicon-32.png" sizes="32x32" type="image/png" />
+<link rel="apple-touch-icon" href="assets/apple-touch-icon.png" />
 <link rel="stylesheet" href="styles.css" />
 <script src="assets/contact.js" defer></script>
 </head>
