@@ -49,7 +49,7 @@ T = {
         "skip": "Pular para o conteúdo",
         "langnav": "Idioma",
         "pill_prep": "Versão 0.1.0 — em preparação",
-        "pill_pub": "Versão 0.1.2 — para Windows, macOS e Linux",
+        "pill_pub": "Versão %s — para Windows, macOS e Linux",
         "lead": "Batruc é um instrumento de composição rítmica. Modelos matemáticos e físicos — pêndulos acoplados, bilhar, figuras de Lissajous, séries de Fourier, curvas rolantes — escrevem ritmos que você ouve, edita, toca e leva para a partitura. A geração escreve; ela não filtra às escondidas.",
         "s_shot": "A interface",
         "shot_alt": "O Batruc em execução: o editor de ciclos com o estudo circular das vozes, o gráfico de onda e fluxo, e o painel de células.",
@@ -76,7 +76,7 @@ T = {
         "credits_link": "CREDITS_AND_SOURCES.md",
         "s5": "Estado",
         "state_prep": "A versão 0.1.0 está em preparação. O Batruc foi compilado, testado e tocado no Linux; os pacotes de Windows e macOS são construídos pela integração contínua e ainda não foram abertos em máquinas reais. O instrumento segue em desenvolvimento, aberto.",
-        "state_pub": "A versão 0.1.2 é a atual; a primeira publicada foi a 0.1.0, em novembro de 2026. O Batruc foi compilado, testado e tocado no Linux; os pacotes de Windows e macOS são construídos e testados pela integração contínua e ainda não foram abertos em máquinas reais. O instrumento segue em desenvolvimento, aberto.",
+        "state_pub": "A versão %s é a atual; a primeira publicada foi a 0.1.0, em novembro de 2026. O Batruc foi compilado, testado e tocado no Linux; os pacotes de Windows e macOS são construídos e testados pela integração contínua e ainda não foram abertos em máquinas reais. O instrumento segue em desenvolvimento, aberto.",
         "contact": "Contato",
         "footer_credits": "Créditos",
         "footer_license": "Licença AGPLv3+",
@@ -100,7 +100,7 @@ T = {
         "skip": "Skip to content",
         "langnav": "Language",
         "pill_prep": "Version 0.1.0 — in preparation",
-        "pill_pub": "Version 0.1.2 — for Windows, macOS and Linux",
+        "pill_pub": "Version %s — for Windows, macOS and Linux",
         "lead": "Batruc is a rhythm-composition instrument. Mathematical and physical models — coupled pendulums, billiard, Lissajous figures, Fourier series, rolling curves — write rhythms that you hear, edit, play and take to the score. Generation writes; it does not filter behind your back.",
         "s_shot": "The interface",
         "shot_alt": "Batruc running: the cycle editor with the circular study of the voices, the wave and flow graph, and the cell panel.",
@@ -127,7 +127,7 @@ T = {
         "credits_link": "CREDITS_AND_SOURCES.md",
         "s5": "Status",
         "state_prep": "Version 0.1.0 is in preparation. Batruc has been built, tested and played on Linux; the Windows and macOS packages are built by continuous integration and have not yet been opened on real machines. The instrument remains in development, open.",
-        "state_pub": "Version 0.1.2 is the current one; the first release was 0.1.0, in November 2026. Batruc has been built, tested and played on Linux; the Windows and macOS packages are built and tested by continuous integration and have not yet been opened on real machines. The instrument remains in development, open.",
+        "state_pub": "Version %s is the current one; the first release was 0.1.0, in November 2026. Batruc has been built, tested and played on Linux; the Windows and macOS packages are built and tested by continuous integration and have not yet been opened on real machines. The instrument remains in development, open.",
         "contact": "Contact",
         "footer_credits": "Credits",
         "footer_license": "AGPLv3+ licence",
@@ -151,7 +151,7 @@ T = {
         "skip": "Aller au contenu",
         "langnav": "Langue",
         "pill_prep": "Version 0.1.0 — en préparation",
-        "pill_pub": "Version 0.1.2 — pour Windows, macOS et Linux",
+        "pill_pub": "Version %s — pour Windows, macOS et Linux",
         "lead": "Batruc est un instrument de composition rythmique. Des modèles mathématiques et physiques — pendules couplés, billard, figures de Lissajous, séries de Fourier, courbes roulantes — écrivent des rythmes que vous écoutez, modifiez, jouez et portez sur la partition. La génération écrit ; elle ne filtre pas en cachette.",
         "s_shot": "L'interface",
         "shot_alt": "Batruc en cours d'exécution : l'éditeur de cycles avec l'étude circulaire des voix, le graphique onde et flux, et le panneau des cellules.",
@@ -178,7 +178,7 @@ T = {
         "credits_link": "CREDITS_AND_SOURCES.md",
         "s5": "État",
         "state_prep": "La version 0.1.0 est en préparation. Batruc a été compilé, testé et joué sous Linux ; les paquets Windows et macOS sont construits par l'intégration continue et n'ont pas encore été ouverts sur de vraies machines. L'instrument reste en développement, ouvert.",
-        "state_pub": "La version 0.1.2 est l'actuelle ; la première publiée fut la 0.1.0, en novembre 2026. Batruc a été compilé, testé et joué sous Linux ; les paquets Windows et macOS sont construits et testés par l'intégration continue et n'ont pas encore été ouverts sur de vraies machines. L'instrument reste en développement, ouvert.",
+        "state_pub": "La version %s est l'actuelle ; la première publiée fut la 0.1.0, en novembre 2026. Batruc a été compilé, testé et joué sous Linux ; les paquets Windows et macOS sont construits et testés par l'intégration continue et n'ont pas encore été ouverts sur de vraies machines. L'instrument reste en développement, ouvert.",
         "contact": "Contact",
         "footer_credits": "Crédits",
         "footer_license": "Licence AGPLv3+",
@@ -202,7 +202,7 @@ T = {
         "skip": "Saltar al contenido",
         "langnav": "Idioma",
         "pill_prep": "Versión 0.1.0 — en preparación",
-        "pill_pub": "Versión 0.1.2 — para Windows, macOS y Linux",
+        "pill_pub": "Versión %s — para Windows, macOS y Linux",
         "lead": "Batruc es un instrumento de composición rítmica. Modelos matemáticos y físicos — péndulos acoplados, billar, figuras de Lissajous, series de Fourier, curvas rodantes — escriben ritmos que escuchas, editas, tocas y llevas a la partitura. La generación escribe; no filtra a escondidas.",
         "s_shot": "La interfaz",
         "shot_alt": "Batruc en ejecución: el editor de ciclos con el estudio circular de las voces, el gráfico de onda y flujo, y el panel de células.",
@@ -229,7 +229,7 @@ T = {
         "credits_link": "CREDITS_AND_SOURCES.md",
         "s5": "Estado",
         "state_prep": "La versión 0.1.0 está en preparación. Batruc se ha compilado, probado y tocado en Linux; los paquetes de Windows y macOS los construye la integración continua y todavía no se han abierto en máquinas reales. El instrumento sigue en desarrollo, abierto.",
-        "state_pub": "La versión 0.1.2 es la actual; la primera publicada fue la 0.1.0, en noviembre de 2026. Batruc se ha compilado, probado y tocado en Linux; los paquetes de Windows y macOS los construye y prueba la integración continua y todavía no se han abierto en máquinas reales. El instrumento sigue en desarrollo, abierto.",
+        "state_pub": "La versión %s es la actual; la primera publicada fue la 0.1.0, en noviembre de 2026. Batruc se ha compilado, probado y tocado en Linux; los paquetes de Windows y macOS los construye y prueba la integración continua y todavía no se han abierto en máquinas reales. El instrumento sigue en desarrollo, abierto.",
         "contact": "Contacto",
         "footer_credits": "Créditos",
         "footer_license": "Licencia AGPLv3+",
@@ -296,8 +296,8 @@ def pagina(arquivo, lang):
 </section>
 """ if PUBLICADO else ""
     noindex = "" if PUBLICADO else '<meta name="robots" content="noindex" />\n'
-    pill = t["pill_pub"] if PUBLICADO else t["pill_prep"]
-    estado = t["state_pub"] if PUBLICADO else t["state_prep"]
+    pill = t["pill_pub"] % VERSAO if PUBLICADO else t["pill_prep"]
+    estado = t["state_pub"] % VERSAO if PUBLICADO else t["state_prep"]
     return f"""<!doctype html>
 <html lang="{lang}">
 <head>
