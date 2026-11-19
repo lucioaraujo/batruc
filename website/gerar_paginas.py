@@ -44,7 +44,7 @@ PAGINAS = [("index.html", "pt-BR", "PT"), ("en.html", "en", "EN"), ("fr.html", "
 T = {
     "pt-BR": {
         "title": "Batruc — ritmo escrito por matemática e física",
-        "desc": "Batruc: instrumento de composição rítmica da família RASGO. Pêndulos acoplados, bilhar, Lissajous e Fourier escrevem ritmos editáveis; caixa com ornamentos, baixo com voz própria, pauta e MusicXML.",
+        "desc": "Batruc: composição rítmica da família RASGO. Pêndulos, bilhar, Lissajous e Fourier escrevem ritmos que você edita, toca e leva para a partitura em MusicXML.",
         "strip": "RASGO — família de instrumentos e pesquisa sonora",
         "skip": "Pular para o conteúdo",
         "langnav": "Idioma",
@@ -95,7 +95,7 @@ T = {
     },
     "en": {
         "title": "Batruc — rhythm written by mathematics and physics",
-        "desc": "Batruc: a rhythm-composition instrument of the RASGO family. Coupled pendulums, billiard, Lissajous and Fourier write editable rhythms; a snare with ornaments, a bass with its own voice, staves and MusicXML.",
+        "desc": "Batruc: rhythm composition from the RASGO family. Pendulums, billiards, Lissajous and Fourier write rhythms you edit, play and take to the score in MusicXML.",
         "strip": "RASGO — a family of instruments and sound research",
         "skip": "Skip to content",
         "langnav": "Language",
@@ -146,7 +146,7 @@ T = {
     },
     "fr": {
         "title": "Batruc — le rythme écrit par les mathématiques et la physique",
-        "desc": "Batruc : instrument de composition rythmique de la famille RASGO. Pendules couplés, billard, Lissajous et Fourier écrivent des rythmes modifiables ; caisse claire avec ornements, basse à voix propre, portées et MusicXML.",
+        "desc": "Batruc : composition rythmique de la famille RASGO. Pendules, billard, Lissajous et Fourier écrivent des rythmes à modifier, jouer et noter en MusicXML.",
         "strip": "RASGO — famille d'instruments et recherche sonore",
         "skip": "Aller au contenu",
         "langnav": "Langue",
@@ -197,7 +197,7 @@ T = {
     },
     "es": {
         "title": "Batruc — ritmo escrito por matemática y física",
-        "desc": "Batruc: instrumento de composición rítmica de la familia RASGO. Péndulos acoplados, billar, Lissajous y Fourier escriben ritmos editables; caja con ornamentos, bajo con voz propia, pentagramas y MusicXML.",
+        "desc": "Batruc: composición rítmica de la familia RASGO. Péndulos, billar, Lissajous y Fourier escriben ritmos que editas, tocas y llevas a la partitura en MusicXML.",
         "strip": "RASGO — familia de instrumentos e investigación sonora",
         "skip": "Saltar al contenido",
         "langnav": "Idioma",
